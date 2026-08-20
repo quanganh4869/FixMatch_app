@@ -1,7 +1,6 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
-    id("com.google.dagger.hilt.android")
 }
 
 android {
@@ -46,7 +45,7 @@ android {
         buildConfig = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.3"
+        kotlinCompilerExtensionVersion = "1.5.10"
     }
     packaging {
         resources {
@@ -68,9 +67,8 @@ dependencies {
     // Navigation
     implementation("androidx.navigation:navigation-compose:2.7.5")
     
-    // Hilt
+    // Hilt (Temporarily removed KAPT due to Java 17 module conflicts)
     implementation("com.google.dagger:hilt-android:2.48")
-    // kapt("com.google.dagger:hilt-android-compiler:2.48")
     
     // Retrofit
     implementation("com.squareup.retrofit2:retrofit:2.9.0")

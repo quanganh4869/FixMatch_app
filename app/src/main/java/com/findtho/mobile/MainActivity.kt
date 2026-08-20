@@ -25,18 +25,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    var showSplash by remember { mutableStateOf(true) }
-
-                    if (showSplash) {
-                        com.findtho.mobile.presentation.splash.SplashScreen(
-                            onSplashFinished = { showSplash = false }
-                        )
-                    } else {
-                        // For now, just show a temporary Home text when splash finishes
-                        Box(contentAlignment = androidx.compose.ui.Alignment.Center) {
-                            Text("Welcome to Find Thợ!", style = MaterialTheme.typography.headlineLarge)
-                        }
-                    }
+                    com.findtho.mobile.presentation.navigation.AppNavigation()
                 }
             }
         }

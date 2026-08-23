@@ -216,10 +216,18 @@ fun RequestServiceScreen(
                     onClick = {
                         isSubmitting = true
                         coroutineScope.launch {
-                            delay(1500) // Mock API call
+                            val result = com.fixmatch.mobile.di.ServiceLocator.jobRepository.requestService(
+                                title = problemTitle,
+                                description = description,
+                                category = selectedCategory,
+                                location = "Địa chỉ mặc định"
+                            )
                             isSubmitting = false
                             showConfirmationSheet = false
-                            onSubmitRequest()
+                            if (result is com.fixmatch.mobile.domain.util.NetworkResult.Success) {
+                                com.fixmatch.mobile.di.ServiceLocator.currentActiveJobId.value = result.data?.id
+                                onSubmitRequest()
+                            }
                         }
                     },
                     modifier = Modifier.fillMaxWidth().height(56.dp),

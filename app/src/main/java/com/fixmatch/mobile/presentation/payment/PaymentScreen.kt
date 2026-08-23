@@ -65,6 +65,10 @@ fun PaymentScreen(
                         isProcessing = true
                         coroutineScope.launch {
                             delay(1500) // Mock API
+                            val activeJobId = com.fixmatch.mobile.di.ServiceLocator.currentActiveJobId.value
+                            if (activeJobId != null) {
+                                com.fixmatch.mobile.di.ServiceLocator.jobRepository.updateJobStatus(activeJobId, "COMPLETED")
+                            }
                             isProcessing = false
                             onPaymentComplete()
                         }

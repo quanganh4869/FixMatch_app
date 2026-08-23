@@ -11,35 +11,25 @@ import kotlinx.coroutines.flow.map
 
 class FakeJobRepository : JobRepository {
 
+    // Initialize with some past jobs, but no active job so we can test the full flow
     private val _jobsState = MutableStateFlow<List<Job>>(
         listOf(
             Job(
-                id = "j1",
-                title = "Leaky Pipe Repair",
-                description = "Water leaking from kitchen sink pipe",
-                status = JobStatus.SEARCHING,
-                scheduledTime = "Today, 14:30",
-                workerId = null,
-                clientId = "c1",
-                location = "Dist 1, HCMC",
-                estimatedPrice = null
-            ),
-            Job(
-                id = "j2",
-                title = "AC Cleaning",
-                description = "Routine maintenance for 2 units",
-                status = JobStatus.IN_PROGRESS,
-                scheduledTime = "Today, 16:00",
+                id = "j_past_1",
+                title = "Vệ sinh máy lạnh",
+                description = "Bảo trì định kỳ 2 máy lạnh",
+                status = JobStatus.REVIEWED,
+                scheduledTime = "Hôm qua",
                 workerId = "w1",
                 clientId = "c1",
-                location = "Dist 1, HCMC",
+                location = "Quận 1, TP.HCM",
                 estimatedPrice = 250000.0
             )
         )
     )
 
     override suspend fun getJobs(): NetworkResult<List<Job>> {
-        delay(1000)
+        delay(500)
         return NetworkResult.Success(_jobsState.value)
     }
     
@@ -57,26 +47,28 @@ class FakeJobRepository : JobRepository {
         category: String,
         location: String
     ): NetworkResult<Job> {
-        delay(1500)
+        delay(1000) // Simulate network
         val newJob = Job(
-            id = "j${_jobsState.value.size + 1}",
+            id = "j${System.currentTimeMillis()}",
             title = title,
             description = description,
-            status = JobStatus.PENDING,
+            status = JobStatus.CREATED,
             scheduledTime = "ASAP",
             workerId = null,
             clientId = "c1",
             location = location,
             estimatedPrice = null
         )
+        
         val currentList = _jobsState.value.toMutableList()
-        currentList.add(newJob)
+        currentList.add(0, newJob) // Add to top
         _jobsState.value = currentList
+        
         return NetworkResult.Success(newJob)
     }
 
     override suspend fun updateJobStatus(jobId: String, status: String): NetworkResult<Job> {
-        delay(500)
+        delay(300)
         val currentList = _jobsState.value.toMutableList()
         val index = currentList.indexOfFirst { it.id == jobId }
         if (index != -1) {
@@ -86,5 +78,21 @@ class FakeJobRepository : JobRepository {
             return NetworkResult.Success(updated)
         }
         return NetworkResult.Error(com.fixmatch.mobile.domain.util.DataError.Api.NOT_FOUND)
+    }
+    
+    // MOCK SCENARIO METHODS - To be used by Debug Menu or UI for testing flow
+
+    fun assignWorker(jobId: String, workerId: String, price: Double = 250000.0) {
+        val currentList = _jobsState.value.toMutableList()
+        val index = currentList.indexOfFirst { it.id == jobId }
+        if (index != -1) {
+            val updated = currentList[index].copy(
+                status = JobStatus.WORKER_FOUND,
+                workerId = workerId,
+                estimatedPrice = price
+            )
+            currentList[index] = updated
+            _jobsState.value = currentList
+        }
     }
 }

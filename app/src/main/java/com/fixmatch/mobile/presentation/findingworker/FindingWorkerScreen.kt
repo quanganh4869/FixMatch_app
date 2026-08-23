@@ -90,7 +90,7 @@ fun FindingWorkerScreen(
         Spacer(modifier = Modifier.height(32.dp))
         
         Text(
-            text = "Searching for nearby pros...",
+            text = "Đang tìm thợ gần bạn...",
             style = MaterialTheme.typography.headlineMedium,
             fontWeight = FontWeight.Bold,
             color = MaterialTheme.colorScheme.primary,
@@ -99,144 +99,84 @@ fun FindingWorkerScreen(
         
         Spacer(modifier = Modifier.height(8.dp))
         
+        Text(
+            text = "Chúng tôi đang quét những người thợ phù hợp nhất trong khu vực của bạn.",
+            style = MaterialTheme.typography.bodyLarge,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            textAlign = TextAlign.Center,
+            modifier = Modifier.padding(horizontal = 24.dp)
+        )
+        
+        Spacer(modifier = Modifier.height(16.dp))
+
         Row(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Center
         ) {
-            Icon(
-                imageVector = Icons.Default.LocationOn,
-                contentDescription = "Location",
-                modifier = Modifier.size(18.dp),
-                tint = MaterialTheme.colorScheme.onSurfaceVariant
-            )
+            Icon(Icons.Default.LocationOn, contentDescription = null, tint = MaterialTheme.colorScheme.primary, modifier = Modifier.size(20.dp))
             Spacer(modifier = Modifier.width(4.dp))
             Text(
-                text = "124 Maple St",
+                text = "Quận 1, TP. Hồ Chí Minh",
                 style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
+                fontWeight = FontWeight.SemiBold,
+                color = MaterialTheme.colorScheme.onBackground
             )
         }
+
+        Spacer(modifier = Modifier.weight(1f))
         
-        // Central Animation Area
+        // Radar Animation
         Box(
-            modifier = Modifier
-                .weight(1f)
-                .fillMaxWidth(),
+            modifier = Modifier.size(250.dp),
             contentAlignment = Alignment.Center
         ) {
-            // Pulse rings
             Box(
                 modifier = Modifier
-                    .size(256.dp)
+                    .fillMaxSize()
                     .scale(scale1)
                     .alpha(alpha1)
-                    .border(2.dp, MaterialTheme.colorScheme.primaryContainer, CircleShape)
+                    .background(MaterialTheme.colorScheme.primary.copy(alpha = 0.2f), CircleShape)
             )
             Box(
                 modifier = Modifier
-                    .size(192.dp)
+                    .fillMaxSize()
                     .scale(scale2)
                     .alpha(alpha2)
-                    .border(2.dp, MaterialTheme.colorScheme.primaryContainer, CircleShape)
+                    .background(MaterialTheme.colorScheme.primary.copy(alpha = 0.2f), CircleShape)
             )
             
-            // Mascot
             Box(
                 modifier = Modifier
-                    .size(192.dp)
-                    .shadow(12.dp, CircleShape, spotColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.2f))
-                    .background(MaterialTheme.colorScheme.surface, CircleShape)
-                    .clip(CircleShape)
-                    .padding(8.dp),
+                    .size(80.dp)
+                    .background(MaterialTheme.colorScheme.primary, CircleShape)
+                    .shadow(8.dp, CircleShape),
                 contentAlignment = Alignment.Center
             ) {
-                Image(
-                    painter = painterResource(id = R.drawable.worker_mascot),
-                    contentDescription = "Worker Mascot",
-                    modifier = Modifier.fillMaxSize().padding(16.dp),
-                    contentScale = ContentScale.Fit
+                Icon(
+                    imageVector = Icons.Default.Build,
+                    contentDescription = null,
+                    tint = MaterialTheme.colorScheme.onPrimary,
+                    modifier = Modifier.size(40.dp)
                 )
             }
         }
         
-        // Request Details Card
-        Row(
+        Spacer(modifier = Modifier.weight(1f))
+        
+        Button(
+            onClick = onCancel,
             modifier = Modifier
                 .fillMaxWidth()
-                .shadow(4.dp, RoundedCornerShape(12.dp), spotColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.05f))
-                .background(MaterialTheme.colorScheme.surface, RoundedCornerShape(12.dp))
-                .padding(16.dp),
-            verticalAlignment = Alignment.CenterVertically
+                .padding(horizontal = 24.dp)
+                .height(56.dp),
+            colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.errorContainer),
+            shape = RoundedCornerShape(16.dp)
         ) {
-            Box(
-                modifier = Modifier
-                    .size(48.dp)
-                    .background(MaterialTheme.colorScheme.secondaryContainer, RoundedCornerShape(8.dp)),
-                contentAlignment = Alignment.Center
-            ) {
-                Icon(Icons.Default.Build, contentDescription = null, tint = MaterialTheme.colorScheme.onSecondaryContainer, modifier = Modifier.size(24.dp))
-            }
-            
-            Spacer(modifier = Modifier.width(16.dp))
-            
-            Column(modifier = Modifier.weight(1f)) {
-                Text(
-                    text = "Leaky Pipe Repair",
-                    style = MaterialTheme.typography.labelLarge,
-                    color = MaterialTheme.colorScheme.onSurface
-                )
-                Text(
-                    text = "Finding the best match...",
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                )
-            }
-            
-            Column(horizontalAlignment = Alignment.End) {
-                // Pending dot indicator animation
-                val pulseAlpha by infiniteTransition.animateFloat(
-                    initialValue = 0.4f,
-                    targetValue = 1f,
-                    animationSpec = infiniteRepeatable(
-                        animation = tween(800, easing = FastOutSlowInEasing),
-                        repeatMode = RepeatMode.Reverse
-                    ),
-                    label = "pulseAlpha"
-                )
-                Box(
-                    modifier = Modifier
-                        .size(12.dp)
-                        .alpha(pulseAlpha)
-                        .background(MaterialTheme.colorScheme.secondaryContainer, CircleShape)
-                )
-                Spacer(modifier = Modifier.height(4.dp))
-                Text(
-                    text = "Pending",
-                    style = MaterialTheme.typography.labelSmall,
-                    color = MaterialTheme.colorScheme.secondary
-                )
-            }
+            Icon(Icons.Default.Close, contentDescription = "Cancel", tint = MaterialTheme.colorScheme.onErrorContainer)
+            Spacer(modifier = Modifier.width(8.dp))
+            Text("Hủy Tìm Kiếm", style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.onErrorContainer, fontWeight = FontWeight.Bold)
         }
         
         Spacer(modifier = Modifier.height(24.dp))
-        
-        TextButton(
-            onClick = onCancel,
-            modifier = Modifier.height(56.dp)
-        ) {
-            Icon(
-                imageVector = Icons.Default.Close,
-                contentDescription = "Cancel",
-                tint = MaterialTheme.colorScheme.primary
-            )
-            Spacer(modifier = Modifier.width(8.dp))
-            Text(
-                text = "Cancel Request",
-                style = MaterialTheme.typography.labelLarge,
-                color = MaterialTheme.colorScheme.primary
-            )
-        }
-        
-        Spacer(modifier = Modifier.height(16.dp))
     }
 }

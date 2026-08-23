@@ -70,7 +70,9 @@ fun MainScreen(
         ) { page ->
             if (isWorkerMode) {
                 when (workerRoutes[page]) {
-                    "worker_home" -> WorkerHomeScreen()
+                    "worker_home" -> WorkerHomeScreen(
+                        onNavigateToNewRequest = { rootNavController.navigate(Screen.NewJobRequest.route) }
+                    )
                     "jobs" -> MyRequestsScreen()
                     "messages" -> MessagesScreen(onNavigateToChat = { rootNavController.navigate(Screen.Chat.route) })
                     "worker_settings" -> WorkerSettingsScreen(
@@ -82,7 +84,8 @@ fun MainScreen(
                 when (userRoutes[page]) {
                     "home" -> HomeScreen(
                         onNavigateToWorkerProfile = { rootNavController.navigate(Screen.WorkerProfile.route) },
-                        onNavigateToNewRequest = { rootNavController.navigate(Screen.RequestService.route) }
+                        onNavigateToNewRequest = { rootNavController.navigate(Screen.RequestService.route) },
+                        onNavigateToFindingWorker = { rootNavController.navigate(Screen.FindingWorker.route) }
                     )
                     "requests" -> MyRequestsScreen()
                     "messages" -> MessagesScreen(onNavigateToChat = { rootNavController.navigate(Screen.Chat.route) })

@@ -15,38 +15,53 @@ import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.filled.KeyboardArrowRight
+import androidx.compose.material.icons.filled.MyLocation
 import androidx.compose.material.icons.outlined.Bolt
 import androidx.compose.material.icons.outlined.WaterDrop
 import androidx.compose.material.icons.outlined.AcUnit
 import androidx.compose.material.icons.outlined.CleaningServices
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
+import com.fixmatch.mobile.data.settings.SettingsManager
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
     onNavigateToWorkerProfile: () -> Unit = {},
-    onNavigateToNewRequest: () -> Unit = {}
+    onNavigateToNewRequest: () -> Unit = {},
+    onNavigateToFindingWorker: () -> Unit = {}
 ) {
+    val context = LocalContext.current
+    val settingsManager = remember { SettingsManager(context) }
+    val coroutineScope = rememberCoroutineScope()
+    
+    val savedLocation by settingsManager.locationFlow.collectAsState(initial = null)
+    var showLocationSheet by remember { mutableStateOf(false) }
+    
+    // Automatically show location sheet if no location is saved (Module 2)
+    LaunchedEffect(savedLocation) {
+        if (savedLocation == null) {
+            showLocationSheet = true
+        }
+    }
+
     var searchQuery by remember { mutableStateOf("") }
     
     Scaffold(
         topBar = {
             TopAppBar(
                 title = {
-                    Column {
+                    Column(modifier = Modifier.clickable { showLocationSheet = true }) {
                         Text(
                             text = "Vị trí hiện tại",
                             style = MaterialTheme.typography.labelSmall,
@@ -61,7 +76,7 @@ fun HomeScreen(
                             )
                             Spacer(modifier = Modifier.width(4.dp))
                             Text(
-                                text = "Quận 1, TP. HCM",
+                                text = savedLocation ?: "Đang cập nhật...",
                                 style = MaterialTheme.typography.titleMedium,
                                 fontWeight = FontWeight.Bold
                             )
@@ -126,10 +141,10 @@ fun HomeScreen(
                         modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp),
                         horizontalArrangement = Arrangement.SpaceBetween
                     ) {
-                        CompactCategoryItem("Điện", Icons.Outlined.Bolt)
-                        CompactCategoryItem("Nước", Icons.Outlined.WaterDrop)
-                        CompactCategoryItem("Máy lạnh", Icons.Outlined.AcUnit)
-                        CompactCategoryItem("Dọn dẹp", Icons.Outlined.CleaningServices)
+                        CompactCategoryItem("Điện", Icons.Outlined.Bolt, onClick = onNavigateToFindingWorker)
+                        CompactCategoryItem("Nước", Icons.Outlined.WaterDrop, onClick = onNavigateToFindingWorker)
+                        CompactCategoryItem("Máy lạnh", Icons.Outlined.AcUnit, onClick = onNavigateToFindingWorker)
+                        CompactCategoryItem("Dọn dẹp", Icons.Outlined.CleaningServices, onClick = onNavigateToFindingWorker)
                     }
                 }
             }
@@ -237,11 +252,87 @@ fun HomeScreen(
             }
         }
     }
+    
+    // Module 2: Location Selection Bottom Sheet
+    if (showLocationSheet) {
+        ModalBottomSheet(
+            onDismissRequest = { 
+                if (savedLocation != null) showLocationSheet = false 
+            }
+        ) {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp, vertical = 24.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Text(
+                    text = "Cập nhật địa chỉ của bạn",
+                    style = MaterialTheme.typography.titleLarge,
+                    fontWeight = FontWeight.Bold
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+                Text(
+                    text = "Để FixMatch tìm thợ gần bạn nhất",
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+                
+                Spacer(modifier = Modifier.height(24.dp))
+                
+                // Mock Map UI (Just a placeholder box for now)
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(200.dp)
+                        .clip(RoundedCornerShape(16.dp))
+                        .background(Color(0xFFE0E0E0))
+                        .clickable {
+                            coroutineScope.launch {
+                                settingsManager.setLocation("Phường Bến Nghé, Quận 1, TP. HCM")
+                                showLocationSheet = false
+                            }
+                        },
+                    contentAlignment = Alignment.Center
+                ) {
+                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                        Icon(
+                            imageVector = Icons.Default.LocationOn,
+                            contentDescription = "Pin",
+                            tint = Color.Red,
+                            modifier = Modifier.size(48.dp)
+                        )
+                        Spacer(modifier = Modifier.height(8.dp))
+                        Text("Bấm vào đây để ghim vị trí", fontWeight = FontWeight.Medium)
+                    }
+                }
+                
+                Spacer(modifier = Modifier.height(24.dp))
+                
+                Button(
+                    onClick = {
+                        coroutineScope.launch {
+                            settingsManager.setLocation("Phường Bến Nghé, Quận 1, TP. HCM")
+                            showLocationSheet = false
+                        }
+                    },
+                    modifier = Modifier.fillMaxWidth().height(50.dp),
+                    shape = RoundedCornerShape(12.dp)
+                ) {
+                    Text("Xác nhận vị trí", fontSize = MaterialTheme.typography.titleMedium.fontSize)
+                }
+                Spacer(modifier = Modifier.height(32.dp))
+            }
+        }
+    }
 }
 
 @Composable
-fun CompactCategoryItem(name: String, icon: androidx.compose.ui.graphics.vector.ImageVector) {
-    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+fun CompactCategoryItem(name: String, icon: androidx.compose.ui.graphics.vector.ImageVector, onClick: () -> Unit = {}) {
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = Modifier.clickable { onClick() }
+    ) {
         Box(
             modifier = Modifier
                 .size(56.dp)

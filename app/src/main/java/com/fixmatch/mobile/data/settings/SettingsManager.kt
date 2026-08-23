@@ -16,6 +16,7 @@ class SettingsManager(private val context: Context) {
     companion object {
         val THEME_MODE = booleanPreferencesKey("theme_mode") // true for dark, false for light, null for system
         val LANGUAGE = stringPreferencesKey("language") // "en", "vi", null for system
+        val LOCATION = stringPreferencesKey("location")
     }
 
     val themeModeFlow: Flow<Boolean?> = context.dataStore.data.map { preferences ->
@@ -24,6 +25,10 @@ class SettingsManager(private val context: Context) {
 
     val languageFlow: Flow<String?> = context.dataStore.data.map { preferences ->
         preferences[LANGUAGE]
+    }
+
+    val locationFlow: Flow<String?> = context.dataStore.data.map { preferences ->
+        preferences[LOCATION]
     }
 
     suspend fun setThemeMode(isDark: Boolean?) {
@@ -42,6 +47,16 @@ class SettingsManager(private val context: Context) {
                 preferences.remove(LANGUAGE)
             } else {
                 preferences[LANGUAGE] = language
+            }
+        }
+    }
+
+    suspend fun setLocation(location: String?) {
+        context.dataStore.edit { preferences ->
+            if (location == null) {
+                preferences.remove(LOCATION)
+            } else {
+                preferences[LOCATION] = location
             }
         }
     }

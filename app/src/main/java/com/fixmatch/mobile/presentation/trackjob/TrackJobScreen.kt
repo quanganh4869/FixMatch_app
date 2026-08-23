@@ -1,5 +1,7 @@
 package com.fixmatch.mobile.presentation.trackjob
 
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
@@ -8,109 +10,89 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.Call
-import androidx.compose.material.icons.filled.Check
-import androidx.compose.material.icons.filled.Email
-import androidx.compose.material.icons.filled.LocationOn
-import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import com.fixmatch.mobile.domain.model.JobStatus
+import com.fixmatch.mobile.domain.util.LatLng
+import com.fixmatch.mobile.domain.util.MockLocationProvider
 
-enum class JobState {
-    PENDING, FINDING, ACCEPTED, IN_PROGRESS, COMPLETED, CANCELLED
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalAnimationApi::class)
 @Composable
 fun TrackJobScreen(
-    currentJobState: JobState = JobState.IN_PROGRESS,
     onNavigateBack: () -> Unit = {},
     onNavigateToReview: () -> Unit = {}
 ) {
+    val coroutineScope = rememberCoroutineScope()
+    
+    // Khởi tạo MockLocationProvider
+    // Giả sử thợ đi từ Landmark 81 đến Bến Thành, với vận tốc 30km/h
+    val startLoc = LatLng(10.794, 106.722)
+    val endLoc = LatLng(10.772, 106.698)
+    // Tăng tốc độ mô phỏng cho người xem dễ thấy (200km/h thay vì 30)
+    val locationProvider = remember { MockLocationProvider(startLoc, endLoc, 400.0, 500) }
+    
+    val currentLocation by locationProvider.currentLocation.collectAsState(initial = startLoc)
+    var jobStatus by remember { mutableStateOf(JobStatus.ON_THE_WAY) }
+    
+    // Tính khoảng cách còn lại (km)
+    val remainingDistance = currentLocation?.let { MockLocationProvider.calculateDistance(it, endLoc) } ?: 0.0
+    // Ước tính thời gian (phút). Giả sử trung bình đi 20km/h nội thành => 3 phút/km
+    val etaMinutes = (remainingDistance * 3).toInt().coerceAtLeast(1)
+
+    LaunchedEffect(Unit) {
+        // Bắt đầu mô phỏng di chuyển
+        locationProvider.startTracking()
+        
+        // Khi di chuyển xong
+        jobStatus = JobStatus.ARRIVED
+        delay(3000)
+        
+        // Bắt đầu sửa
+        jobStatus = JobStatus.IN_PROGRESS
+        delay(4000)
+        
+        // Sửa xong
+        jobStatus = JobStatus.COMPLETED
+    }
+
     Scaffold(
         topBar = {
             TopAppBar(
                 title = { 
                     Text(
-                        "Job Tracking", 
+                        "Theo dõi đơn hàng", 
                         style = MaterialTheme.typography.titleLarge,
                         fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.onSurface
                     ) 
                 },
                 navigationIcon = {
                     IconButton(onClick = onNavigateBack) {
                         Icon(Icons.Default.ArrowBack, contentDescription = "Back")
                     }
-                },
-                actions = {
-                    IconButton(onClick = { }) {
-                        Icon(Icons.Default.MoreVert, contentDescription = "More")
-                    }
-                },
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.surface
-                )
+                }
             )
         },
         bottomBar = {
-            if (currentJobState != JobState.COMPLETED && currentJobState != JobState.CANCELLED) {
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .background(MaterialTheme.colorScheme.surface)
-                        .padding(16.dp)
-                        .navigationBarsPadding()
-                ) {
-                    when (currentJobState) {
-                        JobState.PENDING, JobState.FINDING -> {
-                            OutlinedButton(
-                                onClick = { /* Cancel Job */ },
-                                modifier = Modifier.fillMaxWidth().height(56.dp),
-                                shape = RoundedCornerShape(12.dp),
-                                border = androidx.compose.foundation.BorderStroke(1.dp, MaterialTheme.colorScheme.error),
-                                colors = ButtonDefaults.outlinedButtonColors(contentColor = MaterialTheme.colorScheme.error)
-                            ) {
-                                Text("Cancel Request", style = MaterialTheme.typography.titleMedium)
-                            }
-                        }
-                        JobState.ACCEPTED, JobState.IN_PROGRESS -> {
-                            Button(
-                                onClick = onNavigateToReview,
-                                modifier = Modifier.fillMaxWidth().height(56.dp),
-                                shape = RoundedCornerShape(12.dp),
-                                colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary)
-                            ) {
-                                Text("Mark as Completed", style = MaterialTheme.typography.titleMedium)
-                            }
-                        }
-                        else -> {}
-                    }
-                }
-            } else if (currentJobState == JobState.COMPLETED) {
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .background(MaterialTheme.colorScheme.surface)
-                        .padding(16.dp)
-                        .navigationBarsPadding()
-                ) {
-                     Button(
+            if (jobStatus == JobStatus.COMPLETED) {
+                Box(modifier = Modifier.fillMaxWidth().padding(16.dp).navigationBarsPadding()) {
+                    Button(
                         onClick = onNavigateToReview,
                         modifier = Modifier.fillMaxWidth().height(56.dp),
-                        shape = RoundedCornerShape(12.dp),
-                        colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary)
+                        shape = RoundedCornerShape(12.dp)
                     ) {
-                        Text("Write a Review", style = MaterialTheme.typography.titleMedium)
+                        Text("Thanh Toán & Đánh Giá", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
                     }
                 }
             }
@@ -121,156 +103,128 @@ fun TrackJobScreen(
                 .fillMaxSize()
                 .background(MaterialTheme.colorScheme.background)
                 .padding(paddingValues)
-                .padding(horizontal = 16.dp)
-                .verticalScroll(rememberScrollState()),
-            verticalArrangement = Arrangement.spacedBy(24.dp)
         ) {
-            Spacer(modifier = Modifier.height(8.dp))
             
-            // Timeline
-            JobTimeline(currentState = currentJobState)
-
-            // Worker Info (if accepted or in progress)
-            if (currentJobState == JobState.ACCEPTED || currentJobState == JobState.IN_PROGRESS || currentJobState == JobState.COMPLETED) {
-                WorkerInfoCard()
+            // MAP MOCKUP (Mô phỏng 1 box với toạ độ thay đổi)
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(1f)
+                    .background(Color(0xFFE0E0E0)) // Map placeholder
+            ) {
+                // Ta có thể vẽ một route giả lập bằng Box
+                // Giả lập toạ độ thành padding/offset
+                // Đây chỉ là demo trực quan nên ta dùng layout đơn giản
+                
+                // Point B (Đích - Bến Thành)
+                Box(
+                    modifier = Modifier.align(Alignment.Center).size(30.dp),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Icon(Icons.Default.Home, contentDescription = null, tint = MaterialTheme.colorScheme.primary, modifier = Modifier.size(30.dp))
+                }
+                
+                // Point A (Marker đang chạy)
+                // Cần tính offset dựa trên tiến trình đi từ start->end
+                val progress = if (currentLocation != null) {
+                    val total = MockLocationProvider.calculateDistance(startLoc, endLoc)
+                    val done = MockLocationProvider.calculateDistance(startLoc, currentLocation!!)
+                    (done / total).coerceIn(0.0, 1.0)
+                } else 0.0
+                
+                // Giả lập di chuyển từ trên góc phải xuống giữa màn hình
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(
+                            top = (100 + 200 * progress).dp, 
+                            start = (200 - 100 * progress).dp
+                        )
+                ) {
+                    Box(modifier = Modifier.size(40.dp).background(Color.White, CircleShape).border(2.dp, MaterialTheme.colorScheme.primary, CircleShape), contentAlignment = Alignment.Center) {
+                         AsyncImage(model = "https://i.pravatar.cc/150?img=11", contentDescription = null, modifier = Modifier.size(36.dp).clip(CircleShape))
+                    }
+                }
             }
-
-            // Job Details
-            JobDetailsCard()
             
-            Spacer(modifier = Modifier.height(32.dp))
-        }
-    }
-}
-
-@Composable
-fun JobTimeline(currentState: JobState) {
-    val states = listOf(
-        JobState.PENDING to "Request Sent",
-        JobState.ACCEPTED to "Worker Accepted",
-        JobState.IN_PROGRESS to "In Progress",
-        JobState.COMPLETED to "Completed"
-    )
-
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .shadow(4.dp, RoundedCornerShape(16.dp))
-            .background(MaterialTheme.colorScheme.surface, RoundedCornerShape(16.dp))
-            .padding(20.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp)
-    ) {
-        Text("Status", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onSurface)
-        
-        states.forEachIndexed { index, pair ->
-            val isCompleted = currentState.ordinal >= pair.first.ordinal
-            val isCurrent = currentState == pair.first
-            
-            Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.Top) {
-                Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.width(24.dp)) {
-                    Box(
-                        modifier = Modifier
-                            .size(24.dp)
-                            .background(
-                                if (isCompleted) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.surfaceVariant,
-                                CircleShape
-                            ),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        if (isCompleted) {
-                            Icon(Icons.Default.Check, contentDescription = null, tint = MaterialTheme.colorScheme.onPrimary, modifier = Modifier.size(16.dp))
+            // STATUS PANEL
+            Surface(
+                modifier = Modifier.fillMaxWidth().shadow(16.dp, RoundedCornerShape(topStart = 24.dp, topEnd = 24.dp)),
+                shape = RoundedCornerShape(topStart = 24.dp, topEnd = 24.dp),
+                color = MaterialTheme.colorScheme.surface
+            ) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(24.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    
+                    // Animated Status Header
+                    AnimatedContent(targetState = jobStatus) { status ->
+                        when(status) {
+                            JobStatus.ON_THE_WAY -> {
+                                Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                                    Text("Thợ đang trên đường", style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onSurface)
+                                    Spacer(modifier = Modifier.height(4.dp))
+                                    Text("Đến trong khoảng $etaMinutes phút (${String.format("%.1f", remainingDistance)} km)", style = MaterialTheme.typography.bodyLarge, color = MaterialTheme.colorScheme.primary, fontWeight = FontWeight.Bold)
+                                }
+                            }
+                            JobStatus.ARRIVED -> {
+                                Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                                    Text("Thợ đã đến nơi", style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.primary)
+                                    Spacer(modifier = Modifier.height(4.dp))
+                                    Text("Vui lòng mở cửa cho thợ", style = MaterialTheme.typography.bodyLarge, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                                }
+                            }
+                            JobStatus.IN_PROGRESS -> {
+                                Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                                    Text("Đang thực hiện công việc", style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold, color = Color(0xFFFFA000))
+                                    Spacer(modifier = Modifier.height(4.dp))
+                                    Text("Thợ đang tiến hành sửa chữa...", style = MaterialTheme.typography.bodyLarge, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                                }
+                            }
+                            JobStatus.COMPLETED -> {
+                                Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                                    Text("Công việc đã hoàn thành", style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold, color = Color(0xFF4CAF50))
+                                    Spacer(modifier = Modifier.height(4.dp))
+                                    Text("Vui lòng thanh toán cho thợ", style = MaterialTheme.typography.bodyLarge, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                                }
+                            }
+                            else -> {}
                         }
                     }
-                    if (index < states.size - 1) {
-                        Box(
-                            modifier = Modifier
-                                .width(2.dp)
-                                .height(32.dp)
-                                .background(if (currentState.ordinal > pair.first.ordinal) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.surfaceVariant)
+                    
+                    Spacer(modifier = Modifier.height(24.dp))
+                    
+                    // Worker Info
+                    Row(
+                        modifier = Modifier.fillMaxWidth().background(MaterialTheme.colorScheme.surfaceVariant.copy(alpha=0.3f), RoundedCornerShape(12.dp)).padding(16.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        AsyncImage(
+                            model = "https://i.pravatar.cc/150?img=11",
+                            contentDescription = "Avatar",
+                            modifier = Modifier.size(50.dp).clip(CircleShape)
                         )
+                        Spacer(modifier = Modifier.width(16.dp))
+                        Column(modifier = Modifier.weight(1f)) {
+                            Text("Nguyễn Văn Hải", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
+                            Text("Thợ Điện", style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                        }
+                        
+                        if (jobStatus != JobStatus.COMPLETED) {
+                            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                                IconButton(onClick = { }, modifier = Modifier.background(MaterialTheme.colorScheme.primaryContainer, CircleShape).size(40.dp)) {
+                                    Icon(Icons.Default.Call, contentDescription = "Call", tint = MaterialTheme.colorScheme.onPrimaryContainer, modifier = Modifier.size(20.dp))
+                                }
+                                IconButton(onClick = { }, modifier = Modifier.background(MaterialTheme.colorScheme.secondaryContainer, CircleShape).size(40.dp)) {
+                                    Icon(Icons.Default.Chat, contentDescription = "Chat", tint = MaterialTheme.colorScheme.onSecondaryContainer, modifier = Modifier.size(20.dp))
+                                }
+                            }
+                        }
                     }
                 }
-                Spacer(modifier = Modifier.width(16.dp))
-                Column {
-                    Text(
-                        text = pair.second,
-                        style = MaterialTheme.typography.bodyLarge,
-                        fontWeight = if (isCurrent) FontWeight.Bold else FontWeight.Medium,
-                        color = if (isCurrent) MaterialTheme.colorScheme.primary else (if (isCompleted) MaterialTheme.colorScheme.onSurface else MaterialTheme.colorScheme.onSurfaceVariant)
-                    )
-                }
-            }
-        }
-    }
-}
-
-@Composable
-fun WorkerInfoCard() {
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .shadow(4.dp, RoundedCornerShape(16.dp))
-            .background(MaterialTheme.colorScheme.surface, RoundedCornerShape(16.dp))
-            .border(1.dp, MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.3f), RoundedCornerShape(16.dp))
-            .padding(16.dp)
-    ) {
-        Text("Your Professional", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onSurface)
-        Spacer(modifier = Modifier.height(16.dp))
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            AsyncImage(
-                model = "https://images.unsplash.com/photo-1540569014015-19a7be504e3a?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80",
-                contentDescription = "Worker",
-                modifier = Modifier
-                    .size(56.dp)
-                    .clip(CircleShape),
-                contentScale = ContentScale.Crop
-            )
-            Spacer(modifier = Modifier.width(16.dp))
-            Column(modifier = Modifier.weight(1f)) {
-                Text("Michael Tran", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onSurface)
-                Text("Master Electrician", style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
-            }
-            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                IconButton(onClick = { }, modifier = Modifier.background(MaterialTheme.colorScheme.primaryContainer, CircleShape).size(40.dp)) {
-                    Icon(Icons.Default.Call, contentDescription = "Call", tint = MaterialTheme.colorScheme.onPrimaryContainer, modifier = Modifier.size(20.dp))
-                }
-                IconButton(onClick = { }, modifier = Modifier.background(MaterialTheme.colorScheme.primaryContainer, CircleShape).size(40.dp)) {
-                    Icon(Icons.Default.Email, contentDescription = "Message", tint = MaterialTheme.colorScheme.onPrimaryContainer, modifier = Modifier.size(20.dp))
-                }
-            }
-        }
-    }
-}
-
-@Composable
-fun JobDetailsCard() {
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .shadow(4.dp, RoundedCornerShape(16.dp))
-            .background(MaterialTheme.colorScheme.surface, RoundedCornerShape(16.dp))
-            .padding(16.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp)
-    ) {
-        Text("Job Details", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onSurface)
-        Divider(color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f))
-        
-        Row(verticalAlignment = Alignment.Top) {
-            Icon(Icons.Default.LocationOn, contentDescription = null, tint = MaterialTheme.colorScheme.primary, modifier = Modifier.size(20.dp))
-            Spacer(modifier = Modifier.width(12.dp))
-            Column {
-                Text("Address", style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
-                Text("123 Nguyen Hue, Dist 1, HCMC", style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurface)
-            }
-        }
-        
-        Row(verticalAlignment = Alignment.Top) {
-            Icon(Icons.Default.MoreVert, contentDescription = null, tint = MaterialTheme.colorScheme.primary, modifier = Modifier.size(20.dp))
-            Spacer(modifier = Modifier.width(12.dp))
-            Column {
-                Text("Problem", style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
-                Text("Leaky faucet in kitchen", style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurface)
-                Text("It's been leaking since yesterday. The main valve is off.", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
             }
         }
     }

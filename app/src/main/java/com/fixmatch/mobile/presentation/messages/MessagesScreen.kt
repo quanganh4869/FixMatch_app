@@ -1,7 +1,7 @@
 package com.fixmatch.mobile.presentation.messages
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
@@ -27,34 +27,22 @@ import coil.compose.AsyncImage
 fun MessagesScreen(
     onNavigateToChat: () -> Unit = {}
 ) {
+    var searchQuery by remember { mutableStateOf("") }
+
     Scaffold(
         topBar = {
             TopAppBar(
                 title = { 
                     Text(
-                        "FixMatch", 
-                        style = MaterialTheme.typography.headlineMedium,
+                        "Tin nhắn", 
+                        style = MaterialTheme.typography.titleLarge,
                         fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.primary,
-                        modifier = Modifier.fillMaxWidth(),
-                        textAlign = androidx.compose.ui.text.style.TextAlign.Center
+                        color = MaterialTheme.colorScheme.onSurface
                     ) 
-                },
-                navigationIcon = {
-                    Box(modifier = Modifier.padding(start = 16.dp)) {
-                        AsyncImage(
-                            model = "https://i.pravatar.cc/150?img=33",
-                            contentDescription = "User",
-                            modifier = Modifier
-                                .size(32.dp)
-                                .clip(CircleShape),
-                            contentScale = ContentScale.Crop
-                        )
-                    }
                 },
                 actions = {
                     IconButton(onClick = { }) {
-                        Icon(Icons.Default.Notifications, contentDescription = "Alerts", tint = MaterialTheme.colorScheme.primary)
+                        Icon(Icons.Default.Notifications, contentDescription = "Alerts")
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
@@ -69,71 +57,56 @@ fun MessagesScreen(
                 .background(MaterialTheme.colorScheme.background)
                 .padding(paddingValues)
         ) {
-            Column(modifier = Modifier.padding(16.dp)) {
-                Text(
-                    text = "Messages",
-                    style = MaterialTheme.typography.displaySmall,
-                    fontWeight = FontWeight.Bold,
-                    color = MaterialTheme.colorScheme.onBackground
-                )
-                Spacer(modifier = Modifier.height(16.dp))
-                
-                OutlinedTextField(
-                    value = "",
-                    onValueChange = {},
-                    placeholder = { Text("Search chats...") },
-                    leadingIcon = { Icon(Icons.Default.Search, contentDescription = null, tint = MaterialTheme.colorScheme.onSurfaceVariant) },
-                    modifier = Modifier.fillMaxWidth(),
-                    shape = RoundedCornerShape(16.dp),
-                    colors = OutlinedTextFieldDefaults.colors(
-                        focusedContainerColor = MaterialTheme.colorScheme.surface,
-                        unfocusedContainerColor = MaterialTheme.colorScheme.surface,
-                        focusedBorderColor = MaterialTheme.colorScheme.primary,
-                        unfocusedBorderColor = MaterialTheme.colorScheme.outlineVariant
-                    )
-                )
-            }
             
+            OutlinedTextField(
+                value = searchQuery,
+                onValueChange = { searchQuery = it },
+                placeholder = { Text("Tìm kiếm tin nhắn...") },
+                leadingIcon = { Icon(Icons.Default.Search, contentDescription = null, tint = MaterialTheme.colorScheme.onSurfaceVariant) },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp, vertical = 8.dp),
+                shape = RoundedCornerShape(16.dp),
+                colors = OutlinedTextFieldDefaults.colors(
+                    unfocusedContainerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f),
+                    focusedContainerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f),
+                    unfocusedBorderColor = Color.Transparent,
+                    focusedBorderColor = MaterialTheme.colorScheme.primary
+                ),
+                singleLine = true
+            )
+
             LazyColumn(
-                modifier = Modifier.fillMaxWidth(),
-                contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
+                contentPadding = PaddingValues(16.dp),
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
                 item {
-                    ChatListItem(
-                        name = "Alex Johnson",
-                        time = "10:42 AM",
-                        message = "I'll be there in 15 mins to check the leaky pipe.",
-                        jobTag = "Leaky Pipe Repair",
-                        imageUrl = "https://i.pravatar.cc/150?img=11",
+                    MessageItem(
+                        name = "Nguyễn Văn Hải",
+                        message = "Anh đã đến sảnh chung cư rồi nhé, em xuống đón anh nha.",
+                        time = "10:32 AM",
+                        jobTag = "Sửa ống nước",
                         unreadCount = 2,
-                        isOnline = true,
                         onClick = onNavigateToChat
                     )
-                    
-                    Divider(modifier = Modifier.padding(vertical = 4.dp, horizontal = 16.dp), color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f))
-                    
-                    ChatListItem(
-                        name = "Sarah Williams",
-                        time = "Yesterday",
-                        message = "The AC maintenance is complete. Invoice is attached.",
-                        jobTag = "AC Maintenance",
-                        imageUrl = "https://i.pravatar.cc/150?img=12",
+                }
+                item {
+                    MessageItem(
+                        name = "Trần Trọng Bình",
+                        message = "Dạ, báo giá máy lạnh của anh là 450k nhé.",
+                        time = "Hôm qua",
+                        jobTag = "Máy lạnh",
                         unreadCount = 0,
-                        isOnline = true,
                         onClick = onNavigateToChat
                     )
-                    
-                    Divider(modifier = Modifier.padding(vertical = 4.dp, horizontal = 16.dp), color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f))
-                    
-                    ChatListItem(
-                        name = "Michael T.",
-                        time = "Oct 12",
-                        message = "Thanks for the review!",
-                        jobTag = "Ceiling Fan Install",
-                        imageUrl = "https://i.pravatar.cc/150?img=13",
+                }
+                item {
+                    MessageItem(
+                        name = "Lê Thị Lan",
+                        message = "Cảm ơn em nhiều nha, sạch sẽ lắm.",
+                        time = "Thứ 2",
+                        jobTag = "Dọn dẹp",
                         unreadCount = 0,
-                        isOnline = false,
                         onClick = onNavigateToChat
                     )
                 }
@@ -142,47 +115,37 @@ fun MessagesScreen(
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ChatListItem(
+fun MessageItem(
     name: String,
-    time: String,
     message: String,
+    time: String,
     jobTag: String,
-    imageUrl: String,
     unreadCount: Int,
-    isOnline: Boolean,
     onClick: () -> Unit
 ) {
     Card(
-        onClick = onClick,
         modifier = Modifier
             .fillMaxWidth()
-            .shadow(4.dp, RoundedCornerShape(12.dp), spotColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.05f)),
+            .clickable { onClick() }
+            .shadow(if (unreadCount > 0) 4.dp else 0.dp, RoundedCornerShape(16.dp)),
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
-        shape = RoundedCornerShape(12.dp)
+        shape = RoundedCornerShape(16.dp)
     ) {
-        Row(
-            modifier = Modifier.padding(16.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
+        Row(modifier = Modifier.padding(16.dp), verticalAlignment = Alignment.CenterVertically) {
             Box {
                 AsyncImage(
-                    model = imageUrl,
-                    contentDescription = name,
-                    modifier = Modifier
-                        .size(56.dp)
-                        .clip(CircleShape)
-                        .border(2.dp, MaterialTheme.colorScheme.surface, CircleShape),
+                    model = "https://i.pravatar.cc/150?u=$name",
+                    contentDescription = null,
+                    modifier = Modifier.size(56.dp).clip(CircleShape),
                     contentScale = ContentScale.Crop
                 )
-                if (isOnline) {
+                if (unreadCount > 0) {
                     Box(
                         modifier = Modifier
-                            .align(Alignment.BottomEnd)
-                            .background(Color(0xFF10B981), CircleShape)
-                            .border(2.dp, MaterialTheme.colorScheme.surface, CircleShape)
-                            .size(14.dp)
+                            .align(Alignment.TopEnd)
+                            .size(12.dp)
+                            .background(Color(0xFF4CAF50), CircleShape)
                     )
                 }
             }
@@ -193,23 +156,10 @@ fun ChatListItem(
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.Top
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Text(
-                        text = name,
-                        style = MaterialTheme.typography.titleMedium,
-                        fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.onSurface,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis,
-                        modifier = Modifier.weight(1f)
-                    )
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Text(
-                        text = time,
-                        style = MaterialTheme.typography.labelSmall,
-                        color = if (unreadCount > 0) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant
-                    )
+                    Text(name, style = MaterialTheme.typography.titleMedium, fontWeight = if (unreadCount > 0) FontWeight.Bold else FontWeight.Medium)
+                    Text(time, style = MaterialTheme.typography.labelSmall, color = if (unreadCount > 0) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant)
                 }
                 
                 Spacer(modifier = Modifier.height(4.dp))
@@ -217,7 +167,8 @@ fun ChatListItem(
                 Text(
                     text = message,
                     style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    color = if (unreadCount > 0) MaterialTheme.colorScheme.onSurface else MaterialTheme.colorScheme.onSurfaceVariant,
+                    fontWeight = if (unreadCount > 0) FontWeight.Bold else FontWeight.Normal,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
                 )
@@ -230,28 +181,18 @@ fun ChatListItem(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
-                        text = jobTag.uppercase(),
+                        text = jobTag,
                         style = MaterialTheme.typography.labelSmall,
-                        fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.primaryContainer,
-                        modifier = Modifier
-                            .background(MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.1f), RoundedCornerShape(4.dp))
-                            .padding(horizontal = 8.dp, vertical = 4.dp)
+                        color = MaterialTheme.colorScheme.primary,
+                        modifier = Modifier.background(MaterialTheme.colorScheme.primaryContainer.copy(alpha=0.3f), RoundedCornerShape(4.dp)).padding(horizontal = 6.dp, vertical = 2.dp)
                     )
                     
                     if (unreadCount > 0) {
                         Box(
-                            modifier = Modifier
-                                .background(MaterialTheme.colorScheme.primary, CircleShape)
-                                .size(24.dp),
+                            modifier = Modifier.size(20.dp).background(MaterialTheme.colorScheme.primary, CircleShape),
                             contentAlignment = Alignment.Center
                         ) {
-                            Text(
-                                text = unreadCount.toString(),
-                                style = MaterialTheme.typography.labelSmall,
-                                fontWeight = FontWeight.Bold,
-                                color = MaterialTheme.colorScheme.onPrimary
-                            )
+                            Text(unreadCount.toString(), style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onPrimary, fontWeight = FontWeight.Bold)
                         }
                     }
                 }

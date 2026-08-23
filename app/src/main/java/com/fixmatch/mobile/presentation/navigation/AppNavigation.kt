@@ -97,7 +97,8 @@ fun AppNavigation() {
         composable(Screen.WorkerProfile.route) { 
             WorkerProfileScreen(
                 onNavigateBack = { navController.popBackStack() },
-                onNavigateToRequestService = { navController.navigate(Screen.RequestService.route) }
+                onNavigateToRequestService = { navController.navigate(Screen.RequestService.route) },
+                onNavigateToMessages = { navController.navigate(Screen.Messages.route) }
             ) 
         }
         composable(Screen.RequestService.route) { 
@@ -116,6 +117,7 @@ fun AppNavigation() {
         }
         composable(Screen.WorkerFound.route, enterTransition = { fadeIn(animationSpec = tween(400)) }, exitTransition = { fadeOut(animationSpec = tween(400)) }) { 
             WorkerFoundScreen(
+                onNavigateBack = { navController.popBackStack() },
                 onContinue = { navController.navigate(Screen.TrackJob.route) }
             ) 
         }
@@ -154,7 +156,9 @@ fun AppNavigation() {
                 onNavigateToChat = { navController.navigate(Screen.Chat.route) }
             ) 
         }
-        composable(Screen.Chat.route) { ChatScreen() }
+        composable(Screen.Chat.route) { 
+            ChatScreen(onNavigateBack = { navController.popBackStack() }) 
+        }
         composable(Screen.MyEarnings.route) { MyEarningsScreen() }
         composable(Screen.WorkerSettings.route) { 
             WorkerSettingsScreen(

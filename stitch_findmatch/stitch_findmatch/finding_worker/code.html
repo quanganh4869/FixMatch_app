@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/>
+<title>Find Tho - Finding Worker</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "surface-tint": "#004ee7",
+                        "error": "#ba1a1a",
+                        "inverse-surface": "#2e3132",
+                        "surface-container-high": "#e7e8e9",
+                        "on-tertiary-container": "#e6e8fc",
+                        "on-secondary-fixed-variant": "#5a4300",
+                        "surface-variant": "#e1e3e4",
+                        "primary-container": "#1e5af2",
+                        "surface": "#f8f9fa",
+                        "tertiary": "#4d5060",
+                        "on-tertiary": "#ffffff",
+                        "error-container": "#ffdad6",
+                        "secondary-fixed": "#ffdf98",
+                        "surface-bright": "#f8f9fa",
+                        "inverse-primary": "#b6c4ff",
+                        "on-secondary": "#ffffff",
+                        "surface-container-lowest": "#ffffff",
+                        "on-primary-fixed": "#001550",
+                        "on-surface-variant": "#434655",
+                        "tertiary-fixed": "#e0e1f5",
+                        "primary": "#0043c8",
+                        "on-primary": "#ffffff",
+                        "surface-container": "#edeeef",
+                        "on-secondary-fixed": "#251a00",
+                        "on-background": "#191c1d",
+                        "tertiary-container": "#656879",
+                        "surface-container-highest": "#e1e3e4",
+                        "surface-dim": "#d9dadb",
+                        "on-error-container": "#93000a",
+                        "tertiary-fixed-dim": "#c3c5d9",
+                        "secondary-container": "#fec72b",
+                        "on-tertiary-fixed": "#181b29",
+                        "primary-fixed": "#dce1ff",
+                        "on-surface": "#191c1d",
+                        "on-error": "#ffffff",
+                        "background": "#f8f9fa",
+                        "primary-fixed-dim": "#b6c4ff",
+                        "secondary-fixed-dim": "#f5bf21",
+                        "on-primary-container": "#e5e8ff",
+                        "on-primary-fixed-variant": "#003ab1",
+                        "inverse-on-surface": "#f0f1f2",
+                        "on-secondary-container": "#6f5400",
+                        "secondary": "#775a00",
+                        "surface-container-low": "#f3f4f5",
+                        "outline": "#737687",
+                        "outline-variant": "#c3c5d8",
+                        "on-tertiary-fixed-variant": "#434656"
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    spacing: {
+                        "margin-tablet": "32px",
+                        "gutter": "16px",
+                        "margin-mobile": "16px",
+                        "xl": "32px",
+                        "lg": "24px",
+                        "base": "4px",
+                        "xs": "4px",
+                        "md": "16px",
+                        "sm": "8px"
+                    },
+                    fontFamily: {
+                        "body-lg": ["Inter"],
+                        "body-md": ["Inter"],
+                        "headline-lg-mobile": ["Inter"],
+                        "display-lg": ["Inter"],
+                        "label-lg": ["Inter"],
+                        "headline-lg": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "label-sm": ["Inter"]
+                    },
+                    fontSize: {
+                        "body-lg": ["16px", { lineHeight: "24px", fontWeight: "400" }],
+                        "body-md": ["14px", { lineHeight: "20px", fontWeight: "400" }],
+                        "headline-lg-mobile": ["22px", { lineHeight: "28px", fontWeight: "600" }],
+                        "display-lg": ["32px", { lineHeight: "40px", letterSpacing: "-0.02em", fontWeight: "700" }],
+                        "label-lg": ["14px", { lineHeight: "20px", fontWeight: "600" }],
+                        "headline-lg": ["24px", { lineHeight: "32px", letterSpacing: "-0.01em", fontWeight: "600" }],
+                        "headline-md": ["20px", { lineHeight: "28px", fontWeight: "600" }],
+                        "label-sm": ["12px", { lineHeight: "16px", letterSpacing: "0.05em", fontWeight: "500" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .pulse-ring {
+            animation: pulse-ring 2s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
+        }
+        @keyframes pulse-ring {
+            0% { transform: scale(0.8); opacity: 0.5; }
+            80%, 100% { opacity: 0; transform: scale(1.5); }
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background min-h-screen flex flex-col font-body-md overflow-hidden antialiased">
+<!-- Main Content Area -->
+<main class="flex-1 flex flex-col relative w-full h-full pb-safe">
+<!-- Radar Background Shader -->
+<div class="absolute inset-0 z-0 overflow-hidden opacity-80 pointer-events-none flex items-center justify-center">
+
+</div>
+<!-- Content Overlay -->
+<div class="relative z-10 flex flex-col h-full w-full max-w-md mx-auto px-margin-mobile pt-12 pb-6">
+<!-- Header Text -->
+<div class="text-center mt-8 mb-4">
+<h1 class="font-headline-lg-mobile text-headline-lg-mobile text-primary mb-2">Searching for nearby pros...</h1>
+<p class="font-body-md text-body-md text-on-surface-variant flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-[18px]">location_on</span>
+                    124 Maple St
+                </p>
+</div>
+<!-- Central Animation / Mascot Area -->
+<div class="flex-1 flex items-center justify-center relative my-8">
+<!-- Pulsing Rings Behind Mascot -->
+<div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+<div class="w-64 h-64 rounded-full border-2 border-primary-fixed pulse-ring absolute"></div>
+<div class="w-48 h-48 rounded-full border-2 border-primary-fixed pulse-ring absolute" style="animation-delay: 0.5s;"></div>
+</div>
+<!-- Mascot Image -->
+<div class="relative w-48 h-48 md:w-56 md:h-56 z-20 drop-shadow-xl bg-surface-container-lowest rounded-full p-2 flex items-center justify-center">
+<img alt="Worker Mascot" class="w-full h-full object-contain rounded-full" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD3o3Lj2UPNvnVqk7qjGhFgnnwscogA1qxbiyy_tIFnb9jIVA1oZ5b019R8l51ENbbG8N4WITnhCewViMQugRBeustYt72AgYFaY5QlvDUA19RXXrkZ5M5rtl1JdsmsNnYaA7vIhjDUpH9VUhqgUT_0CcuSU5M4irPaMM9bak_82rpPXPpRHz_yvWYV6mvcYsMzMs2vWNSWCIAjOnxlX2U9hB-tFYzVAt_yypCMLGv_g6JpJyrSt-PjAcACkLzfHOy1RA"/>
+</div>
+</div>
+<!-- Request Details Card -->
+<div class="bg-surface-container-lowest rounded-xl shadow-[0px_4px_12px_rgba(30,90,242,0.05)] p-4 mb-6 relative z-20">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 bg-secondary-container text-on-secondary-container rounded-lg flex items-center justify-center flex-shrink-0">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">plumbing</span>
+</div>
+<div class="flex-1">
+<h3 class="font-label-lg text-label-lg text-on-surface">Leaky Pipe Repair</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">Finding the best match...</p>
+</div>
+<div class="flex flex-col items-end">
+<span class="inline-flex h-3 w-3 rounded-full bg-secondary-container animate-pulse mb-1"></span>
+<span class="font-label-sm text-label-sm text-secondary">Pending</span>
+</div>
+</div>
+</div>
+<!-- Cancel Action -->
+<div class="mt-auto pt-4 relative z-20 w-full flex justify-center">
+<button class="w-full max-w-[200px] h-[56px] rounded-lg bg-transparent border-2 border-transparent text-primary font-label-lg text-label-lg flex items-center justify-center gap-2 hover:bg-surface-container-low transition-colors active:scale-95">
+<span class="material-symbols-outlined">close</span>
+                    Cancel Request
+                </button>
+</div>
+</div>
+</main>
+</body></html>

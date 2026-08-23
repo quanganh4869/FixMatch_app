@@ -1,0 +1,25 @@
+R_DEF: Internal format may change without notice
+local
+drawable app_logo
+drawable app_logo_clean
+drawable app_logo_final
+drawable app_logo_transparent
+drawable app_logo_white
+drawable worker_fixing
+drawable worker_mascot
+drawable worker_running
+drawable worker_scooter
+mipmap ic_launcher
+mipmap ic_launcher_round
+raw worker
+string app_name
+string current_location
+string find_trusted_pro
+string need_a_repair
+string recent_requests
+string request_now
+string search
+string see_all
+string top_rated_nearby
+string view_map
+style Theme.FixMatch

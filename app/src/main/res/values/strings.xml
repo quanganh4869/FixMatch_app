@@ -1,4 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Find Thợ</string>
+    <string name="app_name">FixMatch</string>
+    <string name="current_location">Current Location</string>
+    <string name="need_a_repair">Need a repair?</string>
+    <string name="find_trusted_pro">Find a trusted professional in minutes.</string>
+    <string name="request_now">Request Now</string>
+    <string name="search">Search</string>
+    <string name="recent_requests">Recent Requests</string>
+    <string name="top_rated_nearby">Top Rated Nearby</string>
+    <string name="view_map">View Map</string>
+    <string name="see_all">See All</string>
 </resources>

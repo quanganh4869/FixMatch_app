@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+
+<html class="h-full" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
+<title>User Profile</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "surface-container-highest": "#e1e3e4",
+                      "surface-container-lowest": "#ffffff",
+                      "on-primary": "#ffffff",
+                      "on-primary-fixed": "#001550",
+                      "surface": "#f8f9fa",
+                      "error-container": "#ffdad6",
+                      "on-error-container": "#93000a",
+                      "on-secondary-fixed-variant": "#5a4300",
+                      "on-primary-container": "#e5e8ff",
+                      "inverse-surface": "#2e3132",
+                      "surface-tint": "#004ee7",
+                      "on-secondary-container": "#6f5400",
+                      "primary-fixed-dim": "#b6c4ff",
+                      "surface-container": "#edeeef",
+                      "background": "#f8f9fa",
+                      "on-tertiary-container": "#e6e8fc",
+                      "outline": "#737687",
+                      "tertiary-fixed": "#e0e1f5",
+                      "surface-container-high": "#e7e8e9",
+                      "on-tertiary-fixed": "#181b29",
+                      "inverse-on-surface": "#f0f1f2",
+                      "primary-container": "#1e5af2",
+                      "surface-bright": "#f8f9fa",
+                      "secondary-fixed-dim": "#f5bf21",
+                      "secondary-fixed": "#ffdf98",
+                      "on-tertiary-fixed-variant": "#434656",
+                      "surface-container-low": "#f3f4f5",
+                      "primary": "#0043c8",
+                      "outline-variant": "#c3c5d8",
+                      "secondary": "#775a00",
+                      "on-secondary": "#ffffff",
+                      "error": "#ba1a1a",
+                      "on-surface-variant": "#434655",
+                      "on-surface": "#191c1d",
+                      "tertiary-container": "#656879",
+                      "secondary-container": "#fec72b",
+                      "on-background": "#191c1d",
+                      "on-error": "#ffffff",
+                      "on-primary-fixed-variant": "#003ab1",
+                      "tertiary": "#4d5060",
+                      "on-tertiary": "#ffffff",
+                      "surface-variant": "#e1e3e4",
+                      "on-secondary-fixed": "#251a00",
+                      "tertiary-fixed-dim": "#c3c5d9",
+                      "surface-dim": "#d9dadb",
+                      "primary-fixed": "#dce1ff",
+                      "inverse-primary": "#b6c4ff"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "lg": "24px",
+                      "xs": "4px",
+                      "gutter": "16px",
+                      "xl": "32px",
+                      "sm": "8px",
+                      "base": "4px",
+                      "md": "16px",
+                      "margin-mobile": "16px",
+                      "margin-tablet": "32px"
+              },
+              "fontFamily": {
+                      "headline-md": [
+                              "Inter"
+                      ],
+                      "body-lg": [
+                              "Inter"
+                      ],
+                      "body-md": [
+                              "Inter"
+                      ],
+                      "label-sm": [
+                              "Inter"
+                      ],
+                      "headline-lg": [
+                              "Inter"
+                      ],
+                      "headline-lg-mobile": [
+                              "Inter"
+                      ],
+                      "label-lg": [
+                              "Inter"
+                      ],
+                      "display-lg": [
+                              "Inter"
+                      ]
+              },
+              "fontSize": {
+                      "headline-md": [
+                              "20px",
+                              {
+                                      "lineHeight": "28px",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "body-lg": [
+                              "16px",
+                              {
+                                      "lineHeight": "24px",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "body-md": [
+                              "14px",
+                              {
+                                      "lineHeight": "20px",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "label-sm": [
+                              "12px",
+                              {
+                                      "lineHeight": "16px",
+                                      "letterSpacing": "0.05em",
+                                      "fontWeight": "500"
+                              }
+                      ],
+                      "headline-lg": [
+                              "24px",
+                              {
+                                      "lineHeight": "32px",
+                                      "letterSpacing": "-0.01em",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "headline-lg-mobile": [
+                              "22px",
+                              {
+                                      "lineHeight": "28px",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "label-lg": [
+                              "14px",
+                              {
+                                      "lineHeight": "20px",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "display-lg": [
+                              "32px",
+                              {
+                                      "lineHeight": "40px",
+                                      "letterSpacing": "-0.02em",
+                                      "fontWeight": "700"
+                              }
+                      ]
+              }
+      },
+          },
+        }
+    </script>
+<style>
+        body {
+            -webkit-tap-highlight-color: transparent;
+        }
+        .pb-safe {
+            padding-bottom: env(safe-area-inset-bottom, 20px);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface text-on-background min-h-full font-body-lg flex flex-col md:flex-row antialiased">
+<!-- TopAppBar (Web) -->
+<header class="hidden md:flex fixed top-0 left-0 w-full z-50 justify-between items-center px-margin-mobile h-14 bg-surface dark:bg-on-background shadow-sm">
+<div class="flex items-center gap-4">
+<div class="w-8 h-8 rounded-full overflow-hidden bg-surface-container">
+<img class="w-full h-full object-cover" data-alt="A small, high-quality circular avatar portrait of a modern user in a brightly lit home environment, conveying trust and approachability." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCn_k6empJT1x926K9rm-mDxhU_gQe9hQk8f1FR-73xhlwuY6KXtuyklUqi5fNAbjri8pA78HURx9cuCzGJCdl0ZUJHo29GqAv0iVnB10DzF8Viw7sOY369AjLMOWqpJ2NDJAq0uUivyOEesP_2OUqMQRkugCOD8ggR1immBaAmUggO2PSeLoOh9MaSs5vSYLpdvcwcga4YcdE7LSNFgpZ18rPTLV8AyyH6BcRLzeqjg5BCT8fn61OQ"/>
+</div>
+<span class="text-headline-lg-mobile font-headline-lg-mobile font-bold text-primary dark:text-primary-fixed-dim">Find Tho</span>
+</div>
+<div class="flex items-center">
+<button class="w-10 h-10 flex items-center justify-center text-primary dark:text-primary-fixed-dim rounded-full hover:bg-surface-container-low dark:hover:bg-surface-container-highest transition-colors active:opacity-80 scale-95 transition-all">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+</div>
+</header>
+<!-- TopAppBar (Mobile) - Used as a standard page header here as requested by 'Top area' -->
+<header class="md:hidden sticky top-0 z-40 bg-surface/90 backdrop-blur-md px-margin-mobile py-4 flex justify-center items-center">
+<span class="text-headline-lg-mobile font-headline-lg-mobile font-bold text-on-background">Profile</span>
+</header>
+<!-- SideNav (NavigationDrawer) - Web Only -->
+<aside class="hidden md:flex flex-col h-full w-80 rounded-r-xl bg-surface dark:bg-on-background shadow-xl fixed inset-y-0 left-0 z-[100] py-lg">
+<div class="px-6 mb-8 flex flex-col items-start gap-4">
+<div class="w-16 h-16 rounded-full overflow-hidden bg-surface-container shadow-sm">
+<img class="w-full h-full object-cover" data-alt="A close-up portrait of a friendly professional in modern smart-casual attire, smiling warmly in a bright, clean indoor space. Soft lighting and high resolution." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB6TuIn9m8iFVgIOt0kbF2CeMY_I-tRy8GQyvYWf-JRKvmCgWavv1-TmXnvwqRWsBUBiJtA6AFpob1v7pOV6lbxcfRd5MnP666jFzxa5ZY8VUUlS8TcaRahpAUh4DTH69dedz9V4lHVyWKUipELcwWtvwqamLmsptB6MQFJd0OM_UnkEOYE5jGryFq0WHFiKlhDudTgLIZgpUftBFLQbiphN4sSXtTMpjalHwYEnWGcCveW3EuPKKfl"/>
+</div>
+<div>
+<h2 class="text-headline-md font-headline-md text-primary">Alex Johnson</h2>
+<p class="text-body-md font-body-md text-on-surface-variant">Home Owner</p>
+<div class="mt-2 inline-flex items-center gap-1 px-2 py-1 bg-[#E8F0FE] rounded-full">
+<span class="material-symbols-outlined text-[14px] text-primary" style="font-variation-settings: 'FILL' 1;">stars</span>
+<span class="text-label-sm font-label-sm text-primary">Premium Member</span>
+</div>
+</div>
+</div>
+<nav class="flex-1 px-2 flex flex-col gap-2">
+<a class="flex items-center gap-4 px-4 py-3 rounded-full text-on-surface-variant dark:text-outline-variant hover:bg-surface-container dark:hover:bg-surface-container-highest mx-2 transition-transform duration-300 ease-in-out" href="#">
+<span class="material-symbols-outlined">swap_horiz</span>
+<span class="text-label-lg font-label-lg">Switch Role</span>
+</a>
+<a class="flex items-center gap-4 px-4 py-3 rounded-full text-on-surface-variant dark:text-outline-variant hover:bg-surface-container dark:hover:bg-surface-container-highest mx-2 transition-transform duration-300 ease-in-out" href="#">
+<span class="material-symbols-outlined">payments</span>
+<span class="text-label-lg font-label-lg">Earnings</span>
+</a>
+<a class="flex items-center gap-4 px-4 py-3 rounded-full text-on-surface-variant dark:text-outline-variant hover:bg-surface-container dark:hover:bg-surface-container-highest mx-2 transition-transform duration-300 ease-in-out" href="#">
+<span class="material-symbols-outlined">calendar_month</span>
+<span class="text-label-lg font-label-lg">Schedule</span>
+</a>
+<a class="flex items-center gap-4 px-4 py-3 rounded-full text-on-surface-variant dark:text-outline-variant hover:bg-surface-container dark:hover:bg-surface-container-highest mx-2 transition-transform duration-300 ease-in-out" href="#">
+<span class="material-symbols-outlined">help</span>
+<span class="text-label-lg font-label-lg">Support</span>
+</a>
+<div class="mt-auto mb-4 px-2">
+<a class="flex items-center gap-4 px-4 py-3 rounded-full text-error hover:bg-error-container mx-2 transition-transform duration-300 ease-in-out" href="#">
+<span class="material-symbols-outlined">logout</span>
+<span class="text-label-lg font-label-lg">Logout</span>
+</a>
+</div>
+</nav>
+</aside>
+<!-- Main Content Canvas -->
+<main class="flex-1 w-full max-w-2xl mx-auto md:ml-80 md:pt-20 pb-24 md:pb-8 px-margin-mobile flex flex-col gap-lg">
+<!-- Mobile Profile Header (Hidden on Web as it's in SideNav) -->
+<section class="md:hidden flex flex-col items-center text-center mt-4">
+<div class="w-24 h-24 rounded-full overflow-hidden bg-surface-container shadow-[0px_4px_12px_rgba(30,90,242,0.05)] border-4 border-surface">
+<img class="w-full h-full object-cover" data-alt="A bright, welcoming portrait photo of a user named Alex Johnson. Professional yet casual lighting, soft background, conveying a trustworthy modern digital profile identity." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBLYcnLRROyS2hS16JOuHsb08S1ITBbm2U-jSr1W-pO80gcKzq-Vlhm7xyyVCO-SQ8m1I4z9-L_DEV9RQ1jfv_9NIp8j6T66cbEBuCBB9O-DvLDZvkyx4eJnanY5VvnlgDaLbo3Kc6B-Ku7XPak41uFIi9CNj9zeZm6_3Xael_jsn2z8dxUVy0Q8WWEECvG-S-z_ZCuhIaQjsEKVk5cgaOU7714MtbK_P5hcZbwgjizuPcDkKuByf6Q"/>
+</div>
+<h1 class="text-headline-lg-mobile font-headline-lg-mobile text-on-background mt-4">Alex Johnson</h1>
+<div class="mt-2 inline-flex items-center gap-1 px-3 py-1.5 bg-[#E8F0FE] rounded-full">
+<span class="material-symbols-outlined text-[16px] text-primary" style="font-variation-settings: 'FILL' 1;">stars</span>
+<span class="text-label-sm font-label-sm text-primary uppercase tracking-wide">Premium Member</span>
+</div>
+</section>
+<!-- Settings List -->
+<section class="flex flex-col gap-2 mt-4 md:mt-0">
+<!-- Edit Profile -->
+<button class="w-full bg-surface-container-lowest rounded-xl p-4 flex items-center justify-between shadow-[0px_4px_12px_rgba(30,90,242,0.05)] hover:bg-surface-container-low transition-colors active:scale-[0.98]">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center text-on-surface-variant">
+<span class="material-symbols-outlined">person</span>
+</div>
+<span class="text-body-lg font-body-lg text-on-background">Edit Profile</span>
+</div>
+<span class="material-symbols-outlined text-outline">chevron_right</span>
+</button>
+<!-- Saved Addresses -->
+<button class="w-full bg-surface-container-lowest rounded-xl p-4 flex items-center justify-between shadow-[0px_4px_12px_rgba(30,90,242,0.05)] hover:bg-surface-container-low transition-colors active:scale-[0.98]">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center text-on-surface-variant">
+<span class="material-symbols-outlined">location_on</span>
+</div>
+<span class="text-body-lg font-body-lg text-on-background">Saved Addresses</span>
+</div>
+<span class="material-symbols-outlined text-outline">chevron_right</span>
+</button>
+<!-- Payment Methods -->
+<button class="w-full bg-surface-container-lowest rounded-xl p-4 flex items-center justify-between shadow-[0px_4px_12px_rgba(30,90,242,0.05)] hover:bg-surface-container-low transition-colors active:scale-[0.98]">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center text-on-surface-variant">
+<span class="material-symbols-outlined">credit_card</span>
+</div>
+<span class="text-body-lg font-body-lg text-on-background">Payment Methods</span>
+</div>
+<span class="material-symbols-outlined text-outline">chevron_right</span>
+</button>
+<!-- Subscription -->
+<button class="w-full bg-surface-container-lowest rounded-xl p-4 flex items-center justify-between shadow-[0px_4px_12px_rgba(30,90,242,0.05)] hover:bg-surface-container-low transition-colors active:scale-[0.98]">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center text-primary">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">workspace_premium</span>
+</div>
+<div class="flex flex-col items-start">
+<span class="text-body-lg font-body-lg text-on-background">Subscription</span>
+<span class="text-body-md font-body-md text-on-surface-variant">Premium Plan</span>
+</div>
+</div>
+<span class="material-symbols-outlined text-outline">chevron_right</span>
+</button>
+<!-- Language -->
+<button class="w-full bg-surface-container-lowest rounded-xl p-4 flex items-center justify-between shadow-[0px_4px_12px_rgba(30,90,242,0.05)] hover:bg-surface-container-low transition-colors active:scale-[0.98]">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center text-on-surface-variant">
+<span class="material-symbols-outlined">language</span>
+</div>
+<div class="flex flex-col items-start">
+<span class="text-body-lg font-body-lg text-on-background">Language</span>
+<span class="text-body-md font-body-md text-on-surface-variant">English/Vietnamese</span>
+</div>
+</div>
+<span class="material-symbols-outlined text-outline">chevron_right</span>
+</button>
+<!-- Help Center -->
+<button class="w-full bg-surface-container-lowest rounded-xl p-4 flex items-center justify-between shadow-[0px_4px_12px_rgba(30,90,242,0.05)] hover:bg-surface-container-low transition-colors active:scale-[0.98] mt-4">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center text-on-surface-variant">
+<span class="material-symbols-outlined">help_outline</span>
+</div>
+<span class="text-body-lg font-body-lg text-on-background">Help Center</span>
+</div>
+<span class="material-symbols-outlined text-outline">chevron_right</span>
+</button>
+<!-- Logout (Mobile Only, since Web has it in SideNav) -->
+<button class="md:hidden w-full bg-surface-container-lowest rounded-xl p-4 flex items-center justify-between shadow-[0px_4px_12px_rgba(30,90,242,0.05)] hover:bg-error-container/20 transition-colors active:scale-[0.98] mt-2 group">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-full bg-error/10 flex items-center justify-center text-error group-hover:bg-error group-hover:text-white transition-colors">
+<span class="material-symbols-outlined">logout</span>
+</div>
+<span class="text-body-lg font-body-lg text-error font-medium">Logout</span>
+</div>
+</button>
+</section>
+</main>
+<!-- BottomNavBar (Mobile) -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 py-2 pb-safe bg-surface/90 dark:bg-on-background/90 backdrop-blur-md shadow-lg border-t border-outline-variant dark:border-outline">
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline-variant hover:text-primary dark:hover:text-secondary-container transition-all" href="#">
+<span class="material-symbols-outlined">home</span>
+<span class="text-label-sm font-label-sm mt-1">Home</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline-variant hover:text-primary dark:hover:text-secondary-container transition-all" href="#">
+<span class="material-symbols-outlined">chat</span>
+<span class="text-label-sm font-label-sm mt-1">Chat</span>
+</a>
+<a class="flex flex-col items-center justify-center text-primary dark:text-secondary-container font-bold scale-110 duration-200 ease-out" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">person</span>
+<span class="text-label-sm font-label-sm mt-1">Profile</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline-variant hover:text-primary dark:hover:text-secondary-container transition-all" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="text-label-sm font-label-sm mt-1">Settings</span>
+</a>
+</nav>
+</body></html>

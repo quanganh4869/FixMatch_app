@@ -1,4 +1,4 @@
-com.findtho.mobile
+com.fixmatch.mobile
 attr action
 attr alpha
 attr argType
@@ -69,6 +69,11 @@ dimen notification_subtext_size
 dimen notification_top_pad
 dimen notification_top_pad_large_text
 drawable abc_vector_test
+drawable app_logo
+drawable app_logo_clean
+drawable app_logo_final
+drawable app_logo_transparent
+drawable app_logo_white
 drawable ic_call_answer
 drawable ic_call_answer_low
 drawable ic_call_answer_video
@@ -88,6 +93,10 @@ drawable notification_template_icon_bg
 drawable notification_template_icon_low_bg
 drawable notification_tile_bg
 drawable notify_panel_notification_icon_bg
+drawable worker_fixing
+drawable worker_mascot
+drawable worker_running
+drawable worker_scooter
 id accessibility_action_clickable_span
 id accessibility_custom_action_0
 id accessibility_custom_action_1
@@ -187,6 +196,8 @@ layout notification_template_custom_big
 layout notification_template_icon_group
 layout notification_template_part_chronometer
 layout notification_template_part_time
+mipmap ic_launcher
+mipmap ic_launcher_round
 raw worker
 string androidx_startup
 string app_name
@@ -204,6 +215,7 @@ string call_notification_screening_text
 string close_drawer
 string close_sheet
 string collapsed
+string current_location
 string date_input_headline
 string date_input_headline_description
 string date_input_invalid_for_pattern
@@ -240,16 +252,22 @@ string default_popup_window_title
 string dialog
 string dropdown_menu
 string expanded
+string find_trusted_pro
 string in_progress
 string indeterminate
 string m3c_bottom_sheet_pane_title
 string navigation_menu
+string need_a_repair
 string not_selected
 string off
 string on
 string range_end
 string range_start
+string recent_requests
+string request_now
+string search
 string search_bar_search
+string see_all
 string selected
 string snackbar_dismiss
 string status_bar_notification_info_overflow
@@ -271,6 +289,8 @@ string time_picker_period_toggle_description
 string time_picker_pm
 string tooltip_long_press_label
 string tooltip_pane_description
+string top_rated_nearby
+string view_map
 style DialogWindowTheme
 style FloatingDialogTheme
 style FloatingDialogWindowTheme
@@ -279,7 +299,7 @@ style TextAppearance_Compat_Notification_Info
 style TextAppearance_Compat_Notification_Line2
 style TextAppearance_Compat_Notification_Time
 style TextAppearance_Compat_Notification_Title
-style Theme_FindTho
+style Theme_FixMatch
 style Widget_Compat_NotificationActionContainer
 style Widget_Compat_NotificationActionText
 styleable ActivityNavigator android_name action data dataPattern targetPackage

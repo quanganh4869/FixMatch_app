@@ -1,9 +1,9 @@
 -- Merging decision tree log ---
 manifest
-ADDED from D:\Work\Kotlin\FixMatch\fixmatch-app\app\src\main\AndroidManifest.xml:2:1-24:12
-INJECTED from D:\Work\Kotlin\FixMatch\fixmatch-app\app\src\main\AndroidManifest.xml:2:1-24:12
-INJECTED from D:\Work\Kotlin\FixMatch\fixmatch-app\app\src\main\AndroidManifest.xml:2:1-24:12
-INJECTED from D:\Work\Kotlin\FixMatch\fixmatch-app\app\src\main\AndroidManifest.xml:2:1-24:12
+ADDED from D:\Work\Kotlin\FixMatch\fixmatch-app\app\src\main\AndroidManifest.xml:2:1-22:12
+INJECTED from D:\Work\Kotlin\FixMatch\fixmatch-app\app\src\main\AndroidManifest.xml:2:1-22:12
+INJECTED from D:\Work\Kotlin\FixMatch\fixmatch-app\app\src\main\AndroidManifest.xml:2:1-22:12
+INJECTED from D:\Work\Kotlin\FixMatch\fixmatch-app\app\src\main\AndroidManifest.xml:2:1-22:12
 MERGED from [io.coil-kt:coil-compose:2.5.0] C:\Users\anhnq\.gradle\caches\8.10\transforms\0e477f9a520379c813ebb8c734ec9402\transformed\coil-compose-2.5.0\AndroidManifest.xml:2:1-7:12
 MERGED from [io.coil-kt:coil-compose-base:2.5.0] C:\Users\anhnq\.gradle\caches\8.10\transforms\cfe5160c112f4bfcc69a42ed949faa01\transformed\coil-compose-base-2.5.0\AndroidManifest.xml:2:1-7:12
 MERGED from [io.coil-kt:coil:2.5.0] C:\Users\anhnq\.gradle\caches\8.10\transforms\de3e1062930edb1403ddcf77d30037d0\transformed\coil-2.5.0\AndroidManifest.xml:2:1-7:12
@@ -17,6 +17,7 @@ MERGED from [androidx.navigation:navigation-compose:2.7.5] C:\Users\anhnq\.gradl
 MERGED from [androidx.activity:activity:1.8.0] C:\Users\anhnq\.gradle\caches\8.10\transforms\128498cfa5bd78475f2e31510ac4e95e\transformed\activity-1.8.0\AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.compose.material:material-ripple-android:1.5.4] C:\Users\anhnq\.gradle\caches\8.10\transforms\1d6a91297ec55779403f654bb53fbfe8\transformed\material-ripple-release\AndroidManifest.xml:2:1-7:12
 MERGED from [androidx.compose.material:material-icons-core-android:1.5.4] C:\Users\anhnq\.gradle\caches\8.10\transforms\80750b9d150c4dde2d726cd2ae276720\transformed\material-icons-core-release\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.compose.material:material-icons-extended-android:1.5.4] C:\Users\anhnq\.gradle\caches\8.10\transforms\7147e20cbde2e7f9da439b1a4ff9af0b\transformed\material-icons-extended-release\AndroidManifest.xml:2:1-7:12
 MERGED from [androidx.compose.material:material-android:1.5.4] C:\Users\anhnq\.gradle\caches\8.10\transforms\20461a7375acfed871f4faca4b293f03\transformed\material-release\AndroidManifest.xml:2:1-7:12
 MERGED from [androidx.compose.animation:animation-core-android:1.5.4] C:\Users\anhnq\.gradle\caches\8.10\transforms\9c232ca00e78133289cb653a39c0102b\transformed\animation-core-release\AndroidManifest.xml:2:1-7:12
 MERGED from [androidx.compose.animation:animation-android:1.5.4] C:\Users\anhnq\.gradle\caches\8.10\transforms\bb83fbb5102e4dad6009bf9fdd667460\transformed\animation-release\AndroidManifest.xml:2:1-7:12
@@ -66,7 +67,7 @@ MERGED from [androidx.startup:startup-runtime:1.1.1] C:\Users\anhnq\.gradle\cach
 MERGED from [androidx.tracing:tracing:1.0.0] C:\Users\anhnq\.gradle\caches\8.10\transforms\dca07fcc9e880ac0ffa5fd13a36a412e\transformed\tracing-1.0.0\AndroidManifest.xml:17:1-24:12
 MERGED from [androidx.exifinterface:exifinterface:1.3.6] C:\Users\anhnq\.gradle\caches\8.10\transforms\d521b466c0fe6618e02b24f9f479e347\transformed\exifinterface-1.3.6\AndroidManifest.xml:17:1-24:12
 	package
-		ADDED from D:\Work\Kotlin\FixMatch\fixmatch-app\app\src\main\AndroidManifest.xml:3:5-33
+		ADDED from D:\Work\Kotlin\FixMatch\fixmatch-app\app\src\main\AndroidManifest.xml:3:5-34
 		INJECTED from D:\Work\Kotlin\FixMatch\fixmatch-app\app\src\main\AndroidManifest.xml
 	android:versionName
 		INJECTED from D:\Work\Kotlin\FixMatch\fixmatch-app\app\src\main\AndroidManifest.xml
@@ -75,12 +76,12 @@ MERGED from [androidx.exifinterface:exifinterface:1.3.6] C:\Users\anhnq\.gradle\
 	xmlns:android
 		ADDED from D:\Work\Kotlin\FixMatch\fixmatch-app\app\src\main\AndroidManifest.xml:2:11-69
 uses-permission#android.permission.INTERNET
-ADDED from D:\Work\Kotlin\FixMatch\fixmatch-app\app\src\main\AndroidManifest.xml:5:5-67
+ADDED from D:\Work\Kotlin\FixMatch\fixmatch-app\app\src\main\AndroidManifest.xml:4:5-67
 	android:name
-		ADDED from D:\Work\Kotlin\FixMatch\fixmatch-app\app\src\main\AndroidManifest.xml:5:22-64
+		ADDED from D:\Work\Kotlin\FixMatch\fixmatch-app\app\src\main\AndroidManifest.xml:4:22-64
 application
-ADDED from D:\Work\Kotlin\FixMatch\fixmatch-app\app\src\main\AndroidManifest.xml:7:5-23:19
-INJECTED from D:\Work\Kotlin\FixMatch\fixmatch-app\app\src\main\AndroidManifest.xml:7:5-23:19
+ADDED from D:\Work\Kotlin\FixMatch\fixmatch-app\app\src\main\AndroidManifest.xml:5:5-21:19
+INJECTED from D:\Work\Kotlin\FixMatch\fixmatch-app\app\src\main\AndroidManifest.xml:5:5-21:19
 MERGED from [androidx.emoji2:emoji2:1.4.0] C:\Users\anhnq\.gradle\caches\8.10\transforms\d2ce1ab62d096965acb5e11677f05316\transformed\emoji2-1.4.0\AndroidManifest.xml:23:5-33:19
 MERGED from [androidx.emoji2:emoji2:1.4.0] C:\Users\anhnq\.gradle\caches\8.10\transforms\d2ce1ab62d096965acb5e11677f05316\transformed\emoji2-1.4.0\AndroidManifest.xml:23:5-33:19
 MERGED from [androidx.lifecycle:lifecycle-process:2.6.2] C:\Users\anhnq\.gradle\caches\8.10\transforms\04096ac37228f6b20b3ab8bfff4f39f2\transformed\lifecycle-process-2.6.2\AndroidManifest.xml:23:5-33:19
@@ -102,35 +103,35 @@ MERGED from [androidx.startup:startup-runtime:1.1.1] C:\Users\anhnq\.gradle\cach
 	android:appComponentFactory
 		ADDED from [androidx.core:core:1.12.0] C:\Users\anhnq\.gradle\caches\8.10\transforms\c9968623b12f1d91b0eaa1b9dcfdfcf9\transformed\core-1.12.0\AndroidManifest.xml:28:18-86
 	android:supportsRtl
-		ADDED from D:\Work\Kotlin\FixMatch\fixmatch-app\app\src\main\AndroidManifest.xml:12:9-35
+		ADDED from D:\Work\Kotlin\FixMatch\fixmatch-app\app\src\main\AndroidManifest.xml:10:9-35
 	android:label
-		ADDED from D:\Work\Kotlin\FixMatch\fixmatch-app\app\src\main\AndroidManifest.xml:10:9-41
+		ADDED from D:\Work\Kotlin\FixMatch\fixmatch-app\app\src\main\AndroidManifest.xml:9:9-41
 	android:roundIcon
-		ADDED from D:\Work\Kotlin\FixMatch\fixmatch-app\app\src\main\AndroidManifest.xml:11:9-63
+		ADDED from D:\Work\Kotlin\FixMatch\fixmatch-app\app\src\main\AndroidManifest.xml:8:9-54
 	android:icon
-		ADDED from D:\Work\Kotlin\FixMatch\fixmatch-app\app\src\main\AndroidManifest.xml:9:9-58
+		ADDED from D:\Work\Kotlin\FixMatch\fixmatch-app\app\src\main\AndroidManifest.xml:7:9-43
 	android:allowBackup
-		ADDED from D:\Work\Kotlin\FixMatch\fixmatch-app\app\src\main\AndroidManifest.xml:8:9-35
+		ADDED from D:\Work\Kotlin\FixMatch\fixmatch-app\app\src\main\AndroidManifest.xml:6:9-35
 	android:theme
-		ADDED from D:\Work\Kotlin\FixMatch\fixmatch-app\app\src\main\AndroidManifest.xml:13:9-45
-activity#com.findtho.mobile.MainActivity
-ADDED from D:\Work\Kotlin\FixMatch\fixmatch-app\app\src\main\AndroidManifest.xml:14:9-22:20
+		ADDED from D:\Work\Kotlin\FixMatch\fixmatch-app\app\src\main\AndroidManifest.xml:11:9-46
+activity#com.fixmatch.mobile.MainActivity
+ADDED from D:\Work\Kotlin\FixMatch\fixmatch-app\app\src\main\AndroidManifest.xml:12:9-20:20
 	android:exported
-		ADDED from D:\Work\Kotlin\FixMatch\fixmatch-app\app\src\main\AndroidManifest.xml:16:13-36
+		ADDED from D:\Work\Kotlin\FixMatch\fixmatch-app\app\src\main\AndroidManifest.xml:14:13-36
 	android:theme
-		ADDED from D:\Work\Kotlin\FixMatch\fixmatch-app\app\src\main\AndroidManifest.xml:17:13-49
+		ADDED from D:\Work\Kotlin\FixMatch\fixmatch-app\app\src\main\AndroidManifest.xml:15:13-50
 	android:name
-		ADDED from D:\Work\Kotlin\FixMatch\fixmatch-app\app\src\main\AndroidManifest.xml:15:13-41
+		ADDED from D:\Work\Kotlin\FixMatch\fixmatch-app\app\src\main\AndroidManifest.xml:13:13-41
 intent-filter#action:name:android.intent.action.MAIN+category:name:android.intent.category.LAUNCHER
-ADDED from D:\Work\Kotlin\FixMatch\fixmatch-app\app\src\main\AndroidManifest.xml:18:13-21:29
+ADDED from D:\Work\Kotlin\FixMatch\fixmatch-app\app\src\main\AndroidManifest.xml:16:13-19:29
 action#android.intent.action.MAIN
-ADDED from D:\Work\Kotlin\FixMatch\fixmatch-app\app\src\main\AndroidManifest.xml:19:17-69
+ADDED from D:\Work\Kotlin\FixMatch\fixmatch-app\app\src\main\AndroidManifest.xml:17:17-69
 	android:name
-		ADDED from D:\Work\Kotlin\FixMatch\fixmatch-app\app\src\main\AndroidManifest.xml:19:25-66
+		ADDED from D:\Work\Kotlin\FixMatch\fixmatch-app\app\src\main\AndroidManifest.xml:17:25-66
 category#android.intent.category.LAUNCHER
-ADDED from D:\Work\Kotlin\FixMatch\fixmatch-app\app\src\main\AndroidManifest.xml:20:17-77
+ADDED from D:\Work\Kotlin\FixMatch\fixmatch-app\app\src\main\AndroidManifest.xml:18:17-77
 	android:name
-		ADDED from D:\Work\Kotlin\FixMatch\fixmatch-app\app\src\main\AndroidManifest.xml:20:27-74
+		ADDED from D:\Work\Kotlin\FixMatch\fixmatch-app\app\src\main\AndroidManifest.xml:18:27-74
 uses-sdk
 INJECTED from D:\Work\Kotlin\FixMatch\fixmatch-app\app\src\main\AndroidManifest.xml reason: use-sdk injection requested
 INJECTED from D:\Work\Kotlin\FixMatch\fixmatch-app\app\src\main\AndroidManifest.xml
@@ -161,6 +162,8 @@ MERGED from [androidx.compose.material:material-ripple-android:1.5.4] C:\Users\a
 MERGED from [androidx.compose.material:material-ripple-android:1.5.4] C:\Users\anhnq\.gradle\caches\8.10\transforms\1d6a91297ec55779403f654bb53fbfe8\transformed\material-ripple-release\AndroidManifest.xml:5:5-44
 MERGED from [androidx.compose.material:material-icons-core-android:1.5.4] C:\Users\anhnq\.gradle\caches\8.10\transforms\80750b9d150c4dde2d726cd2ae276720\transformed\material-icons-core-release\AndroidManifest.xml:5:5-44
 MERGED from [androidx.compose.material:material-icons-core-android:1.5.4] C:\Users\anhnq\.gradle\caches\8.10\transforms\80750b9d150c4dde2d726cd2ae276720\transformed\material-icons-core-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.material:material-icons-extended-android:1.5.4] C:\Users\anhnq\.gradle\caches\8.10\transforms\7147e20cbde2e7f9da439b1a4ff9af0b\transformed\material-icons-extended-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.material:material-icons-extended-android:1.5.4] C:\Users\anhnq\.gradle\caches\8.10\transforms\7147e20cbde2e7f9da439b1a4ff9af0b\transformed\material-icons-extended-release\AndroidManifest.xml:5:5-44
 MERGED from [androidx.compose.material:material-android:1.5.4] C:\Users\anhnq\.gradle\caches\8.10\transforms\20461a7375acfed871f4faca4b293f03\transformed\material-release\AndroidManifest.xml:5:5-44
 MERGED from [androidx.compose.material:material-android:1.5.4] C:\Users\anhnq\.gradle\caches\8.10\transforms\20461a7375acfed871f4faca4b293f03\transformed\material-release\AndroidManifest.xml:5:5-44
 MERGED from [androidx.compose.animation:animation-core-android:1.5.4] C:\Users\anhnq\.gradle\caches\8.10\transforms\9c232ca00e78133289cb653a39c0102b\transformed\animation-core-release\AndroidManifest.xml:5:5-44
@@ -307,7 +310,7 @@ ADDED from [androidx.core:core:1.12.0] C:\Users\anhnq\.gradle\caches\8.10\transf
 		ADDED from [androidx.core:core:1.12.0] C:\Users\anhnq\.gradle\caches\8.10\transforms\c9968623b12f1d91b0eaa1b9dcfdfcf9\transformed\core-1.12.0\AndroidManifest.xml:24:9-44
 	android:name
 		ADDED from [androidx.core:core:1.12.0] C:\Users\anhnq\.gradle\caches\8.10\transforms\c9968623b12f1d91b0eaa1b9dcfdfcf9\transformed\core-1.12.0\AndroidManifest.xml:23:9-81
-permission#com.findtho.mobile.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION
+permission#com.fixmatch.mobile.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION
 ADDED from [androidx.core:core:1.12.0] C:\Users\anhnq\.gradle\caches\8.10\transforms\c9968623b12f1d91b0eaa1b9dcfdfcf9\transformed\core-1.12.0\AndroidManifest.xml:22:5-24:47
 	android:protectionLevel
 		ADDED from [androidx.core:core:1.12.0] C:\Users\anhnq\.gradle\caches\8.10\transforms\c9968623b12f1d91b0eaa1b9dcfdfcf9\transformed\core-1.12.0\AndroidManifest.xml:24:9-44
@@ -317,7 +320,7 @@ uses-permission#${applicationId}.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION
 ADDED from [androidx.core:core:1.12.0] C:\Users\anhnq\.gradle\caches\8.10\transforms\c9968623b12f1d91b0eaa1b9dcfdfcf9\transformed\core-1.12.0\AndroidManifest.xml:26:5-97
 	android:name
 		ADDED from [androidx.core:core:1.12.0] C:\Users\anhnq\.gradle\caches\8.10\transforms\c9968623b12f1d91b0eaa1b9dcfdfcf9\transformed\core-1.12.0\AndroidManifest.xml:26:22-94
-uses-permission#com.findtho.mobile.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION
+uses-permission#com.fixmatch.mobile.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION
 ADDED from [androidx.core:core:1.12.0] C:\Users\anhnq\.gradle\caches\8.10\transforms\c9968623b12f1d91b0eaa1b9dcfdfcf9\transformed\core-1.12.0\AndroidManifest.xml:26:5-97
 	android:name
 		ADDED from [androidx.core:core:1.12.0] C:\Users\anhnq\.gradle\caches\8.10\transforms\c9968623b12f1d91b0eaa1b9dcfdfcf9\transformed\core-1.12.0\AndroidManifest.xml:26:22-94

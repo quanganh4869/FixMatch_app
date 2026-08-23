@@ -1,0 +1,282 @@
+<!DOCTYPE html><html class="light" lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport">
+<title>Worker Account Settings</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                            "surface-container-highest": "#e1e3e4",
+                            "surface-container-lowest": "#ffffff",
+                            "on-primary": "#ffffff",
+                            "on-primary-fixed": "#001550",
+                            "surface": "#f8f9fa",
+                            "error-container": "#ffdad6",
+                            "on-error-container": "#93000a",
+                            "on-secondary-fixed-variant": "#5a4300",
+                            "on-primary-container": "#e5e8ff",
+                            "inverse-surface": "#2e3132",
+                            "surface-tint": "#004ee7",
+                            "on-secondary-container": "#6f5400",
+                            "primary-fixed-dim": "#b6c4ff",
+                            "surface-container": "#edeeef",
+                            "background": "#f8f9fa",
+                            "on-tertiary-container": "#e6e8fc",
+                            "outline": "#737687",
+                            "tertiary-fixed": "#e0e1f5",
+                            "surface-container-high": "#e7e8e9",
+                            "on-tertiary-fixed": "#181b29",
+                            "inverse-on-surface": "#f0f1f2",
+                            "primary-container": "#1e5af2",
+                            "surface-bright": "#f8f9fa",
+                            "secondary-fixed-dim": "#f5bf21",
+                            "secondary-fixed": "#ffdf98",
+                            "on-tertiary-fixed-variant": "#434656",
+                            "surface-container-low": "#f3f4f5",
+                            "primary": "#0043c8",
+                            "outline-variant": "#c3c5d8",
+                            "secondary": "#775a00",
+                            "on-secondary": "#ffffff",
+                            "error": "#ba1a1a",
+                            "on-surface-variant": "#434655",
+                            "on-surface": "#191c1d",
+                            "tertiary-container": "#656879",
+                            "secondary-container": "#fec72b",
+                            "on-background": "#191c1d",
+                            "on-error": "#ffffff",
+                            "on-primary-fixed-variant": "#003ab1",
+                            "tertiary": "#4d5060",
+                            "on-tertiary": "#ffffff",
+                            "surface-variant": "#e1e3e4",
+                            "on-secondary-fixed": "#251a00",
+                            "tertiary-fixed-dim": "#c3c5d9",
+                            "surface-dim": "#d9dadb",
+                            "primary-fixed": "#dce1ff",
+                            "inverse-primary": "#b6c4ff"
+                    },
+                    "borderRadius": {
+                            "DEFAULT": "0.25rem",
+                            "lg": "0.5rem",
+                            "xl": "0.75rem",
+                            "full": "9999px"
+                    },
+                    "spacing": {
+                            "lg": "24px",
+                            "xs": "4px",
+                            "gutter": "16px",
+                            "xl": "32px",
+                            "sm": "8px",
+                            "base": "4px",
+                            "md": "16px",
+                            "margin-mobile": "16px",
+                            "margin-tablet": "32px",
+                            "safe": "env(safe-area-inset-bottom)"
+                    },
+                    "fontFamily": {
+                            "headline-md": ["Inter"],
+                            "body-lg": ["Inter"],
+                            "body-md": ["Inter"],
+                            "label-sm": ["Inter"],
+                            "headline-lg": ["Inter"],
+                            "headline-lg-mobile": ["Inter"],
+                            "label-lg": ["Inter"],
+                            "display-lg": ["Inter"]
+                    },
+                    "fontSize": {
+                            "headline-md": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                            "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                            "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                            "label-sm": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                            "headline-lg": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                            "headline-lg-mobile": ["22px", {"lineHeight": "28px", "fontWeight": "600"}],
+                            "label-lg": ["14px", {"lineHeight": "20px", "fontWeight": "600"}],
+                            "display-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700"}]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body {
+            background-color: theme('colors.surface');
+            color: theme('colors.on-surface');
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        .glass-card {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 4px 24px -1px rgba(30, 90, 242, 0.05);
+        }
+
+        .list-item-hover:active {
+            background-color: theme('colors.surface-container-low');
+        }
+
+        @media (min-width: 768px) {
+            .list-item-hover:hover {
+                background-color: theme('colors.surface-container-low');
+            }
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="antialiased min-h-screen flex flex-col pt-14 pb-[calc(60px+env(safe-area-inset-bottom))] md:pb-0">
+<!-- TopAppBar -->
+<header class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-margin-mobile h-14 bg-surface shadow-sm scale-95 active:opacity-80 transition-all docked full-width top-0">
+<div class="flex items-center gap-sm">
+<button class="w-8 h-8 rounded-full overflow-hidden bg-surface-container flex items-center justify-center text-primary hover:bg-surface-container-low transition-colors">
+<img alt="User or Worker Profile Photo" class="w-full h-full object-cover" data-alt="A close-up headshot of a friendly male professional service worker in his early 30s. He has a warm smile, neat short hair, and is wearing a clean navy blue uniform shirt. The background is a soft, blurred bright outdoor setting with a light-mode aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD_nT_-v4GBq_UwKfGVailZJ54YfnhJItYF7yrAhRxKVPXoffHjOUCOscw0eTgsDnp16SJQY8Ck_xrnYMDxWuUt3CXzv_zyvlV3coMx0m6tAb113N6eqSnvNPy_xKjIWGTNfix8tW8QtC451n982c9TcvIIdth7rHKnihk8-tgzAbK04NooaFRLs9qEviAn4g9AInE6xua-6Rod8EpPnKZ6hY0uSlEsplHqu9I5jfeL9WAc-fzvAnG-">
+</button>
+<h1 class="text-headline-lg-mobile font-headline-lg-mobile font-bold text-primary">Find Tho</h1>
+</div>
+<button class="w-10 h-10 flex items-center justify-center rounded-full text-on-surface-variant hover:bg-surface-container-low transition-colors">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">notifications</span>
+</button>
+</header>
+<!-- Main Content -->
+<main class="flex-1 w-full max-w-3xl mx-auto px-margin-mobile pt-lg pb-xl space-y-lg md:space-y-xl">
+<!-- Profile Header Card -->
+<section class="glass-card rounded-xl p-md flex flex-col md:flex-row items-center md:items-start gap-md text-center md:text-left">
+<div class="w-24 h-24 rounded-full overflow-hidden border-4 border-surface shadow-sm relative flex-shrink-0">
+<img alt="Michael T. Profile" class="w-full h-full object-cover" data-alt="A close-up headshot of a friendly male professional service worker in his early 30s. He has a warm smile, neat short hair, and is wearing a clean navy blue uniform shirt. The background is a soft, blurred bright outdoor setting with a light-mode aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAGaOGB5iydTw8PliuaWTQBUtSVUGmEn63R8RBlfAvy4r-4-7vdPbZbUYJKaNkhkHbSSAglkUUcZ5qyUGXA-YeOyIztUL7Oyn66iCvNv2NsIXmjDatBemYV4lHdG4V37TdN7byjLWXncIfpZjMSUL2nUWTOE8AmffXGnahLbvth8Mwbub9bHN4fPV-R_cB0p0KO2yqGHz6JRS50GWo8D-1no9620cx_4XBuaZs_rsT7x2Zm9KZQzwDx">
+<!-- Status indicator -->
+<div class="absolute bottom-1 right-1 w-4 h-4 bg-[#10b981] rounded-full border-2 border-white"></div>
+</div>
+<div class="flex flex-col justify-center flex-1 h-full">
+<div class="flex items-center justify-center md:justify-start gap-sm mb-xs">
+<h2 class="text-headline-md font-headline-md text-on-surface">Michael T.</h2>
+<span class="material-symbols-outlined text-primary text-[20px]" style="font-variation-settings: 'FILL' 1;">verified</span>
+</div>
+<div class="inline-flex items-center justify-center md:justify-start gap-xs bg-[#E8F0FE] text-primary px-sm py-1 rounded-full w-max mx-auto md:mx-0 mb-sm">
+<span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">workspace_premium</span>
+<span class="text-label-sm font-label-sm">Verified Pro</span>
+</div>
+<p class="text-body-md font-body-md text-on-surface-variant">Master Electrician &amp; Plumber</p>
+</div>
+</section>
+<!-- Role Toggle Bento -->
+<section class="glass-card rounded-xl p-md flex items-center justify-between">
+<div class="flex items-center gap-md">
+<div class="w-10 h-10 rounded-full bg-primary-container/10 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined">swap_horiz</span>
+</div>
+<div>
+<h3 class="text-body-lg font-body-lg text-on-surface font-semibold">Switch to User Role</h3>
+<p class="text-body-md font-body-md text-on-surface-variant">Book services for your own home</p>
+</div>
+</div>
+<!-- Custom Toggle -->
+<label class="relative inline-flex items-center cursor-pointer">
+<input class="sr-only peer" type="checkbox" value="">
+<div class="w-11 h-6 bg-surface-variant peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+</label>
+</section>
+<!-- Settings List -->
+<section class="bg-surface-container-lowest rounded-xl shadow-sm border border-surface-variant overflow-hidden">
+<h3 class="px-md py-sm text-label-sm font-label-sm text-on-surface-variant uppercase tracking-wider bg-surface-container-low border-b border-surface-variant">Professional Settings</h3>
+<ul class="flex flex-col">
+<!-- Worker Profile -->
+<li class="">
+<a class="list-item-hover flex items-center justify-between p-md border-b border-surface-variant/50 transition-colors" href="#">
+<div class="flex items-center gap-md">
+<span class="material-symbols-outlined text-tertiary">person</span>
+<span class="text-body-lg font-body-lg text-on-surface">Worker Profile (Public View)</span>
+</div>
+<span class="material-symbols-outlined text-outline-variant">chevron_right</span>
+</a>
+</li>
+<!-- Service Management -->
+<li class="">
+<a class="list-item-hover flex items-center justify-between p-md border-b border-surface-variant/50 transition-colors" href="#">
+<div class="flex items-center gap-md">
+<span class="material-symbols-outlined text-tertiary">home_repair_service</span>
+<span class="text-body-lg font-body-lg text-on-surface">Service Management</span>
+</div>
+<span class="material-symbols-outlined text-outline-variant">chevron_right</span>
+</a>
+</li>
+<!-- Service Area -->
+<li class="">
+<a class="list-item-hover flex items-center justify-between p-md border-b border-surface-variant/50 transition-colors" href="#">
+<div class="flex items-center gap-md">
+<span class="material-symbols-outlined text-tertiary">map</span>
+<span class="text-body-lg font-body-lg text-on-surface">Service Area</span>
+</div>
+<span class="material-symbols-outlined text-outline-variant">chevron_right</span>
+</a>
+</li>
+<!-- Working Hours -->
+<li class="">
+<a class="list-item-hover flex items-center justify-between p-md border-b border-surface-variant/50 transition-colors" href="#">
+<div class="flex items-center gap-md">
+<span class="material-symbols-outlined text-tertiary">schedule</span>
+<span class="text-body-lg font-body-lg text-on-surface">Working Hours</span>
+</div>
+<span class="material-symbols-outlined text-outline-variant">chevron_right</span>
+</a>
+</li>
+<!-- Verification Documents -->
+<li class="">
+<a class="list-item-hover flex items-center justify-between p-md border-b border-surface-variant/50 transition-colors" href="#">
+<div class="flex items-center gap-md">
+<span class="material-symbols-outlined text-tertiary">description</span>
+<span class="text-body-lg font-body-lg text-on-surface">Verification Documents</span>
+</div>
+<span class="material-symbols-outlined text-outline-variant">chevron_right</span>
+</a>
+</li>
+<!-- Earnings Settings -->
+<li class="">
+<a class="list-item-hover flex items-center justify-between p-md transition-colors" href="#">
+<div class="flex items-center gap-md">
+<span class="material-symbols-outlined text-tertiary">payments</span>
+<span class="text-body-lg font-body-lg text-on-surface">Earnings Settings</span>
+</div>
+<span class="material-symbols-outlined text-outline-variant">chevron_right</span>
+</a>
+</li>
+</ul>
+</section>
+<!-- Danger Zone -->
+<section class="mt-lg">
+<button class="w-full flex items-center justify-center gap-sm bg-error-container/20 text-error hover:bg-error-container/40 transition-colors py-md rounded-xl font-label-lg text-label-lg">
+<span class="material-symbols-outlined">logout</span>
+                Logout
+            </button>
+</section>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 py-2 pb-safe bg-surface/90 backdrop-blur-md shadow-lg border-t border-outline-variant md:hidden">
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-all" href="#">
+<span class="material-symbols-outlined mb-1" style="font-variation-settings: 'FILL' 0;">home</span>
+<span class="text-label-sm font-label-sm">Home</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-all" href="#">
+<span class="material-symbols-outlined mb-1" style="font-variation-settings: 'FILL' 0;">chat</span>
+<span class="text-label-sm font-label-sm">Chat</span>
+</a>
+<a class="flex flex-col items-center justify-center text-primary font-bold scale-110 duration-200 ease-out" href="#">
+<span class="material-symbols-outlined mb-1" style="font-variation-settings: 'FILL' 1;">person</span>
+<span class="text-label-sm font-label-sm">Profile</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-all" href="#">
+<span class="material-symbols-outlined mb-1" style="font-variation-settings: 'FILL' 0;">settings</span>
+<span class="text-label-sm font-label-sm">Settings</span>
+</a>
+</nav>
+
+
+</body></html>

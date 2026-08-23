@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">FindMatch</string>
+    <string name="current_location">Vị trí hiện tại</string>
+    <string name="find_trusted_pro">Tìm thợ chuyên nghiệp đáng tin cậy chỉ trong vài phút.</string>
+    <string name="need_a_repair">Bạn cần sửa chữa?</string>
+    <string name="recent_requests">Yêu cầu gần đây</string>
+    <string name="request_now">Đặt thợ ngay</string>
+    <string name="search">Tìm kiếm</string>
+    <string name="see_all">Xem tất cả</string>
+    <string name="top_rated_nearby">Thợ giỏi gần bạn</string>
+    <string name="view_map">Xem bản đồ</string>
+</resources>

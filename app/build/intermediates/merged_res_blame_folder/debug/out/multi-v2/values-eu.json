@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "com.findtho.mobile.app-mergeDebugResources-52:/values-eu/values-eu.xml",
+            "outputFile": "com.fixmatch.mobile.app-mergeDebugResources-53:/values-eu/values-eu.xml",
             "map": [
                 {
                     "source": "C:\\Users\\anhnq\\.gradle\\caches\\8.10\\transforms\\bcde1f2ad9e3061739333f9ed4f1517c\\transformed\\ui-release\\res\\values-eu\\values-eu.xml",

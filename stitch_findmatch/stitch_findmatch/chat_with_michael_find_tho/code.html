@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/>
+<title>Find Tho - Chat with Michael T.</title>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Google Fonts: Inter -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Config injected from system prompt -->
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "surface-container-highest": "#e1e3e4",
+                      "surface-container-lowest": "#ffffff",
+                      "on-primary": "#ffffff",
+                      "on-primary-fixed": "#001550",
+                      "surface": "#f8f9fa",
+                      "error-container": "#ffdad6",
+                      "on-error-container": "#93000a",
+                      "on-secondary-fixed-variant": "#5a4300",
+                      "on-primary-container": "#e5e8ff",
+                      "inverse-surface": "#2e3132",
+                      "surface-tint": "#004ee7",
+                      "on-secondary-container": "#6f5400",
+                      "primary-fixed-dim": "#b6c4ff",
+                      "surface-container": "#edeeef",
+                      "background": "#f8f9fa",
+                      "on-tertiary-container": "#e6e8fc",
+                      "outline": "#737687",
+                      "tertiary-fixed": "#e0e1f5",
+                      "surface-container-high": "#e7e8e9",
+                      "on-tertiary-fixed": "#181b29",
+                      "inverse-on-surface": "#f0f1f2",
+                      "primary-container": "#1e5af2",
+                      "surface-bright": "#f8f9fa",
+                      "secondary-fixed-dim": "#f5bf21",
+                      "secondary-fixed": "#ffdf98",
+                      "on-tertiary-fixed-variant": "#434656",
+                      "surface-container-low": "#f3f4f5",
+                      "primary": "#0043c8",
+                      "outline-variant": "#c3c5d8",
+                      "secondary": "#775a00",
+                      "on-secondary": "#ffffff",
+                      "error": "#ba1a1a",
+                      "on-surface-variant": "#434655",
+                      "on-surface": "#191c1d",
+                      "tertiary-container": "#656879",
+                      "secondary-container": "#fec72b",
+                      "on-background": "#191c1d",
+                      "on-error": "#ffffff",
+                      "on-primary-fixed-variant": "#003ab1",
+                      "tertiary": "#4d5060",
+                      "on-tertiary": "#ffffff",
+                      "surface-variant": "#e1e3e4",
+                      "on-secondary-fixed": "#251a00",
+                      "tertiary-fixed-dim": "#c3c5d9",
+                      "surface-dim": "#d9dadb",
+                      "primary-fixed": "#dce1ff",
+                      "inverse-primary": "#b6c4ff"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "lg": "24px",
+                      "xs": "4px",
+                      "gutter": "16px",
+                      "xl": "32px",
+                      "sm": "8px",
+                      "base": "4px",
+                      "md": "16px",
+                      "margin-mobile": "16px",
+                      "margin-tablet": "32px",
+                      "safe": "env(safe-area-inset-bottom)"
+              },
+              "fontFamily": {
+                      "headline-md": ["Inter"],
+                      "body-lg": ["Inter"],
+                      "body-md": ["Inter"],
+                      "label-sm": ["Inter"],
+                      "headline-lg": ["Inter"],
+                      "headline-lg-mobile": ["Inter"],
+                      "label-lg": ["Inter"],
+                      "display-lg": ["Inter"]
+              },
+              "fontSize": {
+                      "headline-md": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                      "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                      "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                      "label-sm": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                      "headline-lg": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                      "headline-lg-mobile": ["22px", {"lineHeight": "28px", "fontWeight": "600"}],
+                      "label-lg": ["14px", {"lineHeight": "20px", "fontWeight": "600"}],
+                      "display-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700"}]
+              }
+            }
+          }
+        }
+    </script>
+<style>
+        body {
+            -webkit-tap-highlight-color: transparent;
+        }
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background font-body-lg h-screen flex flex-col overflow-hidden">
+<!-- TopAppBar (Transactional - Hidden global nav shell, customized for chat) -->
+<header class="bg-surface shadow-sm fixed top-0 left-0 w-full z-50 flex items-center px-margin-mobile h-16 pt-safe">
+<button class="mr-4 text-on-surface-variant hover:bg-surface-container-low transition-colors rounded-full p-2 scale-95 active:opacity-80 flex items-center justify-center">
+<span class="material-symbols-outlined" data-icon="arrow_back">arrow_back</span>
+</button>
+<div class="flex items-center gap-3 flex-1">
+<div class="relative w-10 h-10 rounded-full overflow-hidden shrink-0 border-2 border-surface-container-high">
+<img alt="Michael T. Profile" class="w-full h-full object-cover" data-alt="Close up professional portrait of a smiling male Master Electrician wearing a dark blue work shirt. The lighting is soft and natural, creating a trustworthy and energetic mood. The background is slightly blurred showing a clean modern interior, emphasizing high legibility and a warm human-centric style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAORF4EXWGq4R52jm17kr6Qps9hQqvOB5Bik6vYxMtLNztV9TgKe32nBZ64QwuVqosmK40Vp_3sQEF1vVil2laIqGXvKERQ3GMBrLXtNKfHUyf39v6g7UGXEhNyUN6lOLqZvG2fI7YzpkIyfP2aHdSJ20m2C-dEi5PLUuFICoe212pVPGp8zFSYH5Q9YVpEY7_XM5LjXYmB3Q7RlopY5KEkLvCz7tOHnYOBP6fHVH0J0KiFbxJEuBFK"/>
+<div class="absolute bottom-0 right-0 w-3 h-3 bg-[#34A853] border-2 border-surface rounded-full"></div>
+</div>
+<div class="flex flex-col">
+<h1 class="text-headline-md font-headline-md text-on-surface leading-tight">Michael T.</h1>
+<span class="text-label-sm font-label-sm text-on-surface-variant">Master Electrician</span>
+</div>
+</div>
+<button class="text-on-surface-variant hover:bg-surface-container-low transition-colors rounded-full p-2 scale-95 active:opacity-80 flex items-center justify-center">
+<span class="material-symbols-outlined" data-icon="more_vert">more_vert</span>
+</button>
+</header>
+<!-- Main Chat Canvas -->
+<main class="flex-1 overflow-y-auto mt-16 mb-20 px-margin-mobile py-lg hide-scrollbar flex flex-col gap-gutter">
+<!-- Date Divider -->
+<div class="flex justify-center my-2">
+<span class="text-label-sm font-label-sm text-on-surface-variant bg-surface-container-low px-3 py-1 rounded-full">Today, 9:41 AM</span>
+</div>
+<!-- Worker Message -->
+<div class="flex flex-col items-start max-w-[85%] self-start gap-1">
+<div class="bg-surface-container-low text-on-surface p-3 rounded-2xl rounded-tl-sm shadow-sm">
+<p class="text-body-md font-body-md">Hi there! I saw your request for the kitchen sink repair. I can swing by this afternoon around 2 PM if that works for you?</p>
+</div>
+<span class="text-label-sm font-label-sm text-on-surface-variant ml-1">9:42 AM</span>
+</div>
+<!-- User Message (Text) -->
+<div class="flex flex-col items-end max-w-[85%] self-end gap-1 mt-2">
+<div class="bg-primary text-on-primary p-3 rounded-2xl rounded-tr-sm shadow-sm">
+<p class="text-body-md font-body-md">That would be great! The leak is getting a bit worse. I've attached a picture of underneath the sink.</p>
+</div>
+</div>
+<!-- User Message (Image Attachment) -->
+<div class="flex flex-col items-end max-w-[85%] self-end gap-1">
+<div class="bg-primary p-1 rounded-2xl rounded-tr-sm shadow-sm overflow-hidden">
+<img alt="Broken faucet" class="w-48 h-48 object-cover rounded-xl" data-alt="A close-up photograph of the plumbing beneath a modern kitchen sink. The pipes are stainless steel and slightly damp, indicating a leak. The lighting is bright and clear, capturing the details of the connection points in a modern, well-lit home environment. The visual style is realistic and informative." src="https://lh3.googleusercontent.com/aida-public/AB6AXuADziqHee8Cc1iybr7zfbwaThWyjLSx-1Z5l0xvt_AmcXPp2BnUmkE-5pXZF_-hh2yWegi-WDcKnuexUc6w4OPVauSPxrs6tJzI5Zm_WYlNJgWhS9GilDmLpgefKrlSssLMHbiTOSGuzM1Wna2qLVSmZGJUP9YvQ6z8JQO-PVleePP3oVjwDR86oR3mH1OZ_AoOIK6u1WE0gSi0wTiYOudZ-msNh-gqccojaD-i-5iDJbaJnNw7YSqH"/>
+</div>
+<div class="flex items-center gap-1 mr-1">
+<span class="text-label-sm font-label-sm text-on-surface-variant">9:45 AM</span>
+<span class="material-symbols-outlined text-[14px] text-primary" data-icon="done_all">done_all</span>
+</div>
+</div>
+<!-- Worker Message -->
+<div class="flex flex-col items-start max-w-[85%] self-start gap-1 mt-2">
+<div class="bg-surface-container-low text-on-surface p-3 rounded-2xl rounded-tl-sm shadow-sm">
+<p class="text-body-md font-body-md">Thanks for the photo. Looks like a straightforward P-trap replacement. I'll bring the parts. See you at 2!</p>
+</div>
+<span class="text-label-sm font-label-sm text-on-surface-variant ml-1">9:47 AM</span>
+</div>
+<!-- Typing Indicator -->
+<div class="flex flex-col items-start max-w-[85%] self-start gap-1 mt-1 opacity-70">
+<div class="bg-surface-container-low text-on-surface px-4 py-3 rounded-2xl rounded-tl-sm shadow-sm flex gap-1 items-center h-10">
+<div class="w-2 h-2 bg-on-surface-variant rounded-full animate-bounce"></div>
+<div class="w-2 h-2 bg-on-surface-variant rounded-full animate-bounce" style="animation-delay: 0.15s"></div>
+<div class="w-2 h-2 bg-on-surface-variant rounded-full animate-bounce" style="animation-delay: 0.3s"></div>
+</div>
+</div>
+</main>
+<!-- Input Area -->
+<footer class="fixed bottom-0 left-0 w-full bg-surface border-t border-surface-variant px-margin-mobile py-3 pb-safe flex items-center gap-3 z-50">
+<button class="shrink-0 text-primary bg-surface-container-highest hover:bg-tertiary-fixed transition-colors w-10 h-10 rounded-full flex items-center justify-center scale-95 active:opacity-80">
+<span class="material-symbols-outlined" data-icon="add">add</span>
+</button>
+<div class="flex-1 relative">
+<input class="w-full bg-surface-container-low text-on-surface border-none rounded-full py-3 pl-4 pr-12 focus:ring-2 focus:ring-primary text-body-md font-body-md placeholder-on-surface-variant h-12" placeholder="Message Michael..." type="text"/>
+<button class="absolute right-2 top-1/2 -translate-y-1/2 text-on-surface-variant hover:text-primary transition-colors p-1">
+<span class="material-symbols-outlined" data-icon="sentiment_satisfied">sentiment_satisfied</span>
+</button>
+</div>
+<button class="shrink-0 bg-primary text-on-primary w-12 h-12 rounded-full flex items-center justify-center shadow-sm hover:shadow-md transition-all active:scale-95">
+<span class="material-symbols-outlined" data-icon="send">send</span>
+</button>
+</footer>
+<!-- Note: BottomNavBar and SideNav suppressed per Semantic Shell Mandate (Linear/Transactional chat screen) -->
+</body></html>

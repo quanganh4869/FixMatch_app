@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/>
+<title>Find Tho - Onboarding 1</title>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-primary": "#ffffff",
+                        "on-primary-fixed": "#001550",
+                        "on-tertiary": "#ffffff",
+                        "surface-bright": "#f8f9fa",
+                        "error-container": "#ffdad6",
+                        "on-secondary-container": "#6f5400",
+                        "tertiary-fixed": "#e0e1f5",
+                        "surface-variant": "#e1e3e4",
+                        "on-background": "#191c1d",
+                        "inverse-surface": "#2e3132",
+                        "outline": "#737687",
+                        "on-surface-variant": "#434655",
+                        "on-surface": "#191c1d",
+                        "on-primary-container": "#e5e8ff",
+                        "surface-container-low": "#f3f4f5",
+                        "secondary": "#775a00",
+                        "on-tertiary-container": "#e6e8fc",
+                        "inverse-primary": "#b6c4ff",
+                        "inverse-on-surface": "#f0f1f2",
+                        "secondary-fixed-dim": "#f5bf21",
+                        "secondary-container": "#fec72b",
+                        "surface-container-lowest": "#ffffff",
+                        "primary-fixed-dim": "#b6c4ff",
+                        "primary-container": "#1e5af2",
+                        "on-primary-fixed-variant": "#003ab1",
+                        "surface-container": "#edeeef",
+                        "surface": "#f8f9fa",
+                        "tertiary": "#4d5060",
+                        "outline-variant": "#c3c5d8",
+                        "error": "#ba1a1a",
+                        "on-tertiary-fixed-variant": "#434656",
+                        "surface-dim": "#d9dadb",
+                        "surface-tint": "#004ee7",
+                        "tertiary-container": "#656879",
+                        "on-error": "#ffffff",
+                        "primary-fixed": "#dce1ff",
+                        "tertiary-fixed-dim": "#c3c5d9",
+                        "on-tertiary-fixed": "#181b29",
+                        "background": "#f8f9fa",
+                        "on-secondary-fixed-variant": "#5a4300",
+                        "secondary-fixed": "#ffdf98",
+                        "surface-container-high": "#e7e8e9",
+                        "on-error-container": "#93000a",
+                        "primary": "#0043c8",
+                        "on-secondary-fixed": "#251a00",
+                        "surface-container-highest": "#e1e3e4",
+                        "on-secondary": "#ffffff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "margin-tablet": "32px",
+                        "sm": "8px",
+                        "xs": "4px",
+                        "gutter": "16px",
+                        "xl": "32px",
+                        "margin-mobile": "16px",
+                        "lg": "24px",
+                        "md": "16px",
+                        "base": "4px"
+                    },
+                    "fontFamily": {
+                        "body-md": ["Inter"],
+                        "display-lg": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "label-lg": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "headline-lg-mobile": ["Inter"],
+                        "label-sm": ["Inter"],
+                        "headline-lg": ["Inter"]
+                    },
+                    "fontSize": {
+                        "body-md": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+                        "display-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "headline-md": ["20px", { "lineHeight": "28px", "fontWeight": "600" }],
+                        "label-lg": ["14px", { "lineHeight": "20px", "fontWeight": "600" }],
+                        "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "headline-lg-mobile": ["22px", { "lineHeight": "28px", "fontWeight": "600" }],
+                        "label-sm": ["12px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "500" }],
+                        "headline-lg": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .material-symbols-outlined[data-weight="fill"] {
+            font-variation-settings: 'FILL' 1;
+        }
+    </style>
+</head>
+<body class="bg-surface text-on-surface font-body-md min-h-screen flex flex-col pt-safe-top pb-safe-bottom md:items-center md:justify-center">
+<!-- Content Canvas (Onboarding Flow) -->
+<main class="flex-1 flex flex-col w-full max-w-[480px] bg-surface relative overflow-hidden">
+<!-- Top App Bar - Simple/Transparent for Onboarding -->
+<div class="flex justify-between items-center px-margin-mobile h-14 w-full bg-transparent z-10 absolute top-0 left-0 right-0">
+<span class="font-headline-md text-headline-md font-bold text-primary">Find Tho</span>
+<button class="bg-transparent text-primary font-label-lg text-label-lg px-4 py-2 rounded-lg hover:bg-surface-container-low transition-colors" type="button">
+                Skip
+            </button>
+</div>
+<!-- Scrollable Content Area -->
+<div class="flex-1 flex flex-col mt-14 overflow-y-auto hide-scrollbar">
+<!-- Hero Image Container -->
+<div class="relative w-full h-[50vh] min-h-[320px] flex items-center justify-center p-8 mt-4">
+<!-- Decorative Blob Background -->
+<div class="absolute inset-0 flex items-center justify-center overflow-hidden pointer-events-none opacity-20">
+<div class="w-64 h-64 bg-primary rounded-full blur-3xl absolute transform -translate-y-12"></div>
+<div class="w-48 h-48 bg-secondary-container rounded-full blur-3xl absolute transform translate-x-16 translate-y-16"></div>
+</div>
+<img alt="Friendly Find Tho Mascot Worker" class="object-contain w-full h-full max-h-[400px] z-10 drop-shadow-xl animate-fade-in-up" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC4ILZ-ZA56vPvjkhqw4HhLYRUhDfkenz0i8i2WjBvwe94Bk2e3GOVPR1ciAibctpyE0_HzDjbQ4X8UU3mrR1O5VAjnlv4sZHWuoYewl9tVrNrKXMKIW9oWjuFWBqzz7LjBzUYXSomII6gElZM18yusjZBcFMHlkEvPnEsB9ZmMGd4-0mP-cQztpubFVDvI5S9MlCYlaJOQ_9sbplDwnolECdpwI8zL3H5buThBBDMolgzz4zncl1QB_dzXRVxm7GkSbQ"/>
+</div>
+<!-- Text Content & Value Prop -->
+<div class="px-margin-mobile flex flex-col items-center text-center mt-6 animate-fade-in-up" style="animation-delay: 150ms;">
+<h1 class="font-display-lg text-display-lg text-on-surface mb-4">Discover Trusted Workers</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-[320px]">
+                    Connect with vetted professionals in your area for quick, reliable home services and repairs.
+                </p>
+</div>
+</div>
+<!-- Bottom Action Area -->
+<div class="px-margin-mobile pb-margin-mobile pt-4 flex flex-col gap-8 bg-surface w-full mt-auto">
+<!-- Progress Indicators -->
+<div class="flex justify-center gap-2 items-center">
+<div class="w-6 h-2 bg-primary rounded-full"></div>
+<div class="w-2 h-2 bg-surface-variant rounded-full"></div>
+<div class="w-2 h-2 bg-surface-variant rounded-full"></div>
+</div>
+<!-- Actions -->
+<div class="flex w-full gap-4">
+<button class="flex-1 h-[56px] bg-primary text-on-primary font-label-lg text-label-lg rounded-lg flex items-center justify-center shadow-lg shadow-primary/20 hover:opacity-90 active:scale-95 transition-all">
+                    Next
+                </button>
+</div>
+</div>
+</main>
+<style>
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .animate-fade-in-up {
+            animation: fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            opacity: 0;
+        }
+        
+        /* Hide scrollbar for clean UI */
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+</body></html>

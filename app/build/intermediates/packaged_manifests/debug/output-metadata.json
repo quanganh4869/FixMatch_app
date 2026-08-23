@@ -4,7 +4,7 @@
     "type": "PACKAGED_MANIFESTS",
     "kind": "Directory"
   },
-  "applicationId": "com.findtho.mobile",
+  "applicationId": "com.fixmatch.mobile",
   "variantName": "debug",
   "elements": [
     {

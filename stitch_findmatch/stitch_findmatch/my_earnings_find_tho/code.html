@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/>
+<title>Earnings Dashboard - Find Tho</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "error-container": "#ffdad6",
+                      "surface-tint": "#004ee7",
+                      "on-primary-container": "#e5e8ff",
+                      "on-secondary-fixed-variant": "#5a4300",
+                      "on-primary-fixed": "#001550",
+                      "on-tertiary-container": "#e6e8fc",
+                      "on-tertiary-fixed-variant": "#434656",
+                      "on-primary": "#ffffff",
+                      "primary-fixed-dim": "#b6c4ff",
+                      "surface-container-highest": "#e1e3e4",
+                      "on-secondary": "#ffffff",
+                      "outline-variant": "#c3c5d8",
+                      "on-secondary-container": "#6f5400",
+                      "tertiary": "#4d5060",
+                      "secondary": "#775a00",
+                      "primary-fixed": "#dce1ff",
+                      "tertiary-fixed-dim": "#c3c5d9",
+                      "secondary-fixed-dim": "#f5bf21",
+                      "error": "#ba1a1a",
+                      "surface-dim": "#d9dadb",
+                      "secondary-fixed": "#ffdf98",
+                      "outline": "#737687",
+                      "secondary-container": "#fec72b",
+                      "on-surface-variant": "#434655",
+                      "surface-bright": "#f8f9fa",
+                      "on-tertiary-fixed": "#181b29",
+                      "surface-container-high": "#e7e8e9",
+                      "on-error-container": "#93000a",
+                      "on-tertiary": "#ffffff",
+                      "on-background": "#191c1d",
+                      "inverse-primary": "#b6c4ff",
+                      "on-surface": "#191c1d",
+                      "surface-container": "#edeeef",
+                      "on-secondary-fixed": "#251a00",
+                      "surface": "#f8f9fa",
+                      "surface-container-low": "#f3f4f5",
+                      "primary-container": "#1e5af2",
+                      "tertiary-container": "#656879",
+                      "background": "#f8f9fa",
+                      "surface-container-lowest": "#ffffff",
+                      "on-primary-fixed-variant": "#003ab1",
+                      "tertiary-fixed": "#e0e1f5",
+                      "primary": "#0043c8",
+                      "surface-variant": "#e1e3e4",
+                      "inverse-surface": "#2e3132",
+                      "inverse-on-surface": "#f0f1f2",
+                      "on-error": "#ffffff"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "lg": "24px",
+                      "xs": "4px",
+                      "base": "4px",
+                      "xl": "32px",
+                      "gutter": "16px",
+                      "md": "16px",
+                      "margin-tablet": "32px",
+                      "margin-mobile": "16px",
+                      "sm": "8px",
+                      "safe": "env(safe-area-inset-bottom)"
+              },
+              "fontFamily": {
+                      "body-lg": [
+                              "Inter"
+                      ],
+                      "headline-lg-mobile": [
+                              "Inter"
+                      ],
+                      "headline-lg": [
+                              "Inter"
+                      ],
+                      "display-lg": [
+                              "Inter"
+                      ],
+                      "label-lg": [
+                              "Inter"
+                      ],
+                      "label-sm": [
+                              "Inter"
+                      ],
+                      "headline-md": [
+                              "Inter"
+                      ],
+                      "body-md": [
+                              "Inter"
+                      ]
+              },
+              "fontSize": {
+                      "body-lg": [
+                              "16px",
+                              {
+                                      "lineHeight": "24px",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "headline-lg-mobile": [
+                              "22px",
+                              {
+                                      "lineHeight": "28px",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "headline-lg": [
+                              "24px",
+                              {
+                                      "lineHeight": "32px",
+                                      "letterSpacing": "-0.01em",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "display-lg": [
+                              "32px",
+                              {
+                                      "lineHeight": "40px",
+                                      "letterSpacing": "-0.02em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "label-lg": [
+                              "14px",
+                              {
+                                      "lineHeight": "20px",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "label-sm": [
+                              "12px",
+                              {
+                                      "lineHeight": "16px",
+                                      "letterSpacing": "0.05em",
+                                      "fontWeight": "500"
+                              }
+                      ],
+                      "headline-md": [
+                              "20px",
+                              {
+                                      "lineHeight": "28px",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "body-md": [
+                              "14px",
+                              {
+                                      "lineHeight": "20px",
+                                      "fontWeight": "400"
+                              }
+                      ]
+              }
+      },
+          },
+        }
+      </script>
+</head>
+<body class="bg-background text-on-background font-body-lg antialiased pb-24 md:pb-0 pt-14 selection:bg-primary-container selection:text-on-primary-container">
+<!-- TopAppBar -->
+<header class="fixed top-0 left-0 w-full z-40 bg-surface dark:bg-surface text-primary dark:text-primary-fixed-dim flex justify-between items-center px-margin-mobile h-14 flat no shadows transition-all duration-200 md:px-margin-tablet">
+<div class="flex items-center gap-sm">
+<div class="w-8 h-8 rounded-full overflow-hidden bg-surface-container-highest cursor-pointer hover:bg-surface-container-low transition-colors">
+<img class="w-full h-full object-cover" data-alt="A smiling, professional headshot of a service worker in a clean, brightly lit environment. Soft, natural lighting. Friendly and approachable demeanor. Modern tactile style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA-Bcrl7qCl_GL-a3NxqCyiar9c8SSdggNRt9ZHfIAMoYgFasGGxOK_770jNn5vZkXUSZUtucz8kAXKDSGo-QB37W591psGUTEP3RMpNawTANOB-q-CURiaU1vyETf5hOJ6ip32xWDHPkox0LNUdU2eVyTYAbIrTOG5PcB6PNz76HFocJbZ2dZM3pdtxMatVed2stPzLvuWFxh8ot_R-mfOFdEU6fqVJB0x3CXE2wEGlsxKuR-lazfc"/>
+</div>
+<span class="text-headline-md font-headline-md font-bold text-primary dark:text-primary-fixed-dim tracking-tight">Find Tho</span>
+</div>
+<!-- Desktop Nav -->
+<nav class="hidden md:flex items-center gap-md absolute left-1/2 -translate-x-1/2">
+<a class="text-on-surface-variant dark:text-outline-variant text-label-lg font-label-lg hover:bg-surface-container-low px-3 py-2 rounded-full transition-colors" href="#">Dashboard</a>
+<a class="text-on-surface-variant dark:text-outline-variant text-label-lg font-label-lg hover:bg-surface-container-low px-3 py-2 rounded-full transition-colors" href="#">Jobs</a>
+<a class="text-primary dark:text-primary-fixed-dim font-bold text-label-lg font-label-lg bg-surface-container-low px-3 py-2 rounded-full transition-colors" href="#">Earnings</a>
+</nav>
+<button aria-label="Notifications" class="w-10 h-10 flex items-center justify-center rounded-full text-on-surface-variant hover:bg-surface-container-low transition-colors">
+<span class="material-symbols-outlined" data-icon="notifications" data-weight="fill" style="font-variation-settings: 'FILL' 1;">notifications</span>
+</button>
+</header>
+<main class="max-w-7xl mx-auto px-margin-mobile md:px-margin-tablet pt-lg flex flex-col gap-lg md:gap-xl">
+<!-- Hero Section: Total Earnings & Mascot -->
+<section class="grid grid-cols-1 md:grid-cols-2 gap-md items-center bg-surface-container-lowest rounded-xl shadow-[0px_4px_12px_rgba(30,90,242,0.05)] p-lg overflow-hidden relative isolate">
+<div class="z-10 flex flex-col gap-sm">
+<p class="text-label-lg font-label-lg text-on-surface-variant uppercase tracking-wider">Total Earnings</p>
+<h1 class="text-display-lg font-display-lg text-on-background">$1,245.00</h1>
+<div class="flex gap-sm mt-xs">
+<span class="bg-[#E8F0FE] text-primary text-label-sm font-label-sm px-3 py-1 rounded-full inline-flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">trending_up</span>
+                        +12% vs last month
+                    </span>
+</div>
+</div>
+<div class="relative h-48 md:h-64 flex justify-end items-end z-10 -mr-lg -mb-lg md:mr-0 md:mb-0">
+<img alt="Proud Mascot" class="h-full object-contain object-bottom origin-bottom transition-transform hover:scale-105 duration-300" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA_wtPoybG2JjvIxGecBM0jynETSJdQF7M0lI2_qCbvIebMEyTX1y0wo1sdaiyJXe5qbXhhDIG3YoFMq5HvTK7ucqgQbJIkes79nnQ_M00czpAK8OEi_NyMqtIo9PY-CnjNSUIokmxIqqX92uDw6StpS0MLZHWkQYtdlyZ4hsMTZR8MUib885EXSaXliCjffJo5MFhWbHdFGL_19Yxfe1RKA3bzVNrFx1DicoD5IvF5xPv7TCVOLhiM_JWxwAYRdh4cyQ"/>
+</div>
+<!-- Decorative background element -->
+<div class="absolute -top-24 -right-24 w-64 h-64 bg-secondary-container opacity-10 rounded-full blur-3xl -z-10 pointer-events-none"></div>
+<div class="absolute -bottom-24 -left-24 w-64 h-64 bg-primary opacity-5 rounded-full blur-3xl -z-10 pointer-events-none"></div>
+</section>
+<!-- Summary Cards Grid -->
+<section class="grid grid-cols-2 md:grid-cols-4 gap-md">
+<div class="bg-surface-container-lowest rounded-xl shadow-[0px_4px_12px_rgba(30,90,242,0.05)] p-md flex flex-col gap-xs transition-transform hover:-translate-y-1 duration-200 cursor-pointer">
+<span class="material-symbols-outlined text-primary mb-1">today</span>
+<p class="text-body-md font-body-md text-on-surface-variant">Today</p>
+<p class="text-headline-md font-headline-md font-bold text-on-background">$85.00</p>
+</div>
+<div class="bg-surface-container-lowest rounded-xl shadow-[0px_4px_12px_rgba(30,90,242,0.05)] p-md flex flex-col gap-xs transition-transform hover:-translate-y-1 duration-200 cursor-pointer">
+<span class="material-symbols-outlined text-secondary-fixed-dim mb-1">calendar_view_week</span>
+<p class="text-body-md font-body-md text-on-surface-variant">This Week</p>
+<p class="text-headline-md font-headline-md font-bold text-on-background">$420.00</p>
+</div>
+<div class="bg-surface-container-lowest rounded-xl shadow-[0px_4px_12px_rgba(30,90,242,0.05)] p-md flex flex-col gap-xs transition-transform hover:-translate-y-1 duration-200 cursor-pointer">
+<span class="material-symbols-outlined text-primary mb-1">calendar_month</span>
+<p class="text-body-md font-body-md text-on-surface-variant">This Month</p>
+<p class="text-headline-md font-headline-md font-bold text-on-background">$1,245.00</p>
+</div>
+<div class="bg-surface-container-lowest rounded-xl shadow-[0px_4px_12px_rgba(30,90,242,0.05)] p-md flex flex-col gap-xs transition-transform hover:-translate-y-1 duration-200 cursor-pointer">
+<span class="material-symbols-outlined text-outline mb-1">account_balance_wallet</span>
+<p class="text-body-md font-body-md text-on-surface-variant">Available Balance</p>
+<p class="text-headline-md font-headline-md font-bold text-on-background">$310.00</p>
+</div>
+</section>
+</main>
+<!-- BottomNavBar (Mobile Only) -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-2 pb-safe h-20 bg-surface dark:bg-surface-dim shadow-[0px_-4px_12px_rgba(30,90,242,0.05)] rounded-t-xl transition-all">
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline-variant px-4 py-1 hover:bg-surface-container dark:hover:bg-surface-container-highest rounded-full transition-colors group" href="#">
+<span class="material-symbols-outlined group-hover:scale-110 transition-transform" data-icon="home">home</span>
+<span class="text-label-sm font-label-sm mt-1">Home</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline-variant px-4 py-1 hover:bg-surface-container dark:hover:bg-surface-container-highest rounded-full transition-colors group" href="#">
+<span class="material-symbols-outlined group-hover:scale-110 transition-transform" data-icon="search">search</span>
+<span class="text-label-sm font-label-sm mt-1">Search</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-primary-container dark:bg-primary text-on-primary-container dark:text-on-primary rounded-full px-4 py-1 scale-90 transition-transform duration-150" href="#">
+<span class="material-symbols-outlined" data-icon="assignment" data-weight="fill" style="font-variation-settings: 'FILL' 1;">assignment</span>
+<span class="text-label-sm font-label-sm mt-1">Earnings</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline-variant px-4 py-1 hover:bg-surface-container dark:hover:bg-surface-container-highest rounded-full transition-colors group" href="#">
+<span class="material-symbols-outlined group-hover:scale-110 transition-transform" data-icon="chat_bubble">chat_bubble</span>
+<span class="text-label-sm font-label-sm mt-1">Messages</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline-variant px-4 py-1 hover:bg-surface-container dark:hover:bg-surface-container-highest rounded-full transition-colors group" href="#">
+<span class="material-symbols-outlined group-hover:scale-110 transition-transform" data-icon="account_circle">account_circle</span>
+<span class="text-label-sm font-label-sm mt-1">Profile</span>
+</a>
+</nav>
+</body></html>

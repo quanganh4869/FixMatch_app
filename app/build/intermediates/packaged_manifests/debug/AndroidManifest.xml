@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.findtho.mobile"
+    package="com.fixmatch.mobile"
     android:versionCode="1"
     android:versionName="1.0" >
 
@@ -11,25 +11,26 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <permission
-        android:name="com.findtho.mobile.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION"
+        android:name="com.fixmatch.mobile.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION"
         android:protectionLevel="signature" />
 
-    <uses-permission android:name="com.findtho.mobile.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION" />
+    <uses-permission android:name="com.fixmatch.mobile.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION" />
 
     <application
         android:allowBackup="true"
         android:appComponentFactory="androidx.core.app.CoreComponentFactory"
         android:debuggable="true"
         android:extractNativeLibs="false"
-        android:icon="@android:drawable/sym_def_app_icon"
+        android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:roundIcon="@android:drawable/sym_def_app_icon"
+        android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.FindTho" >
+        android:testOnly="true"
+        android:theme="@style/Theme.FixMatch" >
         <activity
-            android:name="com.findtho.mobile.MainActivity"
+            android:name="com.fixmatch.mobile.MainActivity"
             android:exported="true"
-            android:theme="@style/Theme.FindTho" >
+            android:theme="@style/Theme.FixMatch" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -39,7 +40,7 @@
 
         <provider
             android:name="androidx.startup.InitializationProvider"
-            android:authorities="com.findtho.mobile.androidx-startup"
+            android:authorities="com.fixmatch.mobile.androidx-startup"
             android:exported="false" >
             <meta-data
                 android:name="androidx.emoji2.text.EmojiCompatInitializer"

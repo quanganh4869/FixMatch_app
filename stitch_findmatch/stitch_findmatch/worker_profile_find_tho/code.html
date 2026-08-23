@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/>
+<title>Worker Profile - Find Tho</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "error-container": "#ffdad6",
+                        "surface-tint": "#004ee7",
+                        "on-primary-container": "#e5e8ff",
+                        "on-secondary-fixed-variant": "#5a4300",
+                        "on-primary-fixed": "#001550",
+                        "on-tertiary-container": "#e6e8fc",
+                        "on-tertiary-fixed-variant": "#434656",
+                        "on-primary": "#ffffff",
+                        "primary-fixed-dim": "#b6c4ff",
+                        "surface-container-highest": "#e1e3e4",
+                        "on-secondary": "#ffffff",
+                        "outline-variant": "#c3c5d8",
+                        "on-secondary-container": "#6f5400",
+                        "tertiary": "#4d5060",
+                        "secondary": "#775a00",
+                        "primary-fixed": "#dce1ff",
+                        "tertiary-fixed-dim": "#c3c5d9",
+                        "secondary-fixed-dim": "#f5bf21",
+                        "error": "#ba1a1a",
+                        "surface-dim": "#d9dadb",
+                        "secondary-fixed": "#ffdf98",
+                        "outline": "#737687",
+                        "secondary-container": "#fec72b",
+                        "on-surface-variant": "#434655",
+                        "surface-bright": "#f8f9fa",
+                        "on-tertiary-fixed": "#181b29",
+                        "surface-container-high": "#e7e8e9",
+                        "on-error-container": "#93000a",
+                        "on-tertiary": "#ffffff",
+                        "on-background": "#191c1d",
+                        "inverse-primary": "#b6c4ff",
+                        "on-surface": "#191c1d",
+                        "surface-container": "#edeeef",
+                        "on-secondary-fixed": "#251a00",
+                        "surface": "#f8f9fa",
+                        "surface-container-low": "#f3f4f5",
+                        "primary-container": "#1e5af2",
+                        "tertiary-container": "#656879",
+                        "background": "#f8f9fa",
+                        "surface-container-lowest": "#ffffff",
+                        "on-primary-fixed-variant": "#003ab1",
+                        "tertiary-fixed": "#e0e1f5",
+                        "primary": "#0043c8",
+                        "surface-variant": "#e1e3e4",
+                        "inverse-surface": "#2e3132",
+                        "inverse-on-surface": "#f0f1f2",
+                        "on-error": "#ffffff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "lg": "24px",
+                        "xs": "4px",
+                        "base": "4px",
+                        "xl": "32px",
+                        "gutter": "16px",
+                        "md": "16px",
+                        "margin-tablet": "32px",
+                        "margin-mobile": "16px",
+                        "sm": "8px"
+                    },
+                    "fontFamily": {
+                        "body-lg": ["Inter"],
+                        "headline-lg-mobile": ["Inter"],
+                        "headline-lg": ["Inter"],
+                        "display-lg": ["Inter"],
+                        "label-lg": ["Inter"],
+                        "label-sm": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "body-md": ["Inter"]
+                    },
+                    "fontSize": {
+                        "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "headline-lg-mobile": ["22px", {"lineHeight": "28px", "fontWeight": "600"}],
+                        "headline-lg": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "display-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "label-lg": ["14px", {"lineHeight": "20px", "fontWeight": "600"}],
+                        "label-sm": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                        "headline-md": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                        "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .material-symbols-outlined.fill {
+            font-variation-settings: 'FILL' 1;
+        }
+        .pb-safe {
+            padding-bottom: env(safe-area-inset-bottom, 20px);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background min-h-screen flex flex-col font-body-lg">
+<!-- TopAppBar (from JSON context, adjusted for Profile) -->
+<header class="flex justify-between items-center px-margin-mobile h-14 w-full bg-surface text-primary font-headline-lg-mobile font-bold docked full-width top-0 z-40 sticky">
+<span class="material-symbols-outlined text-on-surface-variant cursor-pointer" onclick="window.history.back()">arrow_back</span>
+<span class="text-headline-md font-headline-md font-bold text-primary">Find Tho</span>
+<span class="material-symbols-outlined text-primary cursor-pointer">share</span>
+</header>
+<!-- Main Content Canvas -->
+<main class="flex-1 overflow-y-auto pb-32 px-margin-mobile flex flex-col gap-lg mt-sm">
+<!-- Profile Header Glassmorphism Card -->
+<section class="bg-surface-container-lowest rounded-xl shadow-[0px_4px_12px_rgba(30,90,242,0.05)] p-md flex flex-col items-center relative overflow-hidden isolate border border-surface-variant/50">
+<!-- Decorative background blur -->
+<div class="absolute inset-0 -z-10 bg-primary/5 blur-3xl rounded-full translate-y-[-50%] scale-150"></div>
+<div class="relative mb-sm">
+<img class="w-24 h-24 rounded-full object-cover border-4 border-surface shadow-sm" data-alt="A professional headshot of a friendly handyman in his late 30s wearing a clean blue polo shirt. He is smiling warmly at the camera. The lighting is soft and inviting, suggesting trustworthiness and reliability. The background is a slightly blurred out brightly lit modern living room, reinforcing the home-service context of the app." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBgg_0rlmdVcofKoBGufZPq1JiP9wX3GZj8lBnkHVqim60XMfHlXylO456KXIqt0qQofaqVRv0RNWL222kUFyoAWfsQtKposNHGbaT2sWpzAfytp1ANYAuAd88BHN8ubhUVmM3bX9erBfPo0AC5r2UA9PSnYzGl2aCTv_fnY7NNU_Rn1MPLie9o0mASmEKtT-RtU31-uZQcXbe2G-g40S7JcsEU4IpWoOUQ5Q85kBoNydqDnJrpd-i7"/>
+<!-- Verified Badge overlay -->
+<div aria-label="Verified" class="absolute bottom-0 right-0 bg-[#22c55e] text-on-primary rounded-full p-[2px] border-2 border-surface flex items-center justify-center">
+<span class="material-symbols-outlined text-[16px] fill">check_circle</span>
+</div>
+</div>
+<h1 class="text-headline-md font-headline-md text-on-surface mb-xs">Michael T.</h1>
+<div class="flex items-center gap-xs text-primary-container bg-primary-container/10 px-3 py-1 rounded-full mb-md">
+<span class="material-symbols-outlined text-[18px] fill">verified</span>
+<span class="text-label-sm font-label-sm uppercase tracking-wider">Verified Pro</span>
+</div>
+<div class="flex gap-lg w-full justify-center text-center divide-x divide-surface-variant">
+<div class="px-sm">
+<div class="text-headline-lg-mobile font-headline-lg-mobile text-on-surface">4.9</div>
+<div class="text-body-md font-body-md text-on-surface-variant flex items-center gap-1 justify-center">
+<span class="material-symbols-outlined text-secondary-fixed-dim text-[16px] fill">star</span> Rating
+                    </div>
+</div>
+<div class="px-sm">
+<div class="text-headline-lg-mobile font-headline-lg-mobile text-on-surface">124</div>
+<div class="text-body-md font-body-md text-on-surface-variant">Jobs</div>
+</div>
+<div class="px-sm">
+<div class="text-headline-lg-mobile font-headline-lg-mobile text-on-surface">3</div>
+<div class="text-body-md font-body-md text-on-surface-variant">Years</div>
+</div>
+</div>
+</section>
+<!-- Verification Checklist Bento Box -->
+<section class="bg-surface-container-lowest rounded-xl shadow-[0px_4px_12px_rgba(30,90,242,0.05)] p-md flex flex-col gap-sm">
+<h2 class="text-label-lg font-label-lg text-on-surface mb-xs">Trust &amp; Safety</h2>
+<div class="flex items-center justify-between p-sm rounded-lg hover:bg-surface-container-low transition-colors">
+<div class="flex items-center gap-sm">
+<span class="material-symbols-outlined text-[#22c55e] fill">how_to_reg</span>
+<span class="text-body-lg font-body-lg text-on-surface">Identity Verified</span>
+</div>
+<span class="material-symbols-outlined text-[#22c55e]">check</span>
+</div>
+<div class="flex items-center justify-between p-sm rounded-lg hover:bg-surface-container-low transition-colors">
+<div class="flex items-center gap-sm">
+<span class="material-symbols-outlined text-[#22c55e] fill">military_tech</span>
+<span class="text-body-lg font-body-lg text-on-surface">Skills &amp; Certifications</span>
+</div>
+<span class="material-symbols-outlined text-[#22c55e]">check</span>
+</div>
+<div class="flex items-center justify-between p-sm rounded-lg hover:bg-surface-container-low transition-colors">
+<div class="flex items-center gap-sm">
+<span class="material-symbols-outlined text-[#22c55e] fill">policy</span>
+<span class="text-body-lg font-body-lg text-on-surface">Background Check</span>
+</div>
+<span class="material-symbols-outlined text-[#22c55e]">check</span>
+</div>
+</section>
+<!-- Service Categories -->
+<section class="flex flex-col gap-sm">
+<h2 class="text-label-lg font-label-lg text-on-surface px-xs">Service Categories</h2>
+<div class="flex flex-wrap gap-sm">
+<div class="bg-[#E8F0FE] text-primary px-4 py-2 rounded-lg text-label-lg font-label-lg flex items-center gap-2">
+<span class="material-symbols-outlined text-[20px]">bolt</span>
+                    Electrical
+                </div>
+<div class="bg-[#E8F0FE] text-primary px-4 py-2 rounded-lg text-label-lg font-label-lg flex items-center gap-2">
+<span class="material-symbols-outlined text-[20px]">plumbing</span>
+                    Plumbing
+                </div>
+<div class="bg-[#E8F0FE] text-primary px-4 py-2 rounded-lg text-label-lg font-label-lg flex items-center gap-2">
+<span class="material-symbols-outlined text-[20px]">handyman</span>
+                    General Handyman
+                </div>
+</div>
+</section>
+<!-- Working Area Map Placeholder -->
+<section class="bg-surface-container-lowest rounded-xl shadow-[0px_4px_12px_rgba(30,90,242,0.05)] overflow-hidden flex flex-col">
+<div class="p-md flex items-center justify-between border-b border-surface-variant">
+<div class="flex items-center gap-sm">
+<span class="material-symbols-outlined text-primary">my_location</span>
+<h2 class="text-label-lg font-label-lg text-on-surface">Working Area</h2>
+</div>
+<span class="text-body-md font-body-md text-on-surface-variant">10km radius</span>
+</div>
+<!-- Simplified map representation for brevity/performance, using a generic map image -->
+<div class="h-48 w-full bg-surface-container-low relative">
+<img class="w-full h-full object-cover opacity-80" data-alt="A generic map view of a city area, stylized in a clean, modern light mode aesthetic. A subtle 10km radius circle is overlaid on the map, centered on a specific location to indicate service area. The map uses soft grays, whites, and light blues, fitting perfectly into the app's clean UI." data-location="Los Angeles" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBEQWUvGfpbC9UoM-RFtYG5r8q2aYQvvfFUL4D6LwQ-ngA1u6u9t0hqlVwjBJDJxLK6hFg1885i-IwE9AE7vf01Hpy4Z3lYCyNjzN89weiyXGYX2X8n2jzFpXGBmiKyMntXEt5UDY8aDbGiHYmcnDOWkinSWE4OMPkOMmG7Ffc0Y2X5MF0Aps3RI1ek2u5eEUMWNopxW-OaV4S7hrekOh-Du7eC9mJkUE3N2tUjmKTwUUKBwaK25eR3"/>
+<!-- Pin overlay -->
+<div class="absolute inset-0 flex items-center justify-center">
+<div class="w-32 h-32 bg-primary/20 rounded-full border border-primary/50 flex items-center justify-center relative">
+<span class="material-symbols-outlined text-primary text-[32px] absolute -top-8 drop-shadow-md fill">location_on</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Contact CTA Button -->
+<button class="w-full h-[56px] bg-primary text-on-primary rounded-lg text-label-lg font-label-lg flex items-center justify-center gap-sm mt-sm shadow-md active:scale-[0.98] transition-transform">
+<span class="material-symbols-outlined">chat</span>
+            Message Michael
+        </button>
+</main>
+<!-- BottomNavBar JSON Render -->
+<nav class="md:hidden bg-surface dark:bg-surface-dim shadow-[0px_-4px_12px_rgba(30,90,242,0.05)] fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-2 pb-safe h-20 rounded-t-xl">
+<div class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline-variant px-4 py-1 hover:bg-surface-container dark:hover:bg-surface-container-highest rounded-full cursor-pointer transition-colors group">
+<span class="material-symbols-outlined group-active:scale-90 transition-transform duration-150">home</span>
+<span class="text-label-sm font-label-sm mt-1">Home</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline-variant px-4 py-1 hover:bg-surface-container dark:hover:bg-surface-container-highest rounded-full cursor-pointer transition-colors group">
+<span class="material-symbols-outlined group-active:scale-90 transition-transform duration-150">search</span>
+<span class="text-label-sm font-label-sm mt-1">Search</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline-variant px-4 py-1 hover:bg-surface-container dark:hover:bg-surface-container-highest rounded-full cursor-pointer transition-colors group">
+<span class="material-symbols-outlined group-active:scale-90 transition-transform duration-150">assignment</span>
+<span class="text-label-sm font-label-sm mt-1">Requests</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline-variant px-4 py-1 hover:bg-surface-container dark:hover:bg-surface-container-highest rounded-full cursor-pointer transition-colors group">
+<span class="material-symbols-outlined group-active:scale-90 transition-transform duration-150">chat_bubble</span>
+<span class="text-label-sm font-label-sm mt-1">Messages</span>
+</div>
+<!-- Active State Logic Applied to 'Profile' based on page intent -->
+<div class="flex flex-col items-center justify-center bg-primary-container dark:bg-primary text-on-primary-container dark:text-on-primary rounded-full px-4 py-1 hover:bg-surface-container dark:hover:bg-surface-container-highest transition-colors group active:scale-90 transition-transform duration-150 cursor-pointer">
+<span class="material-symbols-outlined fill">account_circle</span>
+<span class="text-label-sm font-label-sm mt-1">Profile</span>
+</div>
+</nav>
+</body></html>

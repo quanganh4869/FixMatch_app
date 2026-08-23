@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Find Tho - Worker Home</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-primary": "#ffffff",
+                        "on-primary-fixed": "#001550",
+                        "on-tertiary": "#ffffff",
+                        "surface-bright": "#f8f9fa",
+                        "error-container": "#ffdad6",
+                        "on-secondary-container": "#6f5400",
+                        "tertiary-fixed": "#e0e1f5",
+                        "surface-variant": "#e1e3e4",
+                        "on-background": "#191c1d",
+                        "inverse-surface": "#2e3132",
+                        "outline": "#737687",
+                        "on-surface-variant": "#434655",
+                        "on-surface": "#191c1d",
+                        "on-primary-container": "#e5e8ff",
+                        "surface-container-low": "#f3f4f5",
+                        "secondary": "#775a00",
+                        "on-tertiary-container": "#e6e8fc",
+                        "inverse-primary": "#b6c4ff",
+                        "inverse-on-surface": "#f0f1f2",
+                        "secondary-fixed-dim": "#f5bf21",
+                        "secondary-container": "#fec72b",
+                        "surface-container-lowest": "#ffffff",
+                        "primary-fixed-dim": "#b6c4ff",
+                        "primary-container": "#1e5af2",
+                        "on-primary-fixed-variant": "#003ab1",
+                        "surface-container": "#edeeef",
+                        "surface": "#f8f9fa",
+                        "tertiary": "#4d5060",
+                        "outline-variant": "#c3c5d8",
+                        "error": "#ba1a1a",
+                        "on-tertiary-fixed-variant": "#434656",
+                        "surface-dim": "#d9dadb",
+                        "surface-tint": "#004ee7",
+                        "tertiary-container": "#656879",
+                        "on-error": "#ffffff",
+                        "primary-fixed": "#dce1ff",
+                        "tertiary-fixed-dim": "#c3c5d9",
+                        "on-tertiary-fixed": "#181b29",
+                        "background": "#f8f9fa",
+                        "on-secondary-fixed-variant": "#5a4300",
+                        "secondary-fixed": "#ffdf98",
+                        "surface-container-high": "#e7e8e9",
+                        "on-error-container": "#93000a",
+                        "primary": "#0043c8",
+                        "on-secondary-fixed": "#251a00",
+                        "surface-container-highest": "#e1e3e4",
+                        "on-secondary": "#ffffff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "margin-tablet": "32px",
+                        "sm": "8px",
+                        "xs": "4px",
+                        "gutter": "16px",
+                        "xl": "32px",
+                        "margin-mobile": "16px",
+                        "lg": "24px",
+                        "md": "16px",
+                        "base": "4px"
+                    },
+                    "fontFamily": {
+                        "body-md": ["Inter"],
+                        "display-lg": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "label-lg": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "headline-lg-mobile": ["Inter"],
+                        "label-sm": ["Inter"],
+                        "headline-lg": ["Inter"]
+                    },
+                    "fontSize": {
+                        "body-md": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+                        "display-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "headline-md": ["20px", { "lineHeight": "28px", "fontWeight": "600" }],
+                        "label-lg": ["14px", { "lineHeight": "20px", "fontWeight": "600" }],
+                        "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "headline-lg-mobile": ["22px", { "lineHeight": "28px", "fontWeight": "600" }],
+                        "label-sm": ["12px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "500" }],
+                        "headline-lg": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        .icon-fill { font-variation-settings: 'FILL' 1; }
+        /* Hide scrollbar for horizontal scrolling but keep functionality */
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface text-on-surface antialiased min-h-screen flex flex-col">
+<!-- TopAppBar -->
+<header class="fixed top-0 z-40 bg-surface flex justify-between items-center px-margin-mobile h-14 w-full">
+<div class="w-8 h-8 rounded-full overflow-hidden flex-shrink-0 bg-surface-container-high border border-outline-variant">
+<img alt="User Avatar" class="w-full h-full object-cover" data-alt="A close-up, professional portrait of a friendly, approachable service worker with a warm smile, well-lit in a bright modern environment. The color palette features clean whites and subtle blue undertones to match a trustworthy brand identity." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC4oeo_lT4uSzTocTp3jAnr1_69PwD_ZQM8cqTuvFHCyz1DcSr5fmq_cb_0jhR4c3ykayUuBlA5WnhgkTkrSqZzmOzFgx3WaxBjHVAkxvgEd2fEEc1IccOlFooDQ-wCxDOuv8JhLVxnI2NNb_NXky5xmBMhmoLWnm0odWxI7gXhKk3cT0T7KTLxioJwVZAUoUUeT-j_M3QmpntQsQBw09O2_XqnqaYf8vPbOlHL0wcK0vdTOTOa6LLv"/>
+</div>
+<div class="text-headline-md font-headline-md font-bold text-primary flex-grow text-center">
+            Find Tho
+        </div>
+<button aria-label="Notifications" class="w-8 h-8 flex items-center justify-center text-primary rounded-full hover:bg-surface-container-low transition-colors">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+</header>
+<!-- Main Content -->
+<main class="flex-grow pt-14 pb-24 px-margin-mobile flex flex-col gap-lg overflow-y-auto">
+<!-- Header & Status -->
+<div class="flex justify-between items-start mt-4">
+<div>
+<p class="font-body-md text-body-md text-on-surface-variant">Good morning,</p>
+<h1 class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface">Michael!</h1>
+</div>
+<!-- Online Toggle -->
+<button class="flex items-center gap-xs bg-secondary-container text-on-secondary-container px-3 py-1.5 rounded-full border border-secondary shadow-[0px_2px_4px_rgba(119,90,0,0.1)] transition-transform active:scale-95">
+<div class="w-2.5 h-2.5 rounded-full bg-on-secondary-container animate-pulse"></div>
+<span class="font-label-sm text-label-sm font-bold">Online</span>
+</button>
+</div>
+<!-- Earnings Summary Bento Card -->
+<div class="bg-primary text-on-primary rounded-xl p-md flex flex-col gap-sm relative overflow-hidden shadow-lg">
+<!-- Decorative background element -->
+<div class="absolute top-0 right-0 w-32 h-32 bg-white opacity-10 rounded-full blur-2xl transform translate-x-1/3 -translate-y-1/3"></div>
+<div class="flex justify-between items-center relative z-10">
+<h2 class="font-label-lg text-label-lg opacity-90">Today's Earnings</h2>
+<span class="material-symbols-outlined opacity-75" data-icon="payments">payments</span>
+</div>
+<div class="relative z-10 mt-1">
+<span class="font-display-lg text-display-lg font-bold">$145.50</span>
+</div>
+<div class="relative z-10 flex gap-md mt-2">
+<div class="flex items-center gap-xs bg-on-primary/20 px-2 py-1 rounded-md">
+<span class="material-symbols-outlined text-[16px]" data-icon="task_alt">task_alt</span>
+<span class="font-label-sm text-label-sm">4 Completed</span>
+</div>
+<div class="flex items-center gap-xs bg-on-primary/20 px-2 py-1 rounded-md">
+<span class="material-symbols-outlined text-[16px]" data-icon="schedule">schedule</span>
+<span class="font-label-sm text-label-sm">2 Remaining</span>
+</div>
+</div>
+</div>
+<!-- New Job Requests Carousel -->
+<section class="flex flex-col gap-sm">
+<div class="flex justify-between items-center">
+<h2 class="font-headline-md text-headline-md text-on-surface">New Requests</h2>
+<button class="font-label-lg text-label-lg text-primary hover:underline">View all</button>
+</div>
+<div class="flex overflow-x-auto no-scrollbar gap-md pb-xs -mx-margin-mobile px-margin-mobile snap-x snap-mandatory">
+<!-- Request Card 1 -->
+<div class="min-w-[260px] max-w-[280px] bg-surface-container-lowest shadow-[0px_4px_12px_rgba(30,90,242,0.05)] rounded-xl p-md snap-start shrink-0 flex flex-col gap-md border border-surface-container-low">
+<div class="flex justify-between items-start">
+<div class="flex items-center gap-sm">
+<div class="w-10 h-10 rounded-full bg-tertiary-container text-on-tertiary-container flex items-center justify-center">
+<span class="material-symbols-outlined icon-fill" data-icon="plumbing">plumbing</span>
+</div>
+<div>
+<h3 class="font-label-lg text-label-lg text-on-surface">Pipe Leak Repair</h3>
+<p class="font-body-md text-body-md text-on-surface-variant text-[13px]">1.2 miles away</p>
+</div>
+</div>
+<span class="font-label-lg text-label-lg text-primary font-bold">Est. $85</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant line-clamp-2">Customer reports a leaking pipe under the kitchen sink. Needs immediate attention.</p>
+<div class="flex gap-sm mt-auto">
+<button class="flex-1 bg-surface-container-high text-on-surface py-2 rounded-lg font-label-lg text-label-lg hover:bg-surface-variant transition-colors">Decline</button>
+<button class="flex-1 bg-primary text-on-primary py-2 rounded-lg font-label-lg text-label-lg hover:bg-primary/90 transition-colors">Accept</button>
+</div>
+</div>
+<!-- Request Card 2 -->
+<div class="min-w-[260px] max-w-[280px] bg-surface-container-lowest shadow-[0px_4px_12px_rgba(30,90,242,0.05)] rounded-xl p-md snap-start shrink-0 flex flex-col gap-md border border-surface-container-low">
+<div class="flex justify-between items-start">
+<div class="flex items-center gap-sm">
+<div class="w-10 h-10 rounded-full bg-secondary-container text-on-secondary-container flex items-center justify-center">
+<span class="material-symbols-outlined icon-fill" data-icon="bolt">bolt</span>
+</div>
+<div>
+<h3 class="font-label-lg text-label-lg text-on-surface">Light Fixture</h3>
+<p class="font-body-md text-body-md text-on-surface-variant text-[13px]">3.5 miles away</p>
+</div>
+</div>
+<span class="font-label-lg text-label-lg text-primary font-bold">Est. $60</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant line-clamp-2">Install two new ceiling light fixtures in the living room. Wiring is already present.</p>
+<div class="flex gap-sm mt-auto">
+<button class="flex-1 bg-surface-container-high text-on-surface py-2 rounded-lg font-label-lg text-label-lg hover:bg-surface-variant transition-colors">Decline</button>
+<button class="flex-1 bg-primary text-on-primary py-2 rounded-lg font-label-lg text-label-lg hover:bg-primary/90 transition-colors">Accept</button>
+</div>
+</div>
+</div>
+</section>
+<!-- Today's Schedule -->
+<section class="flex flex-col gap-sm">
+<h2 class="font-headline-md text-headline-md text-on-surface">Next Appointment</h2>
+<div class="bg-surface-container-lowest shadow-[0px_4px_12px_rgba(30,90,242,0.05)] rounded-xl overflow-hidden border border-surface-container-low">
+<!-- Top color bar indicating status -->
+<div class="h-1.5 w-full bg-secondary-container"></div>
+<div class="p-md flex flex-col gap-md">
+<div class="flex justify-between items-start">
+<div>
+<span class="inline-block bg-secondary-container/20 text-secondary-fixed-dim px-2 py-0.5 rounded text-[11px] font-bold uppercase tracking-wider mb-2">Upcoming - 1:00 PM</span>
+<h3 class="font-label-lg text-label-lg text-on-surface text-lg">HVAC Maintenance</h3>
+<p class="font-body-md text-body-md text-on-surface-variant flex items-center gap-1 mt-1">
+<span class="material-symbols-outlined text-[16px]" data-icon="person">person</span> Sarah Jenkins
+                            </p>
+</div>
+<div class="w-12 h-12 bg-surface-container-low rounded-lg flex flex-col items-center justify-center text-primary">
+<span class="font-label-sm text-label-sm font-bold uppercase">Oct</span>
+<span class="font-headline-md text-headline-md leading-none">24</span>
+</div>
+</div>
+<div class="flex items-start gap-2 bg-surface-container-lowest p-2 -mx-2 rounded-lg">
+<span class="material-symbols-outlined text-outline mt-0.5" data-icon="location_on">location_on</span>
+<p class="font-body-md text-body-md text-on-surface-variant">1234 Maple Street, Apt 4B<br/>Springfield, IL 62704</p>
+</div>
+<button class="w-full bg-surface-container text-on-surface font-label-lg text-label-lg py-3 rounded-lg hover:bg-surface-container-high transition-colors flex items-center justify-center gap-2 mt-2">
+                        View Details
+                        <span class="material-symbols-outlined text-[18px]" data-icon="arrow_forward">arrow_forward</span>
+</button>
+</div>
+</div>
+</section>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-2 pb-safe h-20 bg-surface shadow-[0px_-4px_12px_rgba(30,90,242,0.05)] rounded-t-xl">
+<!-- Home (Active) -->
+<button class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-full px-4 py-1 scale-90 transition-transform duration-150 group">
+<span class="material-symbols-outlined icon-fill group-hover:scale-110 transition-transform" data-icon="home">home</span>
+<span class="text-label-sm font-label-sm mt-1">Home</span>
+</button>
+<!-- Search -->
+<button class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1 hover:bg-surface-container rounded-full transition-colors group">
+<span class="material-symbols-outlined group-hover:scale-110 transition-transform" data-icon="search">search</span>
+<span class="text-label-sm font-label-sm mt-1">Search</span>
+</button>
+<!-- Requests -->
+<button class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1 hover:bg-surface-container rounded-full transition-colors group relative">
+<span class="absolute top-1 right-3 w-2 h-2 bg-error rounded-full border border-surface"></span>
+<span class="material-symbols-outlined group-hover:scale-110 transition-transform" data-icon="assignment">assignment</span>
+<span class="text-label-sm font-label-sm mt-1">Requests</span>
+</button>
+<!-- Messages -->
+<button class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1 hover:bg-surface-container rounded-full transition-colors group">
+<span class="material-symbols-outlined group-hover:scale-110 transition-transform" data-icon="chat_bubble">chat_bubble</span>
+<span class="text-label-sm font-label-sm mt-1">Messages</span>
+</button>
+<!-- Profile -->
+<button class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1 hover:bg-surface-container rounded-full transition-colors group">
+<span class="material-symbols-outlined group-hover:scale-110 transition-transform" data-icon="account_circle">account_circle</span>
+<span class="text-label-sm font-label-sm mt-1">Profile</span>
+</button>
+</nav>
+</body></html>

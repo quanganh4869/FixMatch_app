@@ -4,11 +4,11 @@ plugins {
 }
 
 android {
-    namespace = "com.findtho.mobile"
+    namespace = "com.fixmatch.mobile"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.findtho.mobile"
+        applicationId = "com.fixmatch.mobile"
         minSdk = 24
         targetSdk = 34
         versionCode = 1
@@ -22,7 +22,8 @@ android {
 
     buildTypes {
         release {
-            isMinifyEnabled = false
+            signingConfig = signingConfigs.getByName("debug")
+            isMinifyEnabled = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -63,6 +64,7 @@ dependencies {
     implementation("androidx.compose.ui:ui-graphics")
     implementation("androidx.compose.ui:ui-tooling-preview")
     implementation("androidx.compose.material3:material3")
+    implementation("androidx.compose.material:material-icons-extended")
     
     // Navigation
     implementation("androidx.navigation:navigation-compose:2.7.5")
@@ -70,6 +72,8 @@ dependencies {
     // Retrofit
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+    implementation("com.squareup.okhttp3:okhttp:4.11.0")
+    implementation("com.squareup.okhttp3:logging-interceptor:4.11.0")
     
     // DataStore
     implementation("androidx.datastore:datastore-preferences:1.0.0")

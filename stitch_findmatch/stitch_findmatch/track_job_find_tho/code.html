@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Find Tho - Job Tracking</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-container-high": "#e7e8e9",
+                    "primary-fixed": "#dce1ff",
+                    "on-tertiary-container": "#e6e8fc",
+                    "primary": "#0043c8",
+                    "primary-container": "#1e5af2",
+                    "tertiary-container": "#656879",
+                    "outline": "#737687",
+                    "on-background": "#191c1d",
+                    "surface-container-lowest": "#ffffff",
+                    "on-secondary-fixed-variant": "#5a4300",
+                    "tertiary-fixed": "#e0e1f5",
+                    "on-secondary-container": "#6f5400",
+                    "surface-container-low": "#f3f4f5",
+                    "on-secondary-fixed": "#251a00",
+                    "error-container": "#ffdad6",
+                    "on-primary-fixed-variant": "#003ab1",
+                    "secondary-fixed": "#ffdf98",
+                    "on-primary-container": "#e5e8ff",
+                    "surface-bright": "#f8f9fa",
+                    "secondary-container": "#fec72b",
+                    "on-tertiary-fixed-variant": "#434656",
+                    "primary-fixed-dim": "#b6c4ff",
+                    "inverse-surface": "#2e3132",
+                    "on-surface": "#191c1d",
+                    "secondary-fixed-dim": "#f5bf21",
+                    "on-primary": "#ffffff",
+                    "error": "#ba1a1a",
+                    "on-error": "#ffffff",
+                    "on-tertiary": "#ffffff",
+                    "surface": "#f8f9fa",
+                    "tertiary": "#4d5060",
+                    "secondary": "#775a00",
+                    "tertiary-fixed-dim": "#c3c5d9",
+                    "surface-container-highest": "#e1e3e4",
+                    "on-secondary": "#ffffff",
+                    "surface-dim": "#d9dadb",
+                    "background": "#f8f9fa",
+                    "outline-variant": "#c3c5d8",
+                    "on-surface-variant": "#434655",
+                    "on-primary-fixed": "#001550",
+                    "surface-variant": "#e1e3e4",
+                    "inverse-on-surface": "#f0f1f2",
+                    "on-error-container": "#93000a",
+                    "on-tertiary-fixed": "#181b29",
+                    "surface-tint": "#004ee7",
+                    "surface-container": "#edeeef",
+                    "inverse-primary": "#b6c4ff"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "base": "4px",
+                    "lg": "24px",
+                    "md": "16px",
+                    "xs": "4px",
+                    "margin-tablet": "32px",
+                    "gutter": "16px",
+                    "xl": "32px",
+                    "margin-mobile": "16px",
+                    "sm": "8px"
+            },
+            "fontFamily": {
+                    "display-lg": ["Inter"],
+                    "body-md": ["Inter"],
+                    "label-lg": ["Inter"],
+                    "body-lg": ["Inter"],
+                    "headline-md": ["Inter"],
+                    "label-sm": ["Inter"],
+                    "headline-lg-mobile": ["Inter"],
+                    "headline-lg": ["Inter"]
+            },
+            "fontSize": {
+                    "display-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                    "label-lg": ["14px", {"lineHeight": "20px", "fontWeight": "600"}],
+                    "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "headline-md": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                    "label-sm": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                    "headline-lg-mobile": ["22px", {"lineHeight": "28px", "fontWeight": "600"}],
+                    "headline-lg": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface text-on-surface h-screen flex flex-col antialiased selection:bg-primary-container selection:text-on-primary-container">
+<!-- TopAppBar -->
+<header class="flex justify-between items-center px-margin-mobile h-14 w-full bg-surface z-10 sticky top-0">
+<button class="text-primary hover:bg-surface-container-low transition-colors rounded-full p-2 flex items-center justify-center">
+<span class="material-symbols-outlined" data-icon="arrow_back">arrow_back</span>
+</button>
+<h1 class="text-headline-lg-mobile font-headline-lg-mobile text-primary font-bold">Job Details</h1>
+<button class="text-primary hover:bg-surface-container-low transition-colors rounded-full p-2 flex items-center justify-center">
+<span class="material-symbols-outlined" data-icon="more_vert">more_vert</span>
+</button>
+</header>
+<!-- Main Content Canvas -->
+<main class="flex-1 overflow-y-auto px-margin-mobile py-lg pb-24 space-y-lg max-w-2xl mx-auto w-full">
+<!-- Status Header Card -->
+<section class="bg-surface-container-lowest rounded-xl p-md shadow-[0px_4px_12px_rgba(30,90,242,0.05)] flex items-center space-x-md">
+<div class="bg-primary-container w-16 h-16 rounded-xl flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-on-primary text-[32px]" data-icon="two_wheeler" data-weight="fill" style="font-variation-settings: 'FILL' 1;">two_wheeler</span>
+</div>
+<div>
+<div class="flex items-center space-x-2">
+<span class="bg-secondary-fixed text-on-secondary-fixed text-label-sm font-label-sm px-2 py-1 rounded-full uppercase">On the way</span>
+</div>
+<h2 class="text-headline-md font-headline-md mt-1">Worker is Arriving</h2>
+<p class="text-body-md font-body-md text-outline mt-1">Expected in 15 mins</p>
+</div>
+</section>
+<!-- Service Summary Bento -->
+<section class="grid grid-cols-2 gap-md">
+<div class="col-span-2 bg-surface-container-lowest rounded-xl p-md shadow-[0px_4px_12px_rgba(30,90,242,0.05)] border border-surface-variant">
+<h3 class="text-label-lg font-label-lg text-outline mb-2">Service</h3>
+<p class="text-headline-md font-headline-md">Leaky Pipe Repair</p>
+<div class="flex items-center space-x-sm mt-2 text-primary">
+<span class="material-symbols-outlined text-[18px]" data-icon="calendar_today">calendar_today</span>
+<span class="text-body-md font-body-md">Today, 2:30 PM</span>
+</div>
+</div>
+</section>
+<!-- Worker Profile Card -->
+<section class="bg-surface-container-lowest rounded-xl p-md shadow-[0px_4px_12px_rgba(30,90,242,0.05)] border border-surface-variant">
+<div class="flex items-center justify-between">
+<div class="flex items-center space-x-md">
+<div class="w-12 h-12 rounded-full overflow-hidden border-2 border-primary-container shrink-0">
+<img alt="Worker Avatar" class="w-full h-full object-cover" data-alt="A portrait photo of a cheerful, professional plumber in a blue uniform and yellow cap, smiling confidently at the camera. The lighting is bright and soft, creating a warm, approachable mood. The background is a clean, slightly blurred white surface to emphasize the subject. High-quality, modern home-service aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCBGlAYhg0WcjIG5LMh0k6svqnEC8VS6mIqq21Sw8HZk-HKrhgLca-ZAxTy7eHvD5IXJP527n9APR7kg2w6LmEeqn69ZvMs9BAmkJ9_XcB8KnnMgg5ojejYEbV5NpcRlBwLDRk2QAGhwziTtDDFwwq7-lzLLmF8Ij68vo9C9GQz8z9JAdYI58ZQuYXGugHfMiKhh51fd15iXjdZiYMss2zHBPOowpYv3e8hx8ZaeBb5t3slKfc6mpgK"/>
+</div>
+<div>
+<h3 class="text-label-lg font-label-lg">Alex Johnson</h3>
+<div class="flex items-center space-x-1 text-secondary-container mt-0.5">
+<span class="material-symbols-outlined text-[16px]" data-icon="star" data-weight="fill" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="text-body-md font-body-md text-on-surface-variant">4.9 (120 reviews)</span>
+</div>
+</div>
+</div>
+<div class="flex space-x-2">
+<button class="bg-surface-container hover:bg-surface-container-high transition-colors w-10 h-10 rounded-full flex items-center justify-center text-primary">
+<span class="material-symbols-outlined" data-icon="chat_bubble">chat_bubble</span>
+</button>
+<button class="bg-primary hover:bg-primary-container transition-colors w-10 h-10 rounded-full flex items-center justify-center text-on-primary shadow-sm">
+<span class="material-symbols-outlined" data-icon="call">call</span>
+</button>
+</div>
+</div>
+</section>
+<!-- Visual Timeline -->
+<section class="bg-surface-container-lowest rounded-xl p-md shadow-[0px_4px_12px_rgba(30,90,242,0.05)] border border-surface-variant">
+<h3 class="text-label-lg font-label-lg text-outline mb-md">Status Timeline</h3>
+<div class="relative pl-6 space-y-6">
+<!-- Timeline Line -->
+<div class="absolute left-[11px] top-2 bottom-2 w-[2px] bg-surface-container-high"></div>
+<div class="absolute left-[11px] top-2 h-[60%] w-[2px] bg-primary"></div>
+<!-- Step 1: Requested -->
+<div class="relative flex items-start group">
+<div class="absolute -left-6 bg-primary w-6 h-6 rounded-full flex items-center justify-center ring-4 ring-surface-container-lowest z-10">
+<span class="material-symbols-outlined text-[14px] text-on-primary" data-icon="check">check</span>
+</div>
+<div>
+<p class="text-label-lg font-label-lg">Requested</p>
+<p class="text-body-md font-body-md text-outline">1:45 PM</p>
+</div>
+</div>
+<!-- Step 2: Accepted -->
+<div class="relative flex items-start group">
+<div class="absolute -left-6 bg-primary w-6 h-6 rounded-full flex items-center justify-center ring-4 ring-surface-container-lowest z-10">
+<span class="material-symbols-outlined text-[14px] text-on-primary" data-icon="check">check</span>
+</div>
+<div>
+<p class="text-label-lg font-label-lg">Worker Found</p>
+<p class="text-body-md font-body-md text-outline">1:55 PM</p>
+</div>
+</div>
+<!-- Step 3: Arriving (Current) -->
+<div class="relative flex items-start group">
+<div class="absolute -left-6 bg-surface-container-lowest border-2 border-primary w-6 h-6 rounded-full flex items-center justify-center z-10">
+<div class="bg-primary w-2 h-2 rounded-full animate-pulse"></div>
+</div>
+<div>
+<p class="text-label-lg font-label-lg text-primary">Arriving</p>
+<p class="text-body-md font-body-md text-primary">Currently en route</p>
+</div>
+</div>
+<!-- Step 4: In Progress -->
+<div class="relative flex items-start group opacity-50">
+<div class="absolute -left-6 bg-surface-container-highest w-6 h-6 rounded-full flex items-center justify-center ring-4 ring-surface-container-lowest z-10">
+</div>
+<div>
+<p class="text-label-lg font-label-lg">In Progress</p>
+<p class="text-body-md font-body-md text-outline">Pending arrival</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Location Map Preview -->
+<section class="bg-surface-container-lowest rounded-xl overflow-hidden shadow-[0px_4px_12px_rgba(30,90,242,0.05)] border border-surface-variant relative h-48">
+<img alt="Map Preview" class="w-full h-full object-cover" data-alt="A clean, modern top-down map interface showing a residential neighborhood block. The styling is bright and minimalist with soft off-white roads and very pale grey building footprints. A stylized blue path indicates a route, ending at a bold primary blue location pin. The mood is functional, clean, and navigation-focused, fitting a premium mobile app aesthetic." data-location="Los Angeles" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA8IDAiV8fOkUJ3LYtS3dfw_YpEZS4S5P4YiIWarCeNFDRKlWmKI30XHvSyMLsdQOx-5hyLM3J1o8gIsXBr9U-o95tt7CTLK5fS3iakLwe6Y7zFQTCBpLVHtqXcY8rNczcnd9adzA0JAOaumu6iG9GvgKPjwO8Ik9rT3OZaArOP-40ZwtsOGQxqY7A8yY9G8-omqaaxh7krkFlEMFzLIW0GhdLkqlPk-3QpAFI2GgHaM7nvOEpJkiIj"/>
+<div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/50 to-transparent p-md">
+<p class="text-on-primary text-body-md font-body-md flex items-center">
+<span class="material-symbols-outlined mr-1 text-[18px]" data-icon="location_on">location_on</span>
+                    123 Oak Street, Apt 4B
+                </p>
+</div>
+</section>
+</main>
+<!-- Suppressed Nav Shells based on intent (Transactional/Task-focused view) -->
+</body></html>

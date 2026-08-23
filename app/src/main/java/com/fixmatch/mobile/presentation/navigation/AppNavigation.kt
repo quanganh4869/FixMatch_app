@@ -97,9 +97,22 @@ fun AppNavigation() {
             MainScreen(rootNavController = navController)
         }
         
-        // --- CUSTOMER FLOW ---
+        // --- CUSTOMER FLOW (ON-DEMAND GRAB STYLE) ---
         
-        // 1. Finding Worker (Search & Filter)
+        // 1. Request Service (Fill issue details & book)
+        composable(Screen.RequestService.route) { 
+            RequestServiceScreen(
+                onNavigateBack = { navController.popBackStack() },
+                onSubmitRequest = { 
+                    // Start finding worker
+                    navController.navigate(Screen.FindingWorker.route) {
+                        popUpTo(Screen.Home.route) // Keep Home as base
+                    }
+                }
+            ) 
+        }
+
+        // 2. Finding Worker (Radar Animation)
         composable(Screen.FindingWorker.route) { 
             FindingWorkerScreen(
                 onCancel = { navController.popBackStack() },
@@ -111,33 +124,24 @@ fun AppNavigation() {
             ) 
         }
         
-        // 2. Worker Found (List of Workers)
+        // 3. Worker Found (Single Match)
         composable(Screen.WorkerFound.route) { 
             WorkerFoundScreen(
                 onNavigateBack = { navController.popBackStack() },
-                onContinue = { navController.navigate(Screen.WorkerProfile.route) } // Go to profile
+                onContinue = { 
+                    navController.navigate(Screen.TrackJob.route) {
+                        popUpTo(Screen.WorkerFound.route) { inclusive = true }
+                    }
+                } 
             ) 
         }
         
-        // 3. Worker Profile
+        // (Optional) Worker Profile if they want to view it from Tracking
         composable(Screen.WorkerProfile.route) { 
             WorkerProfileScreen(
                 onNavigateBack = { navController.popBackStack() },
-                onNavigateToRequestService = { navController.navigate(Screen.RequestService.route) }, // "Đặt thợ"
-                onNavigateToMessages = { navController.navigate(Screen.Chat.route) } // "Nhắn tin"
-            ) 
-        }
-        
-        // 4. Request Service (Fill issue details)
-        composable(Screen.RequestService.route) { 
-            RequestServiceScreen(
-                onNavigateBack = { navController.popBackStack() },
-                onSubmitRequest = { 
-                    // Navigate to TrackJob to monitor the active request
-                    navController.navigate(Screen.TrackJob.route) {
-                        popUpTo(Screen.Home.route) // Keep Home as base
-                    }
-                }
+                onNavigateToRequestService = { navController.navigate(Screen.RequestService.route) }, 
+                onNavigateToMessages = { navController.navigate(Screen.Chat.route) }
             ) 
         }
         

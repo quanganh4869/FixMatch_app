@@ -87,7 +87,7 @@ fun MainScreen(
                     "home" -> HomeScreen(
                         onNavigateToWorkerProfile = { rootNavController.navigate(Screen.WorkerProfile.route) },
                         onNavigateToNewRequest = { rootNavController.navigate(Screen.RequestService.route) },
-                        onNavigateToFindingWorker = { rootNavController.navigate(Screen.FindingWorker.route) }
+                        onNavigateToFindingWorker = { rootNavController.navigate(Screen.RequestService.route) } // Navigate to RequestService to start Grab flow
                     )
                     "requests" -> MyRequestsScreen(
                         onNavigateToTrackJob = { rootNavController.navigate(Screen.TrackJob.route) }

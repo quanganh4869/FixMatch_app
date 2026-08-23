@@ -1,16 +1,18 @@
 package com.fixmatch.mobile.presentation.findingworker
 
+import androidx.compose.animation.core.*
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Search
-import androidx.compose.material.icons.filled.Tune
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.scale
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.delay
@@ -21,113 +23,71 @@ fun FindingWorkerScreen(
     onCancel: () -> Unit = {},
     onWorkerFound: () -> Unit = {}
 ) {
-    var searchQuery by remember { mutableStateOf("") }
-    var selectedDistance by remember { mutableStateOf("Dưới 5km") }
-    var selectedRating by remember { mutableStateOf("4.5+ Sao") }
-    var selectedPrice by remember { mutableStateOf("Tất cả") }
-    var isSearching by remember { mutableStateOf(false) }
+    LaunchedEffect(Unit) {
+        delay(3000)
+        onWorkerFound()
+    }
+    
+    val infiniteTransition = rememberInfiniteTransition(label = "radar")
+    val scale by infiniteTransition.animateFloat(
+        initialValue = 0.5f,
+        targetValue = 2.5f,
+        animationSpec = infiniteRepeatable(
+            animation = tween(2000, easing = LinearOutSlowInEasing),
+            repeatMode = RepeatMode.Restart
+        ),
+        label = "scale"
+    )
+    
+    val alpha by infiniteTransition.animateFloat(
+        initialValue = 1f,
+        targetValue = 0f,
+        animationSpec = infiniteRepeatable(
+            animation = tween(2000, easing = LinearOutSlowInEasing),
+            repeatMode = RepeatMode.Restart
+        ),
+        label = "alpha"
+    )
 
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Tìm kiếm thợ", fontWeight = FontWeight.Bold) },
+                title = { Text("Đang tìm thợ gần bạn...", fontWeight = FontWeight.Bold) },
                 navigationIcon = {
                     IconButton(onClick = onCancel) {
-                        Icon(Icons.Default.ArrowBack, contentDescription = "Back")
+                        Icon(Icons.Default.Close, contentDescription = "Huỷ")
                     }
-                }
+                },
+                colors = TopAppBarDefaults.topAppBarColors(containerColor = Color.Transparent)
             )
-        },
-        bottomBar = {
-            Surface(
-                modifier = Modifier.fillMaxWidth().padding(16.dp),
-                color = MaterialTheme.colorScheme.background
-            ) {
-                Button(
-                    onClick = {
-                        isSearching = true
-                    },
-                    modifier = Modifier.fillMaxWidth().height(56.dp),
-                    shape = MaterialTheme.shapes.medium
-                ) {
-                    if (isSearching) {
-                        CircularProgressIndicator(color = MaterialTheme.colorScheme.onPrimary, modifier = Modifier.size(24.dp))
-                    } else {
-                        Text("Tìm Kiếm", style = MaterialTheme.typography.titleMedium)
-                    }
-                }
-            }
         }
     ) { padding ->
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(padding)
-                .padding(horizontal = 16.dp)
-                .verticalScroll(rememberScrollState())
+        Box(
+            modifier = Modifier.fillMaxSize().padding(padding),
+            contentAlignment = Alignment.Center
         ) {
-            if (isSearching) {
-                LaunchedEffect(Unit) {
-                    delay(1500)
-                    onWorkerFound()
-                    isSearching = false
-                }
-            }
-
-            OutlinedTextField(
-                value = searchQuery,
-                onValueChange = { searchQuery = it },
-                modifier = Modifier.fillMaxWidth(),
-                placeholder = { Text("Bạn đang cần dịch vụ gì?") },
-                leadingIcon = { Icon(Icons.Default.Search, contentDescription = null) },
-                shape = MaterialTheme.shapes.medium,
-                singleLine = true
+            Box(
+                modifier = Modifier
+                    .size(100.dp)
+                    .scale(scale)
+                    .background(MaterialTheme.colorScheme.primary.copy(alpha = alpha), CircleShape)
             )
-            
-            Spacer(modifier = Modifier.height(24.dp))
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Icon(Icons.Default.Tune, contentDescription = null, tint = MaterialTheme.colorScheme.primary)
-                Spacer(modifier = Modifier.width(8.dp))
-                Text("Bộ lọc tìm kiếm", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
-            }
-            Spacer(modifier = Modifier.height(16.dp))
-
-            Text("Khoảng cách", style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.Medium)
-            Spacer(modifier = Modifier.height(8.dp))
-            Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                listOf("Dưới 2km", "Dưới 5km", "Toàn thành phố").forEach { dist ->
-                    FilterChip(
-                        selected = selectedDistance == dist,
-                        onClick = { selectedDistance = dist },
-                        label = { Text(dist) }
-                    )
-                }
-            }
-
-            Spacer(modifier = Modifier.height(16.dp))
-            Text("Đánh giá tối thiểu", style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.Medium)
-            Spacer(modifier = Modifier.height(8.dp))
-            Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                listOf("4.5+ Sao", "4.0+ Sao", "Tất cả").forEach { rating ->
-                    FilterChip(
-                        selected = selectedRating == rating,
-                        onClick = { selectedRating = rating },
-                        label = { Text(rating) }
-                    )
-                }
+            Box(
+                modifier = Modifier
+                    .size(100.dp)
+                    .background(MaterialTheme.colorScheme.primary, CircleShape),
+                contentAlignment = Alignment.Center
+            ) {
+                Icon(Icons.Default.Search, contentDescription = null, tint = Color.White, modifier = Modifier.size(40.dp))
             }
             
-            Spacer(modifier = Modifier.height(16.dp))
-            Text("Mức giá dự kiến", style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.Medium)
-            Spacer(modifier = Modifier.height(8.dp))
-            Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                listOf("Dưới 200k", "200k - 500k", "Tất cả").forEach { price ->
-                    FilterChip(
-                        selected = selectedPrice == price,
-                        onClick = { selectedPrice = price },
-                        label = { Text(price) }
-                    )
-                }
+            Column(
+                modifier = Modifier.align(Alignment.BottomCenter).padding(bottom = 64.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Text("Hệ thống đang quét các thợ...", style = MaterialTheme.typography.titleMedium)
+                Spacer(modifier = Modifier.height(8.dp))
+                Text("Vui lòng đợi trong giây lát", color = MaterialTheme.colorScheme.onSurfaceVariant)
             }
         }
     }

@@ -1,7 +1,6 @@
 package com.fixmatch.mobile.presentation.newjobrequest
 
 import androidx.compose.animation.core.*
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
@@ -11,6 +10,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Build
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.Person
@@ -22,12 +22,10 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
-import com.fixmatch.mobile.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -40,33 +38,56 @@ fun NewJobRequestScreen(
             TopAppBar(
                 title = { 
                     Text(
-                        "FixMatch", 
-                        style = MaterialTheme.typography.headlineMedium,
+                        "Chi tiết yêu cầu", 
+                        style = MaterialTheme.typography.titleLarge,
                         fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.primary
+                        color = MaterialTheme.colorScheme.onSurface
                     ) 
                 },
-                actions = {
-                    IconButton(onClick = { }) {
-                        Icon(Icons.Default.Notifications, contentDescription = "Alerts", tint = MaterialTheme.colorScheme.primary)
+                navigationIcon = {
+                    IconButton(onClick = onDecline) {
+                        Icon(Icons.Default.ArrowBack, contentDescription = "Back")
                     }
-                    Box(modifier = Modifier.padding(end = 16.dp, start = 8.dp)) {
-                        AsyncImage(
-                            model = "https://i.pravatar.cc/150?img=12",
-                            contentDescription = "User",
-                            modifier = Modifier
-                                .size(32.dp)
-                                .clip(CircleShape),
-                            contentScale = ContentScale.Crop
-                        )
-                    }
-                },
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.surface
-                )
+                }
             )
         },
-        
+        bottomBar = {
+            Surface(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .shadow(8.dp),
+                color = MaterialTheme.colorScheme.surface
+            ) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp)
+                        .navigationBarsPadding(),
+                    horizontalArrangement = Arrangement.spacedBy(16.dp)
+                ) {
+                    OutlinedButton(
+                        onClick = onDecline,
+                        modifier = Modifier
+                            .weight(1f)
+                            .height(56.dp),
+                        shape = RoundedCornerShape(12.dp),
+                        colors = ButtonDefaults.outlinedButtonColors(contentColor = MaterialTheme.colorScheme.error)
+                    ) {
+                        Text("Từ chối", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
+                    }
+                    Button(
+                        onClick = onAccept,
+                        modifier = Modifier
+                            .weight(1f)
+                            .height(56.dp),
+                        shape = RoundedCornerShape(12.dp),
+                        colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary)
+                    ) {
+                        Text("Chấp nhận", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
+                    }
+                }
+            }
+        }
     ) { paddingValues ->
         Column(
             modifier = Modifier
@@ -74,231 +95,116 @@ fun NewJobRequestScreen(
                 .background(MaterialTheme.colorScheme.background)
                 .padding(paddingValues)
                 .verticalScroll(rememberScrollState())
-                .padding(horizontal = 16.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp)
+                .padding(24.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
+            
+            Box(
+                modifier = Modifier
+                    .size(80.dp)
+                    .background(MaterialTheme.colorScheme.primaryContainer, CircleShape),
+                contentAlignment = Alignment.Center
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Notifications,
+                    contentDescription = null,
+                    tint = MaterialTheme.colorScheme.onPrimaryContainer,
+                    modifier = Modifier.size(40.dp)
+                )
+            }
+            
+            Spacer(modifier = Modifier.height(16.dp))
+            
+            Text(
+                text = "YÊU CẦU MỚI",
+                style = MaterialTheme.typography.labelLarge,
+                color = MaterialTheme.colorScheme.primary,
+                fontWeight = FontWeight.Bold,
+                letterSpacing = 1.5.sp
+            )
+            
             Spacer(modifier = Modifier.height(8.dp))
             
-            // High-Impact Notification Card
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .shadow(4.dp, RoundedCornerShape(16.dp), spotColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.05f))
-                    .background(MaterialTheme.colorScheme.surface, RoundedCornerShape(16.dp))
+            Text(
+                text = "Chập điện nhà tắm",
+                style = MaterialTheme.typography.headlineMedium,
+                fontWeight = FontWeight.Bold,
+                color = MaterialTheme.colorScheme.onBackground
+            )
+            
+            Spacer(modifier = Modifier.height(32.dp))
+            
+            Card(
+                modifier = Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(16.dp),
+                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
+                elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
             ) {
-                Box(modifier = Modifier.fillMaxWidth().height(8.dp).background(MaterialTheme.colorScheme.secondaryContainer))
-                
-                Column(modifier = Modifier.padding(24.dp)) {
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = Alignment.Top
-                    ) {
-                        Column {
-                            Row(verticalAlignment = Alignment.CenterVertically) {
-                                val infiniteTransition = rememberInfiniteTransition(label = "pulse")
-                                val scale by infiniteTransition.animateFloat(
-                                    initialValue = 0.8f,
-                                    targetValue = 1.5f,
-                                    animationSpec = infiniteRepeatable(
-                                        animation = tween(2000),
-                                        repeatMode = RepeatMode.Restart
-                                    ),
-                                    label = "pulseScale"
-                                )
-                                val alpha by infiniteTransition.animateFloat(
-                                    initialValue = 0.5f,
-                                    targetValue = 0f,
-                                    animationSpec = infiniteRepeatable(
-                                        animation = tween(2000),
-                                        repeatMode = RepeatMode.Restart
-                                    ),
-                                    label = "pulseAlpha"
-                                )
-                                
-                                Box(
-                                    modifier = Modifier.size(12.dp),
-                                    contentAlignment = Alignment.Center
-                                ) {
-                                    Box(
-                                        modifier = Modifier
-                                            .size(10.dp)
-                                            .clip(CircleShape)
-                                            .background(MaterialTheme.colorScheme.primaryContainer)
-                                    )
-                                    Box(
-                                        modifier = Modifier
-                                            .size(12.dp)
-                                            .clip(CircleShape)
-                                            .background(MaterialTheme.colorScheme.primaryContainer.copy(alpha = alpha))
-                                    ) // Simplistic pulse
-                                }
-                                Spacer(modifier = Modifier.width(8.dp))
-                                Text("NEW JOB NEARBY!", style = MaterialTheme.typography.labelSmall, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.primaryContainer)
-                            }
-                            Spacer(modifier = Modifier.height(4.dp))
-                            Text("Leaky Pipe Repair", style = MaterialTheme.typography.headlineMedium, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onSurface)
-                        }
-                        
-                        Box(
-                            modifier = Modifier
-                                .size(64.dp)
-                                .background(Color(0xFFE8F0FE), RoundedCornerShape(12.dp)),
-                            contentAlignment = Alignment.Center
-                        ) {
-                            androidx.compose.foundation.Image(
-                                painter = androidx.compose.ui.res.painterResource(id = com.fixmatch.mobile.R.drawable.worker_mascot),
-                                contentDescription = "Mascot",
-                                modifier = Modifier.fillMaxSize().padding(top = 4.dp),
-                                contentScale = ContentScale.Fit
-                            )
-                        }
-                    }
+                Column(modifier = Modifier.padding(20.dp)) {
+                    Text("Thông tin khách hàng", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onSurface)
+                    Divider(modifier = Modifier.padding(vertical = 12.dp), color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f))
                     
-                    Spacer(modifier = Modifier.height(16.dp))
-                    
-                    // Job Details Grid
-                    Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-                        Column(modifier = Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(12.dp)) {
-                            InfoBox(icon = Icons.Default.Person, title = "Customer", value = "Sarah J.")
-                            InfoBox(icon = Icons.Default.LocationOn, title = "Distance", value = "1.2 km away")
-                        }
-                        Column(modifier = Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(12.dp)) {
-                            InfoBox(icon = Icons.Default.Build, title = "When", value = "Today, 2:30 PM")
-                            InfoBox(icon = Icons.Default.Build, title = "Est. Earnings", value = "$80 - $120", valueColor = MaterialTheme.colorScheme.primaryContainer)
-                        }
-                    }
-                    
-                    Spacer(modifier = Modifier.height(16.dp))
-                    
-                    // Mini Map Area
-                    Box(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(160.dp)
-                            .background(MaterialTheme.colorScheme.surfaceVariant, RoundedCornerShape(12.dp))
-                            .border(1.dp, MaterialTheme.colorScheme.surfaceVariant, RoundedCornerShape(12.dp))
-                            .clip(RoundedCornerShape(12.dp))
-                    ) {
+                    Row(verticalAlignment = Alignment.CenterVertically) {
                         AsyncImage(
-                            model = "https://www.gstatic.com/labs-code/stitch/stitch-placeholder-300x300.svg",
-                            contentDescription = "Map",
-                            modifier = Modifier.fillMaxSize(),
-                            contentScale = ContentScale.Crop
+                            model = "https://i.pravatar.cc/150?img=5",
+                            contentDescription = "Customer",
+                            modifier = Modifier.size(48.dp).clip(CircleShape).border(1.dp, MaterialTheme.colorScheme.outlineVariant, CircleShape)
                         )
-                        
-                        // Gradient Overlay
-                        Box(
-                            modifier = Modifier
-                                .fillMaxSize()
-                                .background(androidx.compose.ui.graphics.Brush.verticalGradient(
-                                    colors = listOf(Color.Transparent, MaterialTheme.colorScheme.surface.copy(alpha = 0.6f))
-                                ))
-                        )
-                        
-                        // Marker
-                        Box(
-                            modifier = Modifier.align(Alignment.Center),
-                            contentAlignment = Alignment.Center
-                        ) {
-                            Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                                Box(
-                                    modifier = Modifier.background(MaterialTheme.colorScheme.secondaryContainer, CircleShape).padding(6.dp),
-                                    contentAlignment = Alignment.Center
-                                ) {
-                                    Icon(Icons.Default.Build, contentDescription = null, tint = MaterialTheme.colorScheme.onSecondaryContainer, modifier = Modifier.size(20.dp))
-                                }
-                                Box(modifier = Modifier.width(4.dp).height(12.dp).background(MaterialTheme.colorScheme.secondaryContainer))
-                            }
-                        }
-                        
-                        // Distance Pill
-                        Row(
-                            modifier = Modifier
-                                .align(Alignment.BottomStart)
-                                .padding(12.dp)
-                                .background(MaterialTheme.colorScheme.surface.copy(alpha = 0.9f), RoundedCornerShape(50))
-                                .border(1.dp, MaterialTheme.colorScheme.surfaceVariant, RoundedCornerShape(50))
-                                .padding(horizontal = 12.dp, vertical = 6.dp),
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            Icon(Icons.Default.Build, contentDescription = null, tint = MaterialTheme.colorScheme.primary, modifier = Modifier.size(14.dp))
-                            Spacer(modifier = Modifier.width(4.dp))
-                            Text("4 min drive", style = MaterialTheme.typography.labelSmall, fontWeight = FontWeight.Medium, color = MaterialTheme.colorScheme.onSurface)
+                        Spacer(modifier = Modifier.width(16.dp))
+                        Column {
+                            Text("Chị Lan", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
+                            Text("Khách hàng mới", style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
                         }
                     }
                     
-                    Spacer(modifier = Modifier.height(24.dp))
+                    Spacer(modifier = Modifier.height(16.dp))
                     
-                    // Action Buttons
-                    Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
-                        Button(
-                            onClick = onAccept,
-                            modifier = Modifier.fillMaxWidth().height(56.dp),
-                            shape = RoundedCornerShape(8.dp),
-                            colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary)
-                        ) {
-                            Text("Accept Job", style = MaterialTheme.typography.titleMedium)
-                        }
-                        
-                        OutlinedButton(
-                            onClick = onDecline,
-                            modifier = Modifier.fillMaxWidth().height(56.dp),
-                            shape = RoundedCornerShape(8.dp),
-                            border = androidx.compose.foundation.BorderStroke(1.5.dp, MaterialTheme.colorScheme.primary),
-                            colors = ButtonDefaults.outlinedButtonColors(contentColor = MaterialTheme.colorScheme.primary)
-                        ) {
-                            Text("Decline", style = MaterialTheme.typography.titleMedium)
+                    Row(verticalAlignment = Alignment.Top) {
+                        Icon(Icons.Default.LocationOn, contentDescription = null, tint = MaterialTheme.colorScheme.primary, modifier = Modifier.size(20.dp))
+                        Spacer(modifier = Modifier.width(12.dp))
+                        Column {
+                            Text("Địa chỉ", style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                            Text("123 Lê Lợi, Phường Bến Nghé, Quận 1", style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurface)
+                            Text("Cách bạn khoảng 1.2 km", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.primary, fontWeight = FontWeight.Bold)
                         }
                     }
                 }
             }
             
-            // Customer Notes
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .shadow(4.dp, RoundedCornerShape(12.dp), spotColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.05f))
-                    .background(MaterialTheme.colorScheme.surface, RoundedCornerShape(12.dp))
-                    .border(1.dp, MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f), RoundedCornerShape(12.dp))
-                    .padding(16.dp)
+            Spacer(modifier = Modifier.height(24.dp))
+            
+            Card(
+                modifier = Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(16.dp),
+                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.secondaryContainer)
             ) {
-                Text("Customer Notes", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onSurface)
-                Spacer(modifier = Modifier.height(8.dp))
-                Text(
-                    text = "\"The pipe under the kitchen sink started leaking this morning. I've turned off the main valve, but it needs fixing ASAP. Please ring the doorbell upon arrival.\"",
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    maxLines = 3,
-                    overflow = TextOverflow.Ellipsis
-                )
+                Column(modifier = Modifier.padding(20.dp)) {
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Icon(Icons.Default.Build, contentDescription = null, tint = MaterialTheme.colorScheme.onSecondaryContainer)
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Text("Chi tiết công việc", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onSecondaryContainer)
+                    }
+                    Spacer(modifier = Modifier.height(12.dp))
+                    Text(
+                        "Tôi đang bật bình nóng lạnh thì thấy chớp điện rồi mất điện cả phòng tắm. Mong thợ đến kiểm tra và khắc phục sớm giúp.",
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onSecondaryContainer
+                    )
+                }
+            }
+            
+            Spacer(modifier = Modifier.height(24.dp))
+            
+            Row(
+                modifier = Modifier.fillMaxWidth().background(MaterialTheme.colorScheme.surfaceVariant.copy(alpha=0.5f), RoundedCornerShape(12.dp)).padding(16.dp),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text("Giá ước tính:", style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                Text("200.000đ - 300.000đ", style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.primary)
             }
             
             Spacer(modifier = Modifier.height(24.dp))
         }
-    }
-}
-
-@Composable
-fun InfoBox(
-    icon: androidx.compose.ui.graphics.vector.ImageVector,
-    title: String,
-    value: String,
-    valueColor: Color = MaterialTheme.colorScheme.onSurface
-) {
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .background(MaterialTheme.colorScheme.surface, RoundedCornerShape(12.dp))
-            .border(1.dp, MaterialTheme.colorScheme.surfaceVariant, RoundedCornerShape(12.dp))
-            .padding(12.dp)
-    ) {
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            Icon(icon, contentDescription = null, tint = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.size(18.dp))
-            Spacer(modifier = Modifier.width(6.dp))
-            Text(title, style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
-        }
-        Spacer(modifier = Modifier.height(4.dp))
-        Text(value, style = MaterialTheme.typography.bodyLarge, fontWeight = FontWeight.Medium, color = valueColor)
     }
 }

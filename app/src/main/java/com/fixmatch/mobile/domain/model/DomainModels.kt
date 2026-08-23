@@ -28,14 +28,15 @@ data class Worker(
 
 enum class JobStatus {
     PENDING,
-    MATCHING,
+    SEARCHING,
     ACCEPTED,
-    CONFIRMED,
+    ON_THE_WAY,
+    ARRIVED,
     IN_PROGRESS,
+    PAYMENT_PENDING,
     COMPLETED,
-    CANCELLED,
-    REJECTED,
-    FAILED
+    REVIEWED,
+    CANCELLED
 }
 
 data class Job(

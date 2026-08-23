@@ -13,10 +13,13 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -26,18 +29,23 @@ fun RequestServiceScreen(
 ) {
     var problemTitle by remember { mutableStateOf("") }
     var description by remember { mutableStateOf("") }
-    var selectedCategory by remember { mutableStateOf("Electrical") }
-    var isError by remember { mutableStateOf(false) }
-    var showConfirmationSheet by remember { mutableStateOf(false) }
+    var selectedCategory by remember { mutableStateOf("Điện") }
     
-    val categories = listOf("Electrical", "Plumbing", "Cleaning", "AC Repair")
+    var titleError by remember { mutableStateOf(false) }
+    var descError by remember { mutableStateOf(false) }
+    
+    var showConfirmationSheet by remember { mutableStateOf(false) }
+    var isSubmitting by remember { mutableStateOf(false) }
+    val coroutineScope = rememberCoroutineScope()
+    
+    val categories = listOf("Điện", "Nước", "Dọn dẹp", "Máy lạnh", "Sửa khoá", "Lắp ráp")
 
     Scaffold(
         topBar = {
             TopAppBar(
                 title = {
                     Text(
-                        "Request Service",
+                        "Đăng Yêu Cầu",
                         style = MaterialTheme.typography.titleLarge,
                         fontWeight = FontWeight.Bold,
                         color = MaterialTheme.colorScheme.onSurface,
@@ -64,10 +72,9 @@ fun RequestServiceScreen(
             ) {
                 Button(
                     onClick = {
-                        if (problemTitle.isBlank() || description.isBlank()) {
-                            isError = true
-                        } else {
-                            isError = false
+                        titleError = problemTitle.isBlank()
+                        descError = description.isBlank()
+                        if (!titleError && !descError) {
                             showConfirmationSheet = true
                         }
                     },
@@ -78,7 +85,7 @@ fun RequestServiceScreen(
                     shape = RoundedCornerShape(16.dp),
                     colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary)
                 ) {
-                    Text("Review Request", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
+                    Text("Tiếp tục", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
                     Spacer(modifier = Modifier.width(8.dp))
                     Icon(Icons.Default.ArrowForward, contentDescription = null, modifier = Modifier.size(20.dp))
                 }
@@ -95,198 +102,140 @@ fun RequestServiceScreen(
             verticalArrangement = Arrangement.spacedBy(24.dp)
         ) {
             
-            // --- Categroy Selection ---
+            // --- Category Selection ---
             Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
-                Text("Select Service Category", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.SemiBold, color = MaterialTheme.colorScheme.onBackground)
+                Text("Chọn Dịch Vụ", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.SemiBold, color = MaterialTheme.colorScheme.onBackground)
                 
-                // Using 2 rows of 2 items
-                Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                    Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                        categories.take(2).forEach { category ->
-                            CategoryChip(
-                                title = category,
-                                isSelected = selectedCategory == category,
-                                onClick = { selectedCategory = category },
-                                modifier = Modifier.weight(1f)
-                            )
-                        }
-                    }
-                    Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                        categories.drop(2).forEach { category ->
-                            CategoryChip(
-                                title = category,
-                                isSelected = selectedCategory == category,
-                                onClick = { selectedCategory = category },
-                                modifier = Modifier.weight(1f)
+                @OptIn(ExperimentalLayoutApi::class)
+                FlowRow(
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    verticalArrangement = Arrangement.spacedBy(8.dp),
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    categories.forEach { category ->
+                        val isSelected = selectedCategory == category
+                        Box(
+                            modifier = Modifier
+                                .clip(RoundedCornerShape(20.dp))
+                                .background(if (isSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.surfaceVariant)
+                                .clickable { selectedCategory = category }
+                                .padding(horizontal = 16.dp, vertical = 10.dp)
+                        ) {
+                            Text(
+                                text = category,
+                                color = if (isSelected) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurfaceVariant,
+                                style = MaterialTheme.typography.labelLarge,
+                                fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal
                             )
                         }
                     }
                 }
             }
 
-            // --- Form Inputs ---
-            Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
+            // --- Problem Title ---
+            Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                Text("Vấn đề bạn đang gặp phải là gì?", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.SemiBold, color = MaterialTheme.colorScheme.onBackground)
                 OutlinedTextField(
                     value = problemTitle,
-                    onValueChange = { problemTitle = it },
-                    label = { Text("What needs fixing?") },
-                    placeholder = { Text("e.g. Leaking faucet in kitchen") },
+                    onValueChange = { 
+                        problemTitle = it
+                        if(it.isNotBlank()) titleError = false
+                    },
+                    placeholder = { Text("VD: Sửa vòi nước bị rò rỉ") },
                     modifier = Modifier.fillMaxWidth(),
                     shape = RoundedCornerShape(12.dp),
-                    singleLine = true,
-                    isError = isError && problemTitle.isBlank(),
-                    supportingText = {
-                        if (isError && problemTitle.isBlank()) {
-                            Text("Please enter a title", color = MaterialTheme.colorScheme.error)
-                        }
-                    },
-                    colors = OutlinedTextFieldDefaults.colors(
-                        focusedBorderColor = MaterialTheme.colorScheme.primary,
-                        unfocusedBorderColor = MaterialTheme.colorScheme.outlineVariant
-                    )
+                    isError = titleError,
+                    supportingText = if (titleError) { { Text("Vui lòng nhập tóm tắt vấn đề") } } else null,
+                    singleLine = true
                 )
+            }
 
+            // --- Description ---
+            Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                Text("Mô tả chi tiết", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.SemiBold, color = MaterialTheme.colorScheme.onBackground)
                 OutlinedTextField(
                     value = description,
-                    onValueChange = { description = it },
-                    label = { Text("Describe the problem in detail") },
-                    placeholder = { Text("Provide details about the issue to help the worker prepare.") },
-                    modifier = Modifier.fillMaxWidth().height(140.dp),
-                    shape = RoundedCornerShape(12.dp),
-                    isError = isError && description.isBlank(),
-                    supportingText = {
-                        if (isError && description.isBlank()) {
-                            Text("Please enter a description", color = MaterialTheme.colorScheme.error)
-                        }
+                    onValueChange = { 
+                        description = it
+                        if(it.isNotBlank()) descError = false
                     },
-                    colors = OutlinedTextFieldDefaults.colors(
-                        focusedBorderColor = MaterialTheme.colorScheme.primary,
-                        unfocusedBorderColor = MaterialTheme.colorScheme.outlineVariant
-                    )
+                    placeholder = { Text("Cung cấp thêm chi tiết giúp thợ mang đúng dụng cụ...") },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(120.dp),
+                    shape = RoundedCornerShape(12.dp),
+                    isError = descError,
+                    supportingText = if (descError) { { Text("Vui lòng nhập chi tiết vấn đề") } } else null
                 )
             }
             
-            // --- Time & Location ---
-            Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
-                Text("Schedule & Location", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.SemiBold, color = MaterialTheme.colorScheme.onBackground)
-                
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .background(MaterialTheme.colorScheme.surface, RoundedCornerShape(12.dp))
-                        .border(1.dp, MaterialTheme.colorScheme.outlineVariant, RoundedCornerShape(12.dp))
-                        .clickable { }
-                        .padding(16.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Icon(Icons.Default.DateRange, contentDescription = null, tint = MaterialTheme.colorScheme.primary)
-                    Spacer(modifier = Modifier.width(16.dp))
-                    Column(modifier = Modifier.weight(1f)) {
-                        Text("When", style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.outline)
-                        Text("As soon as possible", style = MaterialTheme.typography.bodyLarge, fontWeight = FontWeight.Medium, color = MaterialTheme.colorScheme.onSurface)
-                    }
-                    Icon(Icons.Default.KeyboardArrowRight, contentDescription = null, tint = MaterialTheme.colorScheme.outline)
-                }
-
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .background(MaterialTheme.colorScheme.surface, RoundedCornerShape(12.dp))
-                        .border(1.dp, MaterialTheme.colorScheme.outlineVariant, RoundedCornerShape(12.dp))
-                        .clickable { }
-                        .padding(16.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Icon(Icons.Default.LocationOn, contentDescription = null, tint = MaterialTheme.colorScheme.primary)
-                    Spacer(modifier = Modifier.width(16.dp))
-                    Column(modifier = Modifier.weight(1f)) {
-                        Text("Location", style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.outline)
-                        Text("123 Nguyen Hue, Dist 1, HCMC", style = MaterialTheme.typography.bodyLarge, fontWeight = FontWeight.Medium, color = MaterialTheme.colorScheme.onSurface)
-                    }
-                    Icon(Icons.Default.KeyboardArrowRight, contentDescription = null, tint = MaterialTheme.colorScheme.outline)
-                }
+            // --- Address (Mock read-only) ---
+            Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                Text("Địa chỉ", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.SemiBold, color = MaterialTheme.colorScheme.onBackground)
+                OutlinedTextField(
+                    value = "Vị trí hiện tại (Quận 1, TP. HCM)",
+                    onValueChange = { },
+                    modifier = Modifier.fillMaxWidth(),
+                    shape = RoundedCornerShape(12.dp),
+                    readOnly = true,
+                    leadingIcon = { Icon(Icons.Default.LocationOn, contentDescription = null, tint = MaterialTheme.colorScheme.primary) }
+                )
             }
-            
-            Spacer(modifier = Modifier.height(24.dp))
-        }
-        
-        if (showConfirmationSheet) {
-            ModalBottomSheet(
-                onDismissRequest = { showConfirmationSheet = false },
-                containerColor = MaterialTheme.colorScheme.surface
-            ) {
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(24.dp)
-                        .navigationBarsPadding(),
-                    verticalArrangement = Arrangement.spacedBy(16.dp)
-                ) {
-                    Text("Confirm Details", style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onSurface)
-                    Divider(color = MaterialTheme.colorScheme.outlineVariant)
-                    
-                    Row(verticalAlignment = Alignment.Top) {
-                        Icon(Icons.Default.Build, contentDescription = null, tint = MaterialTheme.colorScheme.primary, modifier = Modifier.size(20.dp))
-                        Spacer(modifier = Modifier.width(12.dp))
-                        Column {
-                            Text("Problem", style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
-                            Text(problemTitle, style = MaterialTheme.typography.bodyLarge, color = MaterialTheme.colorScheme.onSurface)
-                            Spacer(modifier = Modifier.height(4.dp))
-                            Text(description, style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
-                        }
-                    }
-                    
-                    Row(verticalAlignment = Alignment.Top) {
-                        Icon(Icons.Default.LocationOn, contentDescription = null, tint = MaterialTheme.colorScheme.primary, modifier = Modifier.size(20.dp))
-                        Spacer(modifier = Modifier.width(12.dp))
-                        Column {
-                            Text("Location", style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
-                            Text("123 Nguyen Hue, Dist 1, HCMC", style = MaterialTheme.typography.bodyLarge, color = MaterialTheme.colorScheme.onSurface)
-                        }
-                    }
-                    
-                    Spacer(modifier = Modifier.height(24.dp))
-                    Button(
-                        onClick = {
-                            showConfirmationSheet = false
-                            onSubmitRequest()
-                        },
-                        modifier = Modifier.fillMaxWidth().height(56.dp).shadow(4.dp, RoundedCornerShape(16.dp)),
-                        colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary)
-                    ) {
-                        Text("Find Worker Now", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
-                    }
-                    Spacer(modifier = Modifier.height(16.dp))
-                }
-            }
+            Spacer(modifier = Modifier.height(40.dp))
         }
     }
-}
-
-@Composable
-fun CategoryChip(
-    title: String,
-    isSelected: Boolean,
-    onClick: () -> Unit,
-    modifier: Modifier = Modifier
-) {
-    val containerColor = if (isSelected) MaterialTheme.colorScheme.primaryContainer else MaterialTheme.colorScheme.surface
-    val contentColor = if (isSelected) MaterialTheme.colorScheme.onPrimaryContainer else MaterialTheme.colorScheme.onSurface
-    val borderColor = if (isSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.outlineVariant
     
-    Box(
-        modifier = modifier
-            .background(containerColor, RoundedCornerShape(12.dp))
-            .border(1.dp, borderColor, RoundedCornerShape(12.dp))
-            .clickable { onClick() }
-            .padding(vertical = 16.dp),
-        contentAlignment = Alignment.Center
-    ) {
-        Text(
-            text = title,
-            style = MaterialTheme.typography.bodyMedium,
-            fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Medium,
-            color = contentColor
-        )
+    if (showConfirmationSheet) {
+        ModalBottomSheet(onDismissRequest = { if (!isSubmitting) showConfirmationSheet = false }) {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 24.dp, vertical = 16.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Text("Xác nhận đăng yêu cầu", style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold)
+                Spacer(modifier = Modifier.height(24.dp))
+                
+                Card(
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f)),
+                    shape = RoundedCornerShape(12.dp)
+                ) {
+                    Column(modifier = Modifier.padding(16.dp)) {
+                        Text("Dịch vụ: $selectedCategory", fontWeight = FontWeight.Medium)
+                        Spacer(modifier = Modifier.height(8.dp))
+                        Text("Vấn đề: $problemTitle", fontWeight = FontWeight.Medium)
+                        Spacer(modifier = Modifier.height(8.dp))
+                        Text("Ghi chú: $description", style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                    }
+                }
+                
+                Spacer(modifier = Modifier.height(32.dp))
+                
+                Button(
+                    onClick = {
+                        isSubmitting = true
+                        coroutineScope.launch {
+                            delay(1500) // Mock API call
+                            isSubmitting = false
+                            showConfirmationSheet = false
+                            onSubmitRequest()
+                        }
+                    },
+                    modifier = Modifier.fillMaxWidth().height(56.dp),
+                    enabled = !isSubmitting,
+                    shape = RoundedCornerShape(12.dp)
+                ) {
+                    if (isSubmitting) {
+                        CircularProgressIndicator(color = MaterialTheme.colorScheme.onPrimary, modifier = Modifier.size(24.dp))
+                        Spacer(modifier = Modifier.width(12.dp))
+                        Text("Đang xử lý...")
+                    } else {
+                        Text("Xác nhận & Tìm Thợ", style = MaterialTheme.typography.titleMedium)
+                    }
+                }
+                Spacer(modifier = Modifier.height(24.dp))
+            }
+        }
     }
 }

@@ -23,7 +23,8 @@ class FakeJobRepository : JobRepository {
                 workerId = "w1",
                 clientId = "c1",
                 location = "Quận 1, TP.HCM",
-                estimatedPrice = 250000.0
+                basePrice = 250000.0,
+                finalPrice = 250000.0
             )
         )
     )
@@ -57,7 +58,7 @@ class FakeJobRepository : JobRepository {
             workerId = null,
             clientId = "c1",
             location = location,
-            estimatedPrice = null
+            basePrice = 150000.0
         )
         
         val currentList = _jobsState.value.toMutableList()
@@ -89,8 +90,25 @@ class FakeJobRepository : JobRepository {
             val job = currentList[index]
             val updatedJob = job.copy(
                 workerId = workerId,
-                status = JobStatus.WORKER_FOUND,
-                estimatedPrice = 250000.0
+                status = JobStatus.WORKER_FOUND
+            )
+            currentList[index] = updatedJob
+            _jobsState.value = currentList
+            return NetworkResult.Success(updatedJob)
+        }
+        return NetworkResult.Error(com.fixmatch.mobile.domain.util.DataError.Api.NOT_FOUND, "Job not found")
+    }
+
+    suspend fun updateJobPrice(jobId: String, additionalCost: Double, reason: String): NetworkResult<Job> {
+        val currentList = _jobsState.value.toMutableList()
+        val index = currentList.indexOfFirst { it.id == jobId }
+        if (index != -1) {
+            val job = currentList[index]
+            val updatedJob = job.copy(
+                additionalCost = additionalCost,
+                finalPrice = job.basePrice + additionalCost,
+                additionalCostReason = reason,
+                status = JobStatus.ADDITIONAL_COST_PENDING
             )
             currentList[index] = updatedJob
             _jobsState.value = currentList

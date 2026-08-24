@@ -49,7 +49,7 @@ fun LoginScreen(
         Image(
             painter = painterResource(id = R.drawable.app_logo_white),
             contentDescription = "App Logo",
-            colorFilter = ColorFilter.tint(Color.White, BlendMode.Multiply),
+            colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.primary, BlendMode.SrcIn),
             modifier = Modifier
                 .size(160.dp)
                 .scale(logoScale)
@@ -90,28 +90,18 @@ fun LoginScreen(
                 .shadow(4.dp, RoundedCornerShape(12.dp), spotColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.2f))
                 .clickable { onLoginSuccess() },
             shape = RoundedCornerShape(12.dp),
-            color = MaterialTheme.colorScheme.surface,
-            border = androidx.compose.foundation.BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant)
+            color = MaterialTheme.colorScheme.primary
         ) {
             Row(
                 modifier = Modifier.fillMaxSize(),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Center
             ) {
-                // Since we don't have a Google logo drawable natively without adding dependencies, 
-                // we'll just use text or a placeholder character.
                 Text(
-                    text = "G",
-                    style = MaterialTheme.typography.titleLarge,
-                    fontWeight = FontWeight.Black,
-                    color = Color(0xFFDB4437) // Google Red approximation
-                )
-                Spacer(modifier = Modifier.width(12.dp))
-                Text(
-                    text = "Continue with Google",
+                    text = "Tiếp tục (Mock Login)",
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.SemiBold,
-                    color = MaterialTheme.colorScheme.onSurface
+                    color = MaterialTheme.colorScheme.onPrimary
                 )
             }
         }

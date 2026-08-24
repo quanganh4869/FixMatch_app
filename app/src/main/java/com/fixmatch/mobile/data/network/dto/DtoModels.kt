@@ -67,6 +67,6 @@ data class JobDto(
         workerId = workerId,
         clientId = clientId,
         location = location,
-        estimatedPrice = estimatedPrice
+        basePrice = estimatedPrice ?: 0.0
     )
 }

@@ -31,7 +31,8 @@ import coil.compose.AsyncImage
 @Composable
 fun WorkerSettingsScreen(
     onNavigateBack: () -> Unit = {},
-    onNavigateToSubscription: () -> Unit = {}
+    onNavigateToSubscription: () -> Unit = {},
+    onSwitchToCustomer: () -> Unit = {}
 ) {
     var showSettingsSheet by remember { mutableStateOf(false) }
 
@@ -167,8 +168,8 @@ fun WorkerSettingsScreen(
                     }
                 }
                 Switch(
-                    checked = !isWorkerMode,
-                    onCheckedChange = { isWorkerMode = !it },
+                    checked = false,
+                    onCheckedChange = { if (it) onSwitchToCustomer() },
                     colors = SwitchDefaults.colors(checkedThumbColor = MaterialTheme.colorScheme.primary, checkedTrackColor = MaterialTheme.colorScheme.primaryContainer)
                 )
             }

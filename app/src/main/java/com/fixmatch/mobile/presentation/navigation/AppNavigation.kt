@@ -53,6 +53,8 @@ sealed class Screen(val route: String) {
     object NewJobRequest : Screen("new_job_request")
     object WorkerHome : Screen("worker_home")
     object Subscription : Screen("subscription")
+    object BecomeWorker : Screen("become_worker")
+    object ApplicationStatus : Screen("application_status")
 }
 
 @Composable
@@ -199,8 +201,18 @@ fun AppNavigation() {
         composable(Screen.NewJobRequest.route) { 
             NewJobRequestScreen(
                 onDecline = { navController.popBackStack() },
-                onAccept = { navController.popBackStack() } 
+                onAccept = { 
+                    com.fixmatch.mobile.di.ServiceLocator.currentActiveJobId.value = "j_mock"
+                    navController.navigate("worker_active_job") {
+                        popUpTo(Screen.WorkerHome.route)
+                    }
+                } 
             ) 
+        }
+        composable("worker_active_job") {
+            com.fixmatch.mobile.presentation.workerhome.WorkerActiveJobScreen(
+                onNavigateBack = { navController.popBackStack() }
+            )
         }
         composable(Screen.MyEarnings.route) { MyEarningsScreen() }
         composable(Screen.WorkerSettings.route) { 
@@ -208,6 +220,26 @@ fun AppNavigation() {
                 onNavigateBack = { navController.popBackStack() },
                 onNavigateToSubscription = { navController.navigate("worker_subscription") }
             ) 
+        }
+        composable(Screen.BecomeWorker.route) {
+            com.fixmatch.mobile.presentation.profile.BecomeWorkerScreen(
+                onNavigateBack = { navController.popBackStack() },
+                onApplicationSubmitted = { 
+                    navController.navigate(Screen.ApplicationStatus.route) {
+                        popUpTo(Screen.Home.route)
+                    }
+                }
+            )
+        }
+        composable(Screen.ApplicationStatus.route) {
+            com.fixmatch.mobile.presentation.profile.ApplicationStatusScreen(
+                onNavigateBack = { navController.popBackStack() },
+                onNavigateToResubmit = {
+                    navController.navigate(Screen.BecomeWorker.route) {
+                        popUpTo(Screen.Home.route)
+                    }
+                }
+            )
         }
         composable(Screen.Subscription.route) { 
             SubscriptionScreen(

@@ -21,13 +21,22 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
+import com.fixmatch.mobile.di.ServiceLocator
+import com.fixmatch.mobile.domain.model.WorkerApplicationStatus
+import com.fixmatch.mobile.domain.model.AppMode
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProfileScreen(
-    onNavigate: (String) -> Unit = {},
+    onNavigateToBecomeWorker: () -> Unit = {},
+    onNavigateToApplicationStatus: () -> Unit = {},
+    onSwitchMode: () -> Unit = {},
     onNavigateToSubscription: () -> Unit = {}
 ) {
+    val accountState by ServiceLocator.accountState.collectAsState()
+    val applicationStatus = accountState.application?.status ?: WorkerApplicationStatus.NONE
+
     var showSettingsSheet by remember { mutableStateOf(false) }
 
     Scaffold(
@@ -35,7 +44,7 @@ fun ProfileScreen(
             TopAppBar(
                 title = { 
                     Text(
-                        "Profile", 
+                        "Tài khoản", 
                         style = MaterialTheme.typography.headlineMedium,
                         fontWeight = FontWeight.Bold,
                         color = MaterialTheme.colorScheme.onBackground,
@@ -70,8 +79,8 @@ fun ProfileScreen(
                     .shadow(4.dp, CircleShape)
             ) {
                 AsyncImage(
-                    model = "https://i.pravatar.cc/150?img=33",
-                    contentDescription = "Alex Johnson",
+                    model = accountState.user.profileImageUrl,
+                    contentDescription = "Avatar",
                     modifier = Modifier.fillMaxSize(),
                     contentScale = ContentScale.Crop
                 )
@@ -79,21 +88,76 @@ fun ProfileScreen(
             
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                 Text(
-                    text = "Alex Johnson",
+                    text = accountState.user.name,
                     style = MaterialTheme.typography.headlineSmall,
                     fontWeight = FontWeight.Bold,
                     color = MaterialTheme.colorScheme.onBackground
                 )
-                Spacer(modifier = Modifier.height(8.dp))
-                Row(
-                    modifier = Modifier
-                        .background(Color(0xFFE8F0FE), RoundedCornerShape(50))
-                        .padding(horizontal = 12.dp, vertical = 6.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Icon(Icons.Default.Star, contentDescription = null, tint = MaterialTheme.colorScheme.primary, modifier = Modifier.size(16.dp))
-                    Spacer(modifier = Modifier.width(4.dp))
-                    Text("PREMIUM MEMBER", style = MaterialTheme.typography.labelSmall, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.primary)
+                Spacer(modifier = Modifier.height(4.dp))
+                Text(accountState.user.email, style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
+            }
+            
+            Spacer(modifier = Modifier.height(16.dp))
+            
+            // Become Worker or Switch Mode Card
+            Card(
+                modifier = Modifier.fillMaxWidth().shadow(4.dp, RoundedCornerShape(16.dp)),
+                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primaryContainer),
+                shape = RoundedCornerShape(16.dp)
+            ) {
+                Column(modifier = Modifier.padding(16.dp)) {
+                    when (applicationStatus) {
+                        WorkerApplicationStatus.NONE -> {
+                            Text("Trở thành FixMatch Worker", style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onPrimaryContainer)
+                            Spacer(modifier = Modifier.height(8.dp))
+                            Text("Đăng ký hồ sơ, chờ duyệt và bắt đầu nhận đơn sửa chữa để tăng thu nhập.", style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onPrimaryContainer)
+                            Spacer(modifier = Modifier.height(16.dp))
+                            Button(onClick = onNavigateToBecomeWorker, modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(12.dp)) {
+                                Text("Đăng ký làm thợ")
+                            }
+                        }
+                        WorkerApplicationStatus.DRAFT -> {
+                            Text("Tiếp tục hoàn thiện hồ sơ", style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onPrimaryContainer)
+                            Spacer(modifier = Modifier.height(8.dp))
+                            Text("Hồ sơ của bạn vẫn chưa hoàn thành. Hãy tiếp tục điền thông tin để gửi đi.", style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onPrimaryContainer)
+                            Spacer(modifier = Modifier.height(16.dp))
+                            Button(onClick = onNavigateToBecomeWorker, modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(12.dp)) {
+                                Text("Tiếp tục")
+                            }
+                        }
+                        WorkerApplicationStatus.SUBMITTED, WorkerApplicationStatus.UNDER_REVIEW -> {
+                            Text("Hồ sơ đang chờ duyệt", style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onPrimaryContainer)
+                            Spacer(modifier = Modifier.height(8.dp))
+                            Text("Quản trị viên đang xem xét hồ sơ của bạn. Vui lòng chờ phản hồi.", style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onPrimaryContainer)
+                            Spacer(modifier = Modifier.height(16.dp))
+                            Button(onClick = onNavigateToApplicationStatus, modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(12.dp)) {
+                                Text("Xem trạng thái")
+                            }
+                        }
+                        WorkerApplicationStatus.REJECTED -> {
+                            Text("Hồ sơ chưa được duyệt", style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.error)
+                            Spacer(modifier = Modifier.height(8.dp))
+                            Text("Hồ sơ của bạn đã bị từ chối. Nhấn vào đây để xem lý do và cập nhật.", style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onErrorContainer)
+                            Spacer(modifier = Modifier.height(16.dp))
+                            Button(onClick = onNavigateToApplicationStatus, modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(12.dp), colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error)) {
+                                Text("Cập nhật hồ sơ")
+                            }
+                        }
+                        WorkerApplicationStatus.APPROVED -> {
+                            Text("Worker Verified", style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.primary)
+                            Spacer(modifier = Modifier.height(8.dp))
+                            Text("Bạn đã là thợ của FixMatch. Chuyển sang Worker Mode để nhận đơn ngay.", style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onPrimaryContainer)
+                            Spacer(modifier = Modifier.height(16.dp))
+                            Button(onClick = onSwitchMode, modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(12.dp)) {
+                                Text("Chuyển sang Worker Mode")
+                            }
+                        }
+                        WorkerApplicationStatus.SUSPENDED -> {
+                            Text("Tài khoản thợ bị tạm khoá", style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.error)
+                            Spacer(modifier = Modifier.height(8.dp))
+                            Text("Bạn vẫn có thể đặt thợ như bình thường, nhưng chế độ Worker đang bị khoá.", style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onErrorContainer)
+                        }
+                    }
                 }
             }
             
@@ -101,26 +165,18 @@ fun ProfileScreen(
             
             // Settings List
             Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                ProfileMenuItem(icon = Icons.Default.Person, title = "Edit Profile")
-                ProfileMenuItem(icon = Icons.Default.LocationOn, title = "Saved Addresses")
-                ProfileMenuItem(icon = Icons.Default.Info, title = "Payment Methods")
-                ProfileMenuItem(
-                    icon = Icons.Default.Star, 
-                    title = "Subscription",
-                    subtitle = "Premium Plan",
-                    iconTint = MaterialTheme.colorScheme.primary,
-                    onClick = { onNavigateToSubscription() }
-                )
+                ProfileMenuItem(icon = Icons.Default.Person, title = "Chỉnh sửa thông tin")
+                ProfileMenuItem(icon = Icons.Default.LocationOn, title = "Địa chỉ đã lưu")
                 ProfileMenuItem(
                     icon = Icons.Default.Settings, 
-                    title = "Settings",
-                    subtitle = "Language, Theme",
+                    title = "Cài đặt",
+                    subtitle = "Ngôn ngữ, giao diện",
                     onClick = { showSettingsSheet = true }
                 )
                 
                 Spacer(modifier = Modifier.height(8.dp))
                 
-                ProfileMenuItem(icon = Icons.Default.Info, title = "Help Center")
+                ProfileMenuItem(icon = Icons.Default.Info, title = "Trung tâm hỗ trợ")
                 
                 Spacer(modifier = Modifier.height(8.dp))
                 
@@ -147,7 +203,7 @@ fun ProfileScreen(
                         }
                         Spacer(modifier = Modifier.width(16.dp))
                         Text(
-                            text = "Logout",
+                            text = "Đăng xuất",
                             style = MaterialTheme.typography.bodyLarge,
                             fontWeight = FontWeight.Medium,
                             color = MaterialTheme.colorScheme.error
@@ -199,21 +255,13 @@ fun ProfileMenuItem(
                 }
                 Spacer(modifier = Modifier.width(16.dp))
                 Column {
-                    Text(
-                        text = title,
-                        style = MaterialTheme.typography.bodyLarge,
-                        color = MaterialTheme.colorScheme.onBackground
-                    )
+                    Text(text = title, style = MaterialTheme.typography.bodyLarge, fontWeight = FontWeight.Medium, color = MaterialTheme.colorScheme.onSurface)
                     if (subtitle != null) {
-                        Text(
-                            text = subtitle,
-                            style = MaterialTheme.typography.bodyMedium,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
-                        )
+                        Text(text = subtitle, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
                     }
                 }
             }
-            Icon(Icons.Default.KeyboardArrowRight, contentDescription = null, tint = MaterialTheme.colorScheme.outlineVariant)
+            Icon(Icons.Default.ChevronRight, contentDescription = "More", tint = MaterialTheme.colorScheme.onSurfaceVariant)
         }
     }
 }

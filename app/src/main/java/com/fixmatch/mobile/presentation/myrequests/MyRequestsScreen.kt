@@ -43,7 +43,7 @@ fun MyRequestsScreen(
         TopAppBar(
             title = {
                 Text(
-                    "Yêu cầu của tôi",
+                    "Lịch sử đặt thợ",
                     style = MaterialTheme.typography.headlineMedium,
                     fontWeight = FontWeight.Bold,
                     color = MaterialTheme.colorScheme.primary
@@ -77,7 +77,8 @@ fun MyRequestsScreen(
                 val activeStatuses = listOf(
                     JobStatus.CREATED, JobStatus.SEARCHING_WORKER, JobStatus.WORKER_FOUND,
                     JobStatus.WORKER_ACCEPTED, JobStatus.WORKER_ON_THE_WAY, JobStatus.WORKER_ARRIVED,
-                    JobStatus.JOB_IN_PROGRESS, JobStatus.JOB_COMPLETED, JobStatus.PAYMENT_PENDING
+                    JobStatus.INSPECTION, JobStatus.REPAIRING, JobStatus.ADDITIONAL_COST_PENDING,
+                    JobStatus.JOB_COMPLETED, JobStatus.PAYMENT_PENDING
                 )
                 
                 val filteredJobs = if (selectedTab == 0) {
@@ -107,7 +108,10 @@ fun MyRequestsScreen(
                                 JobStatus.WORKER_FOUND, JobStatus.WORKER_ACCEPTED -> "Thợ đã nhận việc"
                                 JobStatus.WORKER_ON_THE_WAY -> "Thợ đang tới"
                                 JobStatus.WORKER_ARRIVED -> "Thợ đã đến"
-                                JobStatus.JOB_IN_PROGRESS -> "Đang sửa chữa"
+                                JobStatus.INSPECTION -> "Đang kiểm tra"
+                                JobStatus.REPAIRING -> "Đang sửa chữa"
+                                JobStatus.ADDITIONAL_COST_PENDING -> "Chờ duyệt phụ phí"
+                                JobStatus.ADDITIONAL_COST_APPROVED -> "Đã duyệt phụ phí"
                                 JobStatus.JOB_COMPLETED, JobStatus.PAYMENT_PENDING -> "Chờ thanh toán"
                                 JobStatus.COMPLETED -> "Đã thanh toán"
                                 JobStatus.REVIEWED -> "Đã đánh giá"

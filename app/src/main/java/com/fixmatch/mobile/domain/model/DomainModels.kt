@@ -33,7 +33,10 @@ enum class JobStatus {
     WORKER_ACCEPTED,
     WORKER_ON_THE_WAY,
     WORKER_ARRIVED,
-    JOB_IN_PROGRESS,
+    INSPECTION,
+    REPAIRING,
+    ADDITIONAL_COST_PENDING,
+    ADDITIONAL_COST_APPROVED,
     JOB_COMPLETED,
     PAYMENT_PENDING,
     COMPLETED,
@@ -52,5 +55,41 @@ data class Job(
     val workerId: String?,
     val clientId: String,
     val location: String,
-    val estimatedPrice: Double?
+    val basePrice: Double = 0.0,
+    val additionalCost: Double = 0.0,
+    val finalPrice: Double = 0.0,
+    val additionalCostReason: String? = null
 )
+
+enum class WorkerApplicationStatus {
+    NONE, // No application
+    DRAFT,
+    SUBMITTED,
+    UNDER_REVIEW,
+    APPROVED,
+    REJECTED,
+    SUSPENDED
+}
+
+data class WorkerApplication(
+    val id: String,
+    val userId: String,
+    val status: WorkerApplicationStatus,
+    val submittedAt: String? = null,
+    val reviewedAt: String? = null,
+    val rejectionReason: String? = null,
+    val workerCategory: String = "",
+    val experienceYears: Int = 0,
+    val serviceArea: String = "",
+    val verificationDocuments: List<String> = emptyList()
+)
+
+data class AccountState(
+    val user: User,
+    val application: WorkerApplication?,
+    val currentMode: AppMode
+)
+
+enum class AppMode {
+    CUSTOMER, WORKER
+}

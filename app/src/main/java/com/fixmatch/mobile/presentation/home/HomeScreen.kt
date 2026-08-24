@@ -272,34 +272,33 @@ fun HomeScreen(
                 val activeJobId = com.fixmatch.mobile.di.ServiceLocator.currentActiveJobId.value ?: "j_mock"
                 
                 Button(onClick = { com.fixmatch.mobile.di.ServiceLocator.currentActiveJobId.value = null; showDebugMenu = false }) { Text("1. Chưa có request") }
+                Button(onClick = { coroutineScope.launch { jobRepo.updateJobStatus(activeJobId, "SEARCHING_WORKER") }; showDebugMenu = false }) { Text("2. Đang tìm thợ") }
+                Button(onClick = { coroutineScope.launch { jobRepo.assignWorker(activeJobId, "w1") }; showDebugMenu = false }) { Text("3. Tìm thấy thợ (WORKER_FOUND)") }
+                Button(onClick = { coroutineScope.launch { jobRepo.updateJobStatus(activeJobId, "WORKER_ON_THE_WAY") }; showDebugMenu = false }) { Text("4. Đang trên đường") }
+                Button(onClick = { coroutineScope.launch { jobRepo.updateJobStatus(activeJobId, "WORKER_ARRIVED") }; showDebugMenu = false }) { Text("5. Đã đến") }
+                Button(onClick = { coroutineScope.launch { jobRepo.updateJobStatus(activeJobId, "INSPECTION") }; showDebugMenu = false }) { Text("6. Đang kiểm tra (INSPECTION)") }
+                Button(onClick = { coroutineScope.launch { jobRepo.updateJobStatus(activeJobId, "REPAIRING") }; showDebugMenu = false }) { Text("7. Đang sửa (REPAIRING)") }
+                Button(onClick = { coroutineScope.launch { jobRepo.updateJobPrice(activeJobId, 150000.0, "Thay thế linh kiện") }; showDebugMenu = false }) { Text("8. Phát sinh chi phí") }
+                Button(onClick = { coroutineScope.launch { jobRepo.updateJobStatus(activeJobId, "JOB_COMPLETED") }; showDebugMenu = false }) { Text("9. Sửa xong / Chờ thanh toán") }
+                Button(onClick = { coroutineScope.launch { jobRepo.updateJobStatus(activeJobId, "COMPLETED") }; showDebugMenu = false }) { Text("10. Thanh toán xong") }
+                
+                Spacer(modifier = Modifier.height(16.dp))
+                Text("Worker Application (Mock Admin)", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
                 Button(onClick = { 
-                    coroutineScope.launch { jobRepo.updateJobStatus(activeJobId, "SEARCHING_WORKER") }
+                    val state = com.fixmatch.mobile.di.ServiceLocator.accountState.value
+                    if(state.application != null) {
+                        com.fixmatch.mobile.di.ServiceLocator.accountState.value = state.copy(application = state.application.copy(status = com.fixmatch.mobile.domain.model.WorkerApplicationStatus.APPROVED))
+                    }
                     showDebugMenu = false 
-                }) { Text("2. Đang tìm thợ") }
+                }) { Text("Duyệt hồ sơ (Approve)") }
                 Button(onClick = { 
-                    coroutineScope.launch { jobRepo.assignWorker(activeJobId, "w1") }
+                    val state = com.fixmatch.mobile.di.ServiceLocator.accountState.value
+                    if(state.application != null) {
+                        com.fixmatch.mobile.di.ServiceLocator.accountState.value = state.copy(application = state.application.copy(status = com.fixmatch.mobile.domain.model.WorkerApplicationStatus.REJECTED, rejectionReason = "Ảnh mờ, vui lòng chụp lại CCCD."))
+                    }
                     showDebugMenu = false 
-                }) { Text("3. Tìm thấy thợ (WORKER_FOUND)") }
-                Button(onClick = { 
-                    coroutineScope.launch { jobRepo.updateJobStatus(activeJobId, "WORKER_ON_THE_WAY") }
-                    showDebugMenu = false 
-                }) { Text("4. Đang trên đường") }
-                Button(onClick = { 
-                    coroutineScope.launch { jobRepo.updateJobStatus(activeJobId, "WORKER_ARRIVED") }
-                    showDebugMenu = false 
-                }) { Text("5. Đã đến") }
-                Button(onClick = { 
-                    coroutineScope.launch { jobRepo.updateJobStatus(activeJobId, "JOB_IN_PROGRESS") }
-                    showDebugMenu = false 
-                }) { Text("6. Đang sửa") }
-                Button(onClick = { 
-                    coroutineScope.launch { jobRepo.updateJobStatus(activeJobId, "JOB_COMPLETED") }
-                    showDebugMenu = false 
-                }) { Text("7. Sửa xong / Chờ thanh toán") }
-                Button(onClick = { 
-                    coroutineScope.launch { jobRepo.updateJobStatus(activeJobId, "COMPLETED") }
-                    showDebugMenu = false 
-                }) { Text("8. Thanh toán xong") }
+                }) { Text("Từ chối hồ sơ (Reject)") }
+                
                 Spacer(modifier = Modifier.height(24.dp))
             }
         }

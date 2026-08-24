@@ -85,8 +85,13 @@ fun AppNavigation() {
         }
         composable(Screen.Login.route) {
             LoginScreen(
-                onLoginSuccess = {
+                onLoginAsCustomer = {
                     navController.navigate(Screen.Home.route) {
+                        popUpTo(Screen.Login.route) { inclusive = true }
+                    }
+                },
+                onLoginAsWorker = {
+                    navController.navigate(Screen.WorkerHome.route) {
                         popUpTo(Screen.Login.route) { inclusive = true }
                     }
                 }

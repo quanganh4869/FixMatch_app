@@ -71,7 +71,8 @@ fun MainScreen(
             if (isWorkerMode) {
                 when (workerRoutes[page]) {
                     "worker_home" -> WorkerHomeScreen(
-                        onNavigateToNewRequest = { rootNavController.navigate(Screen.NewJobRequest.route) }
+                        onNavigateToNewRequest = { rootNavController.navigate(Screen.NewJobRequest.route) },
+                        onNavigateToActiveJob = { rootNavController.navigate("worker_active_job") }
                     )
                     "jobs" -> MyRequestsScreen(
                         onNavigateToTrackJob = { rootNavController.navigate(Screen.TrackJob.route) }

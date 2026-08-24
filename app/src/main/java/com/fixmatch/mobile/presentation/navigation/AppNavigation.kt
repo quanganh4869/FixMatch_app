@@ -201,8 +201,18 @@ fun AppNavigation() {
         composable(Screen.NewJobRequest.route) { 
             NewJobRequestScreen(
                 onDecline = { navController.popBackStack() },
-                onAccept = { navController.popBackStack() } 
+                onAccept = { 
+                    com.fixmatch.mobile.di.ServiceLocator.currentActiveJobId.value = "j_mock"
+                    navController.navigate("worker_active_job") {
+                        popUpTo(Screen.WorkerHome.route)
+                    }
+                } 
             ) 
+        }
+        composable("worker_active_job") {
+            com.fixmatch.mobile.presentation.workerhome.WorkerActiveJobScreen(
+                onNavigateBack = { navController.popBackStack() }
+            )
         }
         composable(Screen.MyEarnings.route) { MyEarningsScreen() }
         composable(Screen.WorkerSettings.route) { 

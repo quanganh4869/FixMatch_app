@@ -16,4 +16,5 @@ interface JobRepository {
     fun observeJob(jobId: String): Flow<Job?>
     suspend fun requestService(title: String, description: String, category: String, location: String): NetworkResult<Job>
     suspend fun updateJobStatus(jobId: String, status: String): NetworkResult<Job>
+    suspend fun assignWorker(jobId: String, workerId: String): NetworkResult<Job>
 }

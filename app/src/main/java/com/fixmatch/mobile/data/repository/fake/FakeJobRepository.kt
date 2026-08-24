@@ -82,17 +82,20 @@ class FakeJobRepository : JobRepository {
     
     // MOCK SCENARIO METHODS - To be used by Debug Menu or UI for testing flow
 
-    fun assignWorker(jobId: String, workerId: String, price: Double = 250000.0) {
+    override suspend fun assignWorker(jobId: String, workerId: String): NetworkResult<Job> {
         val currentList = _jobsState.value.toMutableList()
         val index = currentList.indexOfFirst { it.id == jobId }
         if (index != -1) {
-            val updated = currentList[index].copy(
-                status = JobStatus.WORKER_FOUND,
+            val job = currentList[index]
+            val updatedJob = job.copy(
                 workerId = workerId,
-                estimatedPrice = price
+                status = JobStatus.WORKER_FOUND,
+                estimatedPrice = 250000.0
             )
-            currentList[index] = updated
+            currentList[index] = updatedJob
             _jobsState.value = currentList
+            return NetworkResult.Success(updatedJob)
         }
+        return NetworkResult.Error(com.fixmatch.mobile.domain.util.DataError.Api.NOT_FOUND, "Job not found")
     }
 }

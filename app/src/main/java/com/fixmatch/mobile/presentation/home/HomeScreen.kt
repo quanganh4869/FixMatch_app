@@ -277,7 +277,7 @@ fun HomeScreen(
                     showDebugMenu = false 
                 }) { Text("2. Đang tìm thợ") }
                 Button(onClick = { 
-                    jobRepo.assignWorker(activeJobId, "w1")
+                    coroutineScope.launch { jobRepo.assignWorker(activeJobId, "w1") }
                     showDebugMenu = false 
                 }) { Text("3. Tìm thấy thợ (WORKER_FOUND)") }
                 Button(onClick = { 

@@ -24,6 +24,8 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
@@ -57,7 +59,14 @@ fun HomeScreen(
 
     var searchQuery by remember { mutableStateOf("") }
     
+    var showDebugMenu by remember { mutableStateOf(false) }
+
     Scaffold(
+        floatingActionButton = {
+            FloatingActionButton(onClick = { showDebugMenu = true }, containerColor = Color.Red) {
+                Text("DEV", color = Color.White, fontWeight = FontWeight.Bold)
+            }
+        },
         topBar = {
             TopAppBar(
                 title = {
@@ -254,6 +263,48 @@ fun HomeScreen(
     }
     
     // Module 2: Location Selection Bottom Sheet
+    if (showDebugMenu) {
+        ModalBottomSheet(onDismissRequest = { showDebugMenu = false }) {
+            Column(modifier = Modifier.padding(16.dp).verticalScroll(rememberScrollState())) {
+                Text("Debug Mock Scenarios", style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold)
+                Spacer(modifier = Modifier.height(16.dp))
+                val jobRepo = com.fixmatch.mobile.di.ServiceLocator.jobRepository as com.fixmatch.mobile.data.repository.fake.FakeJobRepository
+                val activeJobId = com.fixmatch.mobile.di.ServiceLocator.currentActiveJobId.value ?: "j_mock"
+                
+                Button(onClick = { com.fixmatch.mobile.di.ServiceLocator.currentActiveJobId.value = null; showDebugMenu = false }) { Text("1. Chưa có request") }
+                Button(onClick = { 
+                    coroutineScope.launch { jobRepo.updateJobStatus(activeJobId, "SEARCHING_WORKER") }
+                    showDebugMenu = false 
+                }) { Text("2. Đang tìm thợ") }
+                Button(onClick = { 
+                    coroutineScope.launch { jobRepo.assignWorker(activeJobId, "w1") }
+                    showDebugMenu = false 
+                }) { Text("3. Tìm thấy thợ (WORKER_FOUND)") }
+                Button(onClick = { 
+                    coroutineScope.launch { jobRepo.updateJobStatus(activeJobId, "WORKER_ON_THE_WAY") }
+                    showDebugMenu = false 
+                }) { Text("4. Đang trên đường") }
+                Button(onClick = { 
+                    coroutineScope.launch { jobRepo.updateJobStatus(activeJobId, "WORKER_ARRIVED") }
+                    showDebugMenu = false 
+                }) { Text("5. Đã đến") }
+                Button(onClick = { 
+                    coroutineScope.launch { jobRepo.updateJobStatus(activeJobId, "JOB_IN_PROGRESS") }
+                    showDebugMenu = false 
+                }) { Text("6. Đang sửa") }
+                Button(onClick = { 
+                    coroutineScope.launch { jobRepo.updateJobStatus(activeJobId, "JOB_COMPLETED") }
+                    showDebugMenu = false 
+                }) { Text("7. Sửa xong / Chờ thanh toán") }
+                Button(onClick = { 
+                    coroutineScope.launch { jobRepo.updateJobStatus(activeJobId, "COMPLETED") }
+                    showDebugMenu = false 
+                }) { Text("8. Thanh toán xong") }
+                Spacer(modifier = Modifier.height(24.dp))
+            }
+        }
+    }
+
     if (showLocationSheet) {
         ModalBottomSheet(
             onDismissRequest = { 

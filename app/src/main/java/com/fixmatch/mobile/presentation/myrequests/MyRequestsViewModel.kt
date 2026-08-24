@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 class MyRequestsViewModel(
-    private val jobRepository: JobRepository
+    private val jobRepository: JobRepository = com.fixmatch.mobile.di.ServiceLocator.jobRepository
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow<UiState<List<Job>>>(UiState.Idle)

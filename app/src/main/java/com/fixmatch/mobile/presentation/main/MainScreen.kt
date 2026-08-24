@@ -73,7 +73,9 @@ fun MainScreen(
                     "worker_home" -> WorkerHomeScreen(
                         onNavigateToNewRequest = { rootNavController.navigate(Screen.NewJobRequest.route) }
                     )
-                    "jobs" -> MyRequestsScreen()
+                    "jobs" -> MyRequestsScreen(
+                        onNavigateToTrackJob = { rootNavController.navigate(Screen.TrackJob.route) }
+                    )
                     "messages" -> MessagesScreen(onNavigateToChat = { rootNavController.navigate(Screen.Chat.route) })
                     "worker_settings" -> WorkerSettingsScreen(
                         onNavigateBack = { coroutineScope.launch { pagerState.animateScrollToPage(0) } },
@@ -85,9 +87,11 @@ fun MainScreen(
                     "home" -> HomeScreen(
                         onNavigateToWorkerProfile = { rootNavController.navigate(Screen.WorkerProfile.route) },
                         onNavigateToNewRequest = { rootNavController.navigate(Screen.RequestService.route) },
-                        onNavigateToFindingWorker = { rootNavController.navigate(Screen.FindingWorker.route) }
+                        onNavigateToFindingWorker = { rootNavController.navigate(Screen.RequestService.route) } // Navigate to RequestService to start Grab flow
                     )
-                    "requests" -> MyRequestsScreen()
+                    "requests" -> MyRequestsScreen(
+                        onNavigateToTrackJob = { rootNavController.navigate(Screen.TrackJob.route) }
+                    )
                     "messages" -> MessagesScreen(onNavigateToChat = { rootNavController.navigate(Screen.Chat.route) })
                     "profile" -> ProfileScreen(
                         onNavigate = {},

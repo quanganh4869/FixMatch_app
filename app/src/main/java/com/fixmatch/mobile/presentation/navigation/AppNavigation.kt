@@ -64,6 +64,7 @@ fun AppNavigation() {
         exitTransition = { slideOutOfContainer(AnimatedContentTransitionScope.SlideDirection.Left, animationSpec = tween(300)) },
         popEnterTransition = { slideIntoContainer(AnimatedContentTransitionScope.SlideDirection.Right, animationSpec = tween(300)) },
         popExitTransition = { slideOutOfContainer(AnimatedContentTransitionScope.SlideDirection.Right, animationSpec = tween(300)) }) {
+        
         composable(Screen.Splash.route, exitTransition = { fadeOut(animationSpec = tween(500)) }) {
             SplashScreen(
                 onSplashFinished = {
@@ -92,72 +93,114 @@ fun AppNavigation() {
             )
         }
         composable(Screen.Home.route) {
+            // MainScreen contains Bottom Nav: Home, Requests, Messages, Profile
             MainScreen(rootNavController = navController)
         }
-        composable(Screen.WorkerProfile.route) { 
-            WorkerProfileScreen(
-                onNavigateBack = { navController.popBackStack() },
-                onNavigateToRequestService = { navController.navigate(Screen.RequestService.route) },
-                onNavigateToMessages = { navController.navigate(Screen.Messages.route) }
-            ) 
-        }
+        
+        // --- CUSTOMER FLOW (ON-DEMAND GRAB STYLE) ---
+        
+        // 1. Request Service (Fill issue details & book)
         composable(Screen.RequestService.route) { 
             RequestServiceScreen(
                 onNavigateBack = { navController.popBackStack() },
-                onSubmitRequest = { navController.navigate(Screen.FindingWorker.route) }
+                onSubmitRequest = { 
+                    // Start finding worker
+                    navController.navigate(Screen.FindingWorker.route) {
+                        popUpTo(Screen.Home.route) // Keep Home as base
+                    }
+                }
             ) 
         }
-        composable(Screen.FindingWorker.route, enterTransition = { fadeIn(animationSpec = tween(400)) }, exitTransition = { fadeOut(animationSpec = tween(400)) }) { 
+
+        // 2. Finding Worker (Radar Animation)
+        composable(Screen.FindingWorker.route) { 
             FindingWorkerScreen(
                 onCancel = { navController.popBackStack() },
-                onWorkerFound = { navController.navigate(Screen.WorkerFound.route) {
-                    popUpTo(Screen.FindingWorker.route) { inclusive = true }
-                } }
+                onWorkerFound = { 
+                    navController.navigate(Screen.WorkerFound.route) {
+                        popUpTo(Screen.FindingWorker.route) { inclusive = true }
+                    } 
+                }
             ) 
         }
-        composable(Screen.WorkerFound.route, enterTransition = { fadeIn(animationSpec = tween(400)) }, exitTransition = { fadeOut(animationSpec = tween(400)) }) { 
+        
+        // 3. Worker Found (Single Match)
+        composable(Screen.WorkerFound.route) { 
             WorkerFoundScreen(
                 onNavigateBack = { navController.popBackStack() },
-                onContinue = { navController.navigate(Screen.TrackJob.route) }
+                onContinue = { 
+                    navController.navigate(Screen.TrackJob.route) {
+                        popUpTo(Screen.WorkerFound.route) { inclusive = true }
+                    }
+                } 
             ) 
         }
+        
+        // (Optional) Worker Profile if they want to view it from Tracking
+        composable(Screen.WorkerProfile.route) { 
+            WorkerProfileScreen(
+                onNavigateBack = { navController.popBackStack() },
+                onNavigateToRequestService = { navController.navigate(Screen.RequestService.route) }, 
+                onNavigateToMessages = { navController.navigate(Screen.Chat.route) }
+            ) 
+        }
+        
+        // 5. Track Job
         composable(Screen.TrackJob.route) { 
             TrackJobScreen(
                 onNavigateBack = { navController.popBackStack() },
-                onNavigateToReview = { navController.navigate(Screen.Payment.route) {
-                    popUpTo(Screen.TrackJob.route) { inclusive = true }
-                } }
+                onNavigateToReview = { 
+                    navController.navigate(Screen.Payment.route) {
+                        popUpTo(Screen.TrackJob.route) { inclusive = true }
+                    } 
+                }
             ) 
         }
+        
+        // 6. Payment & Review
         composable(Screen.Payment.route) { 
             PaymentScreen(
                 onNavigateBack = { navController.popBackStack() },
-                onPaymentComplete = { navController.navigate(Screen.PaymentResult.route) {
-                    popUpTo(Screen.Payment.route) { inclusive = true }
-                } }
+                onPaymentComplete = { 
+                    navController.navigate(Screen.PaymentResult.route) {
+                        popUpTo(Screen.Payment.route) { inclusive = true }
+                    } 
+                }
             ) 
         }
         composable(Screen.PaymentResult.route) { 
             PaymentResultScreen(
-                onNavigateToReview = { navController.navigate(Screen.Review.route) {
-                    popUpTo(Screen.PaymentResult.route) { inclusive = true }
-                } }
+                onNavigateToReview = { 
+                    navController.navigate(Screen.Review.route) {
+                        popUpTo(Screen.PaymentResult.route) { inclusive = true }
+                    } 
+                }
             ) 
         }
         composable(Screen.Review.route) { 
             ReviewScreen(
-                onNavigateHome = { navController.navigate(Screen.Home.route) {
-                    popUpTo(Screen.Home.route) { inclusive = true }
-                } }
+                onNavigateHome = { 
+                    navController.navigate(Screen.Home.route) {
+                        popUpTo(Screen.Home.route) { inclusive = true }
+                    } 
+                }
             ) 
         }
-        composable(Screen.Messages.route) { 
-            MessagesScreen(
-                onNavigateToChat = { navController.navigate(Screen.Chat.route) }
-            ) 
-        }
+        
+        // --- SHARED / AUXILIARY ---
         composable(Screen.Chat.route) { 
             ChatScreen(onNavigateBack = { navController.popBackStack() }) 
+        }
+        
+        // --- WORKER FLOW (Kept for compatibility) ---
+        composable(Screen.WorkerHome.route) { 
+            MainScreen(rootNavController = navController, isWorkerMode = true) 
+        }
+        composable(Screen.NewJobRequest.route) { 
+            NewJobRequestScreen(
+                onDecline = { navController.popBackStack() },
+                onAccept = { navController.popBackStack() } 
+            ) 
         }
         composable(Screen.MyEarnings.route) { MyEarningsScreen() }
         composable(Screen.WorkerSettings.route) { 
@@ -165,15 +208,6 @@ fun AppNavigation() {
                 onNavigateBack = { navController.popBackStack() },
                 onNavigateToSubscription = { navController.navigate("worker_subscription") }
             ) 
-        }
-        composable(Screen.NewJobRequest.route) { 
-            NewJobRequestScreen(
-                onDecline = { navController.popBackStack() },
-                onAccept = { navController.popBackStack() } // Back to WorkerHome for now
-            ) 
-        }
-        composable(Screen.WorkerHome.route) { 
-            MainScreen(rootNavController = navController, isWorkerMode = true) 
         }
         composable(Screen.Subscription.route) { 
             SubscriptionScreen(

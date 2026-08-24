@@ -57,6 +57,11 @@ fun ReviewScreen(
                         isSubmitting = true
                         coroutineScope.launch {
                             delay(1000)
+                            val activeJobId = com.fixmatch.mobile.di.ServiceLocator.currentActiveJobId.value
+                            if (activeJobId != null) {
+                                com.fixmatch.mobile.di.ServiceLocator.jobRepository.updateJobStatus(activeJobId, "REVIEWED")
+                                com.fixmatch.mobile.di.ServiceLocator.currentActiveJobId.value = null
+                            }
                             isSubmitting = false
                             onNavigateHome()
                         }

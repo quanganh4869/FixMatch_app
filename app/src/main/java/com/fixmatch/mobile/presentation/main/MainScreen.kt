@@ -79,7 +79,11 @@ fun MainScreen(
                     "messages" -> MessagesScreen(onNavigateToChat = { rootNavController.navigate(Screen.Chat.route) })
                     "worker_settings" -> WorkerSettingsScreen(
                         onNavigateBack = { coroutineScope.launch { pagerState.animateScrollToPage(0) } },
-                        onNavigateToSubscription = { rootNavController.navigate("worker_subscription") }
+                        onNavigateToSubscription = { rootNavController.navigate("worker_subscription") },
+                        onSwitchToCustomer = { 
+                            com.fixmatch.mobile.di.ServiceLocator.accountState.value = com.fixmatch.mobile.di.ServiceLocator.accountState.value.copy(currentMode = com.fixmatch.mobile.domain.model.AppMode.CUSTOMER)
+                            rootNavController.navigate(Screen.Home.route) { popUpTo(Screen.WorkerHome.route) { inclusive = true } } 
+                        }
                     )
                 }
             } else {
@@ -94,8 +98,13 @@ fun MainScreen(
                     )
                     "messages" -> MessagesScreen(onNavigateToChat = { rootNavController.navigate(Screen.Chat.route) })
                     "profile" -> ProfileScreen(
-                        onNavigate = {},
-                        onNavigateToSubscription = { rootNavController.navigate("subscription") }
+                        onNavigateToSubscription = { rootNavController.navigate("subscription") },
+                        onNavigateToBecomeWorker = { rootNavController.navigate(Screen.BecomeWorker.route) },
+                        onNavigateToApplicationStatus = { rootNavController.navigate(Screen.ApplicationStatus.route) },
+                        onSwitchMode = { 
+                            com.fixmatch.mobile.di.ServiceLocator.accountState.value = com.fixmatch.mobile.di.ServiceLocator.accountState.value.copy(currentMode = com.fixmatch.mobile.domain.model.AppMode.WORKER)
+                            rootNavController.navigate(Screen.WorkerHome.route) { popUpTo(Screen.Home.route) { inclusive = true } } 
+                        }
                     )
                 }
             }

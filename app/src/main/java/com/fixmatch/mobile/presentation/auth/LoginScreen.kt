@@ -26,8 +26,7 @@ import com.fixmatch.mobile.R
 
 @Composable
 fun LoginScreen(
-    onLoginAsCustomer: () -> Unit,
-    onLoginAsWorker: () -> Unit
+    onLoginSuccess: () -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -77,20 +76,19 @@ fun LoginScreen(
         Spacer(modifier = Modifier.height(8.dp))
         
         Text(
-            text = "Choose your role to continue",
+            text = "Sign in to continue",
             style = MaterialTheme.typography.bodyLarge,
             color = MaterialTheme.colorScheme.onSurfaceVariant
         )
         
         Spacer(modifier = Modifier.height(48.dp))
         
-        // Customer Login Button
         Surface(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(56.dp)
                 .shadow(4.dp, RoundedCornerShape(12.dp), spotColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.2f))
-                .clickable { onLoginAsCustomer() },
+                .clickable { onLoginSuccess() },
             shape = RoundedCornerShape(12.dp),
             color = MaterialTheme.colorScheme.primary
         ) {
@@ -100,36 +98,10 @@ fun LoginScreen(
                 horizontalArrangement = Arrangement.Center
             ) {
                 Text(
-                    text = "Đăng nhập Khách hàng",
+                    text = "Tiếp tục (Mock Login)",
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.SemiBold,
                     color = MaterialTheme.colorScheme.onPrimary
-                )
-            }
-        }
-        
-        Spacer(modifier = Modifier.height(16.dp))
-        
-        // Worker Login Button
-        Surface(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(56.dp)
-                .clickable { onLoginAsWorker() },
-            shape = RoundedCornerShape(12.dp),
-            color = MaterialTheme.colorScheme.surface,
-            border = androidx.compose.foundation.BorderStroke(1.dp, MaterialTheme.colorScheme.primary)
-        ) {
-            Row(
-                modifier = Modifier.fillMaxSize(),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.Center
-            ) {
-                Text(
-                    text = "Đăng nhập Thợ sửa chữa",
-                    style = MaterialTheme.typography.titleMedium,
-                    fontWeight = FontWeight.SemiBold,
-                    color = MaterialTheme.colorScheme.primary
                 )
             }
         }

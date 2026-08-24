@@ -281,6 +281,24 @@ fun HomeScreen(
                 Button(onClick = { coroutineScope.launch { jobRepo.updateJobPrice(activeJobId, 150000.0, "Thay thế linh kiện") }; showDebugMenu = false }) { Text("8. Phát sinh chi phí") }
                 Button(onClick = { coroutineScope.launch { jobRepo.updateJobStatus(activeJobId, "JOB_COMPLETED") }; showDebugMenu = false }) { Text("9. Sửa xong / Chờ thanh toán") }
                 Button(onClick = { coroutineScope.launch { jobRepo.updateJobStatus(activeJobId, "COMPLETED") }; showDebugMenu = false }) { Text("10. Thanh toán xong") }
+                
+                Spacer(modifier = Modifier.height(16.dp))
+                Text("Worker Application (Mock Admin)", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
+                Button(onClick = { 
+                    val state = com.fixmatch.mobile.di.ServiceLocator.accountState.value
+                    if(state.application != null) {
+                        com.fixmatch.mobile.di.ServiceLocator.accountState.value = state.copy(application = state.application.copy(status = com.fixmatch.mobile.domain.model.WorkerApplicationStatus.APPROVED))
+                    }
+                    showDebugMenu = false 
+                }) { Text("Duyệt hồ sơ (Approve)") }
+                Button(onClick = { 
+                    val state = com.fixmatch.mobile.di.ServiceLocator.accountState.value
+                    if(state.application != null) {
+                        com.fixmatch.mobile.di.ServiceLocator.accountState.value = state.copy(application = state.application.copy(status = com.fixmatch.mobile.domain.model.WorkerApplicationStatus.REJECTED, rejectionReason = "Ảnh mờ, vui lòng chụp lại CCCD."))
+                    }
+                    showDebugMenu = false 
+                }) { Text("Từ chối hồ sơ (Reject)") }
+                
                 Spacer(modifier = Modifier.height(24.dp))
             }
         }

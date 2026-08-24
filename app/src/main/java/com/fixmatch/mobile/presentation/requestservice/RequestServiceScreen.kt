@@ -1,25 +1,20 @@
 package com.fixmatch.mobile.presentation.requestservice
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.*
+import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import com.fixmatch.mobile.di.ServiceLocator
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -27,223 +22,135 @@ fun RequestServiceScreen(
     onNavigateBack: () -> Unit = {},
     onSubmitRequest: () -> Unit = {}
 ) {
-    var problemTitle by remember { mutableStateOf("") }
-    var description by remember { mutableStateOf("") }
-    var selectedCategory by remember { mutableStateOf("Điện") }
-    
-    var titleError by remember { mutableStateOf(false) }
-    var descError by remember { mutableStateOf(false) }
-    
-    var showConfirmationSheet by remember { mutableStateOf(false) }
+    var selectedIssue by remember { mutableStateOf("") }
+    var note by remember { mutableStateOf("") }
+    var location by remember { mutableStateOf("123 Nguyễn Văn Linh, Quận 7, TP.HCM") }
+    var isScheduling by remember { mutableStateOf(false) }
     var isSubmitting by remember { mutableStateOf(false) }
-    val coroutineScope = rememberCoroutineScope()
     
-    val categories = listOf("Điện", "Nước", "Dọn dẹp", "Máy lạnh", "Sửa khoá", "Lắp ráp")
+    val coroutineScope = rememberCoroutineScope()
+    val jobRepo = ServiceLocator.jobRepository
 
     Scaffold(
         topBar = {
             TopAppBar(
-                title = {
-                    Text(
-                        "Đăng Yêu Cầu",
-                        style = MaterialTheme.typography.titleLarge,
-                        fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.onSurface,
-                    )
-                },
+                title = { Text("Đặt dịch vụ", fontWeight = FontWeight.Bold) },
                 navigationIcon = {
                     IconButton(onClick = onNavigateBack) {
                         Icon(Icons.Default.ArrowBack, contentDescription = "Back")
                     }
-                },
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.surface
-                )
+                }
             )
         },
         bottomBar = {
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .background(MaterialTheme.colorScheme.surface)
-                    .padding(16.dp)
-                    .navigationBarsPadding()
-                    .imePadding()
+            Surface(
+                modifier = Modifier.fillMaxWidth().padding(16.dp),
+                color = MaterialTheme.colorScheme.background
             ) {
                 Button(
                     onClick = {
-                        titleError = problemTitle.isBlank()
-                        descError = description.isBlank()
-                        if (!titleError && !descError) {
-                            showConfirmationSheet = true
-                        }
-                    },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(56.dp)
-                        .shadow(4.dp, RoundedCornerShape(16.dp)),
-                    shape = RoundedCornerShape(16.dp),
-                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary)
-                ) {
-                    Text("Tiếp tục", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Icon(Icons.Default.ArrowForward, contentDescription = null, modifier = Modifier.size(20.dp))
-                }
-            }
-        }
-    ) { paddingValues ->
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(MaterialTheme.colorScheme.background)
-                .padding(paddingValues)
-                .verticalScroll(rememberScrollState())
-                .padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(24.dp)
-        ) {
-            
-            // --- Category Selection ---
-            Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
-                Text("Chọn Dịch Vụ", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.SemiBold, color = MaterialTheme.colorScheme.onBackground)
-                
-                @OptIn(ExperimentalLayoutApi::class)
-                FlowRow(
-                    horizontalArrangement = Arrangement.spacedBy(8.dp),
-                    verticalArrangement = Arrangement.spacedBy(8.dp),
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    categories.forEach { category ->
-                        val isSelected = selectedCategory == category
-                        Box(
-                            modifier = Modifier
-                                .clip(RoundedCornerShape(20.dp))
-                                .background(if (isSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.surfaceVariant)
-                                .clickable { selectedCategory = category }
-                                .padding(horizontal = 16.dp, vertical = 10.dp)
-                        ) {
-                            Text(
-                                text = category,
-                                color = if (isSelected) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurfaceVariant,
-                                style = MaterialTheme.typography.labelLarge,
-                                fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal
-                            )
-                        }
-                    }
-                }
-            }
-
-            // --- Problem Title ---
-            Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                Text("Vấn đề bạn đang gặp phải là gì?", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.SemiBold, color = MaterialTheme.colorScheme.onBackground)
-                OutlinedTextField(
-                    value = problemTitle,
-                    onValueChange = { 
-                        problemTitle = it
-                        if(it.isNotBlank()) titleError = false
-                    },
-                    placeholder = { Text("VD: Sửa vòi nước bị rò rỉ") },
-                    modifier = Modifier.fillMaxWidth(),
-                    shape = RoundedCornerShape(12.dp),
-                    isError = titleError,
-                    supportingText = if (titleError) { { Text("Vui lòng nhập tóm tắt vấn đề") } } else null,
-                    singleLine = true
-                )
-            }
-
-            // --- Description ---
-            Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                Text("Mô tả chi tiết", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.SemiBold, color = MaterialTheme.colorScheme.onBackground)
-                OutlinedTextField(
-                    value = description,
-                    onValueChange = { 
-                        description = it
-                        if(it.isNotBlank()) descError = false
-                    },
-                    placeholder = { Text("Cung cấp thêm chi tiết giúp thợ mang đúng dụng cụ...") },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(120.dp),
-                    shape = RoundedCornerShape(12.dp),
-                    isError = descError,
-                    supportingText = if (descError) { { Text("Vui lòng nhập chi tiết vấn đề") } } else null
-                )
-            }
-            
-            // --- Address (Mock read-only) ---
-            Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                Text("Địa chỉ", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.SemiBold, color = MaterialTheme.colorScheme.onBackground)
-                OutlinedTextField(
-                    value = "Vị trí hiện tại (Quận 1, TP. HCM)",
-                    onValueChange = { },
-                    modifier = Modifier.fillMaxWidth(),
-                    shape = RoundedCornerShape(12.dp),
-                    readOnly = true,
-                    leadingIcon = { Icon(Icons.Default.LocationOn, contentDescription = null, tint = MaterialTheme.colorScheme.primary) }
-                )
-            }
-            Spacer(modifier = Modifier.height(40.dp))
-        }
-    }
-    
-    if (showConfirmationSheet) {
-        ModalBottomSheet(onDismissRequest = { if (!isSubmitting) showConfirmationSheet = false }) {
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 24.dp, vertical = 16.dp),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Text("Xác nhận đăng yêu cầu", style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold)
-                Spacer(modifier = Modifier.height(24.dp))
-                
-                Card(
-                    modifier = Modifier.fillMaxWidth(),
-                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f)),
-                    shape = RoundedCornerShape(12.dp)
-                ) {
-                    Column(modifier = Modifier.padding(16.dp)) {
-                        Text("Dịch vụ: $selectedCategory", fontWeight = FontWeight.Medium)
-                        Spacer(modifier = Modifier.height(8.dp))
-                        Text("Vấn đề: $problemTitle", fontWeight = FontWeight.Medium)
-                        Spacer(modifier = Modifier.height(8.dp))
-                        Text("Ghi chú: $description", style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
-                    }
-                }
-                
-                Spacer(modifier = Modifier.height(32.dp))
-                
-                Button(
-                    onClick = {
-                        isSubmitting = true
-                        coroutineScope.launch {
-                            val result = com.fixmatch.mobile.di.ServiceLocator.jobRepository.requestService(
-                                title = problemTitle,
-                                description = description,
-                                category = selectedCategory,
-                                location = "Địa chỉ mặc định"
-                            )
-                            isSubmitting = false
-                            showConfirmationSheet = false
-                            if (result is com.fixmatch.mobile.domain.util.NetworkResult.Success) {
-                                com.fixmatch.mobile.di.ServiceLocator.currentActiveJobId.value = result.data?.id
-                                onSubmitRequest()
+                        if (selectedIssue.isNotBlank()) {
+                            isSubmitting = true
+                            coroutineScope.launch {
+                                val result = jobRepo.requestService(
+                                    title = "Sửa Máy Lạnh",
+                                    description = if (note.isNotBlank()) "$selectedIssue - $note" else selectedIssue,
+                                    category = "Máy lạnh",
+                                    location = location
+                                )
+                                isSubmitting = false
+                                if (result is com.fixmatch.mobile.domain.util.NetworkResult.Success) {
+                                    ServiceLocator.currentActiveJobId.value = result.data.id
+                                    onSubmitRequest()
+                                }
                             }
                         }
                     },
                     modifier = Modifier.fillMaxWidth().height(56.dp),
-                    enabled = !isSubmitting,
-                    shape = RoundedCornerShape(12.dp)
+                    shape = RoundedCornerShape(12.dp),
+                    enabled = selectedIssue.isNotBlank() && !isSubmitting
                 ) {
                     if (isSubmitting) {
                         CircularProgressIndicator(color = MaterialTheme.colorScheme.onPrimary, modifier = Modifier.size(24.dp))
-                        Spacer(modifier = Modifier.width(12.dp))
-                        Text("Đang xử lý...")
                     } else {
-                        Text("Xác nhận & Tìm Thợ", style = MaterialTheme.typography.titleMedium)
+                        Text(if (isScheduling) "Đặt Lịch" else "Tìm Thợ Ngay", style = MaterialTheme.typography.titleMedium)
                     }
                 }
-                Spacer(modifier = Modifier.height(24.dp))
             }
+        }
+    ) { padding ->
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(padding)
+                .verticalScroll(rememberScrollState())
+                .padding(16.dp)
+        ) {
+            Text("Vấn đề bạn đang gặp phải?", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
+            Spacer(modifier = Modifier.height(16.dp))
+            
+            // Mock issues for Air Conditioner
+            val issues = listOf("Máy không lạnh", "Chảy nước", "Quạt không quay", "Cần vệ sinh/Bảo trì")
+            issues.forEach { issue ->
+                Row(
+                    modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    RadioButton(
+                        selected = selectedIssue == issue,
+                        onClick = { selectedIssue = issue }
+                    )
+                    Text(issue, modifier = Modifier.padding(start = 8.dp))
+                }
+            }
+            
+            Spacer(modifier = Modifier.height(24.dp))
+            Text("Mô tả thêm (Không bắt buộc)", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
+            Spacer(modifier = Modifier.height(8.dp))
+            OutlinedTextField(
+                value = note,
+                onValueChange = { note = it },
+                modifier = Modifier.fillMaxWidth().height(100.dp),
+                placeholder = { Text("Ví dụ: Máy kêu to khi chạy...") },
+                shape = RoundedCornerShape(12.dp)
+            )
+            
+            Spacer(modifier = Modifier.height(24.dp))
+            Text("Địa chỉ", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
+            Spacer(modifier = Modifier.height(8.dp))
+            OutlinedTextField(
+                value = location,
+                onValueChange = { location = it },
+                modifier = Modifier.fillMaxWidth(),
+                leadingIcon = { Icon(Icons.Default.LocationOn, contentDescription = null, tint = MaterialTheme.colorScheme.primary) },
+                shape = RoundedCornerShape(12.dp)
+            )
+            
+            Spacer(modifier = Modifier.height(24.dp))
+            Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) {
+                Text("Thời gian", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Text("Làm ngay")
+                    Switch(checked = isScheduling, onCheckedChange = { isScheduling = it }, modifier = Modifier.padding(horizontal = 8.dp))
+                    Text("Đặt lịch")
+                }
+            }
+            
+            Spacer(modifier = Modifier.height(24.dp))
+            Card(
+                modifier = Modifier.fillMaxWidth(),
+                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.5f))
+            ) {
+                Column(modifier = Modifier.padding(16.dp)) {
+                    Text("Phí dịch vụ cơ bản", style = MaterialTheme.typography.titleSmall)
+                    Spacer(modifier = Modifier.height(4.dp))
+                    Text("150,000 đ", style = MaterialTheme.typography.headlineSmall, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.primary)
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Text("*Phí có thể thay đổi tùy tình trạng thực tế sau khi thợ kiểm tra. Bạn sẽ được báo giá và cần xác nhận trước khi sửa.", style = MaterialTheme.typography.bodySmall)
+                }
+            }
+            
+            Spacer(modifier = Modifier.height(24.dp))
         }
     }
 }

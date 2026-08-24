@@ -25,6 +25,7 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.fixmatch.mobile.di.ServiceLocator
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -34,9 +35,31 @@ fun PaymentScreen(
     onNavigateBack: () -> Unit = {},
     onPaymentComplete: () -> Unit = {}
 ) {
-    var selectedPaymentMethod by remember { mutableStateOf("Momo") }
+    var selectedPaymentMethod by remember { mutableStateOf("Tiền mặt") }
     var isProcessing by remember { mutableStateOf(false) }
+    var isSuccess by remember { mutableStateOf(false) }
+    var paymentError by remember { mutableStateOf<String?>(null) }
+    
     val coroutineScope = rememberCoroutineScope()
+    val activeJobId = ServiceLocator.currentActiveJobId.collectAsState().value
+    val job by ServiceLocator.jobRepository.observeJob(activeJobId ?: "").collectAsState(initial = null)
+    
+    val basePrice = job?.basePrice ?: 150000.0
+    val additionalCost = job?.additionalCost ?: 0.0
+    val total = basePrice + additionalCost
+
+    if (isSuccess) {
+        AlertDialog(
+            onDismissRequest = {},
+            title = { Text("Thanh toán thành công") },
+            text = { Text("Cảm ơn bạn đã sử dụng dịch vụ của FixMatch!") },
+            confirmButton = {
+                Button(onClick = { onPaymentComplete() }) {
+                    Text("Đánh giá")
+                }
+            }
+        )
+    }
 
     Scaffold(
         topBar = {
@@ -63,14 +86,14 @@ fun PaymentScreen(
                 Button(
                     onClick = {
                         isProcessing = true
+                        paymentError = null
                         coroutineScope.launch {
                             delay(1500) // Mock API
-                            val activeJobId = com.fixmatch.mobile.di.ServiceLocator.currentActiveJobId.value
                             if (activeJobId != null) {
-                                com.fixmatch.mobile.di.ServiceLocator.jobRepository.updateJobStatus(activeJobId, "COMPLETED")
+                                ServiceLocator.jobRepository.updateJobStatus(activeJobId, "COMPLETED")
+                                isProcessing = false
+                                isSuccess = true
                             }
-                            isProcessing = false
-                            onPaymentComplete()
                         }
                     },
                     modifier = Modifier
@@ -86,7 +109,7 @@ fun PaymentScreen(
                         Spacer(modifier = Modifier.width(12.dp))
                         Text("Đang xử lý...", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
                     } else {
-                        Text("Thanh toán 250.000đ", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
+                        Text("Thanh toán ${String.format("%,.0f", total)}đ", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
                     }
                 }
             }
@@ -98,92 +121,67 @@ fun PaymentScreen(
                 .background(MaterialTheme.colorScheme.background)
                 .padding(paddingValues)
                 .verticalScroll(rememberScrollState())
-                .padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(24.dp)
+                .padding(16.dp)
         ) {
+            if (paymentError != null) {
+                Card(colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.errorContainer), modifier = Modifier.fillMaxWidth().padding(bottom = 16.dp)) {
+                    Text(paymentError!!, modifier = Modifier.padding(16.dp), color = MaterialTheme.colorScheme.onErrorContainer)
+                }
+            }
+        
+            Text("Tổng quan dịch vụ", style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold)
+            Spacer(modifier = Modifier.height(16.dp))
             
-            // Chi tiết hoá đơn
-            Card(
-                modifier = Modifier.fillMaxWidth(),
-                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
-                shape = RoundedCornerShape(16.dp),
-                border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant)
-            ) {
+            Card(modifier = Modifier.fillMaxWidth(), colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface), elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)) {
                 Column(modifier = Modifier.padding(16.dp)) {
-                    Text("Chi tiết hoá đơn", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
-                    Spacer(modifier = Modifier.height(16.dp))
-                    
                     Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-                        Text("Phí sửa chữa", color = MaterialTheme.colorScheme.onSurfaceVariant)
-                        Text("200.000đ", fontWeight = FontWeight.Medium)
+                        Text("Phí dịch vụ cơ bản", style = MaterialTheme.typography.bodyLarge)
+                        Text("${String.format("%,.0f", basePrice)}đ", style = MaterialTheme.typography.bodyLarge)
                     }
-                    Spacer(modifier = Modifier.height(8.dp))
-                    Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-                        Text("Phụ tùng thay thế", color = MaterialTheme.colorScheme.onSurfaceVariant)
-                        Text("50.000đ", fontWeight = FontWeight.Medium)
+                    if (additionalCost > 0) {
+                        Spacer(modifier = Modifier.height(8.dp))
+                        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+                            Text("Phụ phí (Linh kiện...)", style = MaterialTheme.typography.bodyLarge)
+                            Text("${String.format("%,.0f", additionalCost)}đ", style = MaterialTheme.typography.bodyLarge)
+                        }
                     }
-                    Spacer(modifier = Modifier.height(16.dp))
-                    Divider(color = MaterialTheme.colorScheme.outlineVariant)
-                    Spacer(modifier = Modifier.height(16.dp))
+                    Divider(modifier = Modifier.padding(vertical = 12.dp))
                     Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
                         Text("Tổng cộng", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
-                        Text("250.000đ", style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.primary)
+                        Text("${String.format("%,.0f", total)}đ", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.primary)
                     }
                 }
             }
             
-            // Phương thức thanh toán
-            Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
-                Text("Phương thức thanh toán", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
-                
-                PaymentMethodItem(
-                    name = "Ví Momo",
-                    icon = Icons.Default.Wallet,
-                    isSelected = selectedPaymentMethod == "Momo",
-                    onClick = { selectedPaymentMethod = "Momo" }
-                )
-                
-                PaymentMethodItem(
-                    name = "ZaloPay",
-                    icon = Icons.Default.Wallet,
-                    isSelected = selectedPaymentMethod == "ZaloPay",
-                    onClick = { selectedPaymentMethod = "ZaloPay" }
-                )
-                
-                PaymentMethodItem(
-                    name = "Tiền mặt",
-                    icon = Icons.Default.Money,
-                    isSelected = selectedPaymentMethod == "Cash",
-                    onClick = { selectedPaymentMethod = "Cash" }
-                )
-            }
-        }
-    }
-}
-
-@Composable
-fun PaymentMethodItem(name: String, icon: androidx.compose.ui.graphics.vector.ImageVector, isSelected: Boolean, onClick: () -> Unit) {
-    Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clickable { onClick() }
-            .border(
-                width = if (isSelected) 2.dp else 1.dp,
-                color = if (isSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.outlineVariant,
-                shape = RoundedCornerShape(12.dp)
-            ),
-        colors = CardDefaults.cardColors(containerColor = if (isSelected) MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.3f) else MaterialTheme.colorScheme.surface),
-        shape = RoundedCornerShape(12.dp)
-    ) {
-        Row(
-            modifier = Modifier.padding(16.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Icon(icon, contentDescription = null, tint = if (isSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant)
-            Spacer(modifier = Modifier.width(16.dp))
-            Text(name, style = MaterialTheme.typography.titleMedium, fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Medium, modifier = Modifier.weight(1f))
-            if (isSelected) {
-                Icon(Icons.Default.Check, contentDescription = null, tint = MaterialTheme.colorScheme.primary)
+            Spacer(modifier = Modifier.height(32.dp))
+            Text("Phương thức thanh toán", style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold)
+            Spacer(modifier = Modifier.height(16.dp))
+            
+            val methods = listOf("Tiền mặt", "Thẻ tín dụng", "Momo", "ZaloPay")
+            methods.forEach { method ->
+                Card(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 4.dp)
+                        .clickable { selectedPaymentMethod = method }
+                        .border(
+                            if (selectedPaymentMethod == method) BorderStroke(2.dp, MaterialTheme.colorScheme.primary) else BorderStroke(0.dp, Color.Transparent),
+                            RoundedCornerShape(12.dp)
+                        ),
+                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
+                ) {
+                    Row(
+                        modifier = Modifier.fillMaxWidth().padding(16.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        RadioButton(
+                            selected = selectedPaymentMethod == method,
+                            onClick = { selectedPaymentMethod = method }
+                        )
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Text(method, style = MaterialTheme.typography.bodyLarge)
+                    }
+                }
             }
         }
     }

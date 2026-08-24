@@ -9,6 +9,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.DirectionsCar
 import androidx.compose.material.icons.filled.LocationOn
+import androidx.compose.material.icons.filled.Message
 import androidx.compose.material.icons.filled.Phone
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.*
@@ -39,7 +40,17 @@ fun TrackJobScreen(
     val status = job?.status ?: JobStatus.CREATED
     
     var showCancelDialog by remember { mutableStateOf(false) }
+    var showCostApprovalDialog by remember { mutableStateOf(false) }
+    
     val coroutineScope = rememberCoroutineScope()
+    
+    LaunchedEffect(status) {
+        if (status == JobStatus.ADDITIONAL_COST_PENDING) {
+            showCostApprovalDialog = true
+        } else {
+            showCostApprovalDialog = false
+        }
+    }
 
     Scaffold(
         topBar = {
@@ -109,6 +120,51 @@ fun TrackJobScreen(
             }
         )
     }
+    
+    if (showCostApprovalDialog && job != null) {
+        AlertDialog(
+            onDismissRequest = { },
+            title = { Text("Xác nhận phụ phí") },
+            text = { 
+                Column {
+                    Text("Thợ báo phát sinh phụ phí:")
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Text("Lý do: ${job!!.additionalCostReason ?: "Linh kiện thay thế"}")
+                    Text("Phí dịch vụ: 150,000 đ")
+                    Text("Phụ phí: ${job!!.additionalCost} đ")
+                    Divider(modifier = Modifier.padding(vertical = 8.dp))
+                    Text("Tổng cộng: ${job!!.finalPrice} đ", fontWeight = FontWeight.Bold)
+                }
+            },
+            confirmButton = {
+                Button(
+                    onClick = {
+                        if (activeJobId != null) {
+                            coroutineScope.launch {
+                                jobRepo.updateJobStatus(activeJobId, "REPAIRING")
+                            }
+                        }
+                    }
+                ) {
+                    Text("Đồng ý")
+                }
+            },
+            dismissButton = {
+                TextButton(
+                    onClick = {
+                        if (activeJobId != null) {
+                            coroutineScope.launch {
+                                jobRepo.updateJobStatus(activeJobId, "CANCELLED_BY_CUSTOMER")
+                            }
+                        }
+                        onNavigateBack()
+                    }
+                ) {
+                    Text("Từ chối & Huỷ", color = MaterialTheme.colorScheme.error)
+                }
+            }
+        )
+    }
 }
 
 @Composable
@@ -130,6 +186,12 @@ fun MockMapOverlay(status: JobStatus) {
             modifier = Modifier.align(Alignment.Center).offset(y = (-50).dp)
         ) {
             Icon(Icons.Default.LocationOn, contentDescription = null, tint = Color.Blue, modifier = Modifier.size(48.dp))
+        }
+        
+        // Mock route line
+        if (status == JobStatus.WORKER_ON_THE_WAY || status == JobStatus.WORKER_ACCEPTED || status == JobStatus.WORKER_FOUND) {
+            // Draw a fake route using a rotated box
+            Box(modifier = Modifier.align(Alignment.Center).offset(y = 75.dp, x = 25.dp).width(4.dp).height(200.dp).background(Color.Blue.copy(alpha = 0.5f)))
         }
         
         // Worker Location Pin (Animated if ON_THE_WAY)
@@ -187,7 +249,7 @@ fun JobStatusBottomSheet(
         shape = RoundedCornerShape(topStart = 24.dp, topEnd = 24.dp)
     ) {
         Column(modifier = Modifier.padding(24.dp)) {
-            // Handle Handle
+            // Handle
             Box(modifier = Modifier.width(40.dp).height(4.dp).background(Color.LightGray, CircleShape).align(Alignment.CenterHorizontally))
             Spacer(modifier = Modifier.height(16.dp))
             
@@ -195,64 +257,54 @@ fun JobStatusBottomSheet(
                 JobStatus.CREATED -> "Đã tạo yêu cầu"
                 JobStatus.SEARCHING_WORKER -> "Đang tìm thợ gần bạn..."
                 JobStatus.WORKER_FOUND, JobStatus.WORKER_ACCEPTED -> "Thợ đã nhận việc"
-                JobStatus.WORKER_ON_THE_WAY -> "Thợ đang trên đường"
+                JobStatus.WORKER_ON_THE_WAY -> "Thợ đang trên đường (Khoảng 8 phút, 1.8km)"
                 JobStatus.WORKER_ARRIVED -> "Thợ đã đến nơi"
-                JobStatus.JOB_IN_PROGRESS -> "Đang thực hiện công việc"
-                JobStatus.JOB_COMPLETED, JobStatus.PAYMENT_PENDING -> "Công việc hoàn thành"
+                JobStatus.INSPECTION -> "Thợ đang kiểm tra thiết bị"
+                JobStatus.REPAIRING -> "Thợ đang tiến hành sửa chữa"
+                JobStatus.ADDITIONAL_COST_PENDING -> "Đang chờ xác nhận phụ phí"
+                JobStatus.JOB_COMPLETED -> "Sửa chữa hoàn tất"
+                JobStatus.PAYMENT_PENDING -> "Đang chờ thanh toán"
                 JobStatus.COMPLETED -> "Đã thanh toán"
                 JobStatus.REVIEWED -> "Đã đánh giá"
-                JobStatus.CANCELLED_BY_WORKER -> "Thợ đã huỷ yêu cầu"
-                JobStatus.CANCELLED_BY_CUSTOMER -> "Đã huỷ yêu cầu"
-                JobStatus.NO_WORKER_FOUND -> "Không tìm thấy thợ phù hợp"
+                JobStatus.CANCELLED_BY_WORKER -> "Thợ đã huỷ"
+                JobStatus.CANCELLED_BY_CUSTOMER -> "Bạn đã huỷ"
+                JobStatus.NO_WORKER_FOUND -> "Không tìm thấy thợ"
+                else -> "Không xác định"
             }
             
-            Text(statusText, style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold)
-            Spacer(modifier = Modifier.height(8.dp))
+            Text(statusText, style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.primary)
+            Spacer(modifier = Modifier.height(24.dp))
             
-            if (status == JobStatus.SEARCHING_WORKER) {
-                Text("Hệ thống đang quét các thợ chuyên nghiệp trong bán kính 5km.", color = MaterialTheme.colorScheme.onSurfaceVariant)
-                Spacer(modifier = Modifier.height(24.dp))
-                LinearProgressIndicator(modifier = Modifier.fillMaxWidth())
-            }
-            
-            if (workerId != null && status != JobStatus.CREATED && status != JobStatus.SEARCHING_WORKER) {
-                Spacer(modifier = Modifier.height(16.dp))
+            if (workerId != null && status != JobStatus.SEARCHING_WORKER && status != JobStatus.CREATED && status != JobStatus.NO_WORKER_FOUND) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     AsyncImage(
                         model = "https://i.pravatar.cc/150?img=11",
                         contentDescription = "Avatar",
-                        modifier = Modifier.size(50.dp).clip(CircleShape)
+                        modifier = Modifier.size(60.dp).clip(CircleShape)
                     )
                     Spacer(modifier = Modifier.width(16.dp))
                     Column(modifier = Modifier.weight(1f)) {
-                        Text("Nguyễn Văn Hải", fontWeight = FontWeight.Bold, style = MaterialTheme.typography.titleMedium)
+                        Text("Nguyễn Văn Hải", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             Icon(Icons.Default.Star, contentDescription = null, tint = Color(0xFFFFB300), modifier = Modifier.size(16.dp))
-                            Text(" 4.9 • Thợ điện nước", style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                            Text(" 4.9 (124 việc)", style = MaterialTheme.typography.bodyMedium)
                         }
                     }
-                    IconButton(onClick = { /* Call */ }, modifier = Modifier.background(MaterialTheme.colorScheme.primaryContainer, CircleShape)) {
-                        Icon(Icons.Default.Phone, contentDescription = "Call", tint = MaterialTheme.colorScheme.primary)
+                    if (status != JobStatus.JOB_COMPLETED && status != JobStatus.COMPLETED && status != JobStatus.REVIEWED) {
+                        IconButton(onClick = { /* Call */ }, modifier = Modifier.background(MaterialTheme.colorScheme.primaryContainer, CircleShape)) {
+                            Icon(Icons.Default.Phone, contentDescription = "Call", tint = MaterialTheme.colorScheme.primary)
+                        }
+                        Spacer(modifier = Modifier.width(8.dp))
+                        IconButton(onClick = { /* Message */ }, modifier = Modifier.background(MaterialTheme.colorScheme.primaryContainer, CircleShape)) {
+                            Icon(Icons.Default.Message, contentDescription = "Message", tint = MaterialTheme.colorScheme.primary)
+                        }
                     }
                 }
             }
             
-            if (status == JobStatus.WORKER_ON_THE_WAY) {
-                Spacer(modifier = Modifier.height(24.dp))
-                Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-                    Column {
-                        Text("Thời gian dự kiến", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
-                        Text("8 phút", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
-                    }
-                    Column(horizontalAlignment = Alignment.End) {
-                        Text("Khoảng cách", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
-                        Text("1.2 km", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
-                    }
-                }
-            }
+            Spacer(modifier = Modifier.height(24.dp))
             
             if (status == JobStatus.JOB_COMPLETED || status == JobStatus.PAYMENT_PENDING) {
-                Spacer(modifier = Modifier.height(24.dp))
                 Button(
                     onClick = onNavigateToPayment,
                     modifier = Modifier.fillMaxWidth().height(56.dp),
@@ -261,8 +313,6 @@ fun JobStatusBottomSheet(
                     Text("Thanh toán ngay", style = MaterialTheme.typography.titleMedium)
                 }
             }
-            
-            Spacer(modifier = Modifier.height(24.dp))
         }
     }
 }
